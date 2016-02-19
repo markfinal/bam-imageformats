@@ -21,7 +21,9 @@ namespace tiff
                 this.RegisterGeneratedFile(Key, this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders"));
             }
 
-            var tiffioHeader = this.IncludeFile(this.CreateTokenizedString("$(packagedir)/libtiff/tiffio.h"), ".");
+            var tiffHeader = this.IncludeFile(this.CreateTokenizedString("$(packagedir)/libtiff/tiff.h"), ".");
+            this.IncludeFile(this.CreateTokenizedString("$(packagedir)/libtiff/tiffvers.h"), ".", tiffHeader);
+            this.IncludeFile(this.CreateTokenizedString("$(packagedir)/libtiff/tiffio.h"), ".", tiffHeader);
         }
     }
 
