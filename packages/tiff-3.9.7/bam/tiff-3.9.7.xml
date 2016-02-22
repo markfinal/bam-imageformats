@@ -3,6 +3,7 @@
   <Description>A new package called tiff with version 3.9.7</Description>
   <Dependents>
     <Package name="C" />
+    <Package name="Clang" version="Xcode6" />
     <Package name="NativeBuilder" />
     <Package name="Publisher" />
     <Package name="VisualC" version="12.0" />

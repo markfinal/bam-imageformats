@@ -82,6 +82,7 @@ namespace tiff
                 else
                 {
                     var contents = new System.Text.StringBuilder();
+                    contents.AppendLine("#define SIZEOF_INT 4");
                     return contents.ToString();
                 }
             }
@@ -114,6 +115,12 @@ namespace tiff
                 else
                 {
                     var contents = new System.Text.StringBuilder();
+                    contents.AppendLine("#define HAVE_SEARCH_H");
+                    contents.AppendLine("#define TIFF_INT64_T long long");
+                    contents.AppendLine("#define TIFF_UINT64_T unsigned long long");
+                    contents.AppendLine("#define HAVE_FCNTL_H");
+                    contents.AppendLine("#define HAVE_STRING_H");
+                    contents.AppendLine("#define HOST_FILLORDER FILLORDER_LSB2MSB");
                     return contents.ToString();
                 }
             }
@@ -145,7 +152,7 @@ namespace tiff
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
             {
-                source.AddFiles("$(packagedir)/libtiff/tif_apple.c");
+                //source.AddFiles("$(packagedir)/libtiff/tif_apple.c");
             }
 
             // note these dependencies are on SOURCE, as the headers are needed for compilation
