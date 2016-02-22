@@ -121,6 +121,7 @@ namespace tiff
                     contents.AppendLine("#define HAVE_FCNTL_H");
                     contents.AppendLine("#define HAVE_STRING_H");
                     contents.AppendLine("#define HOST_FILLORDER FILLORDER_LSB2MSB");
+                    contents.AppendLine("#define HAVE_IEEEFP 1");
                     return contents.ToString();
                 }
             }
@@ -152,7 +153,7 @@ namespace tiff
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
             {
-                //source.AddFiles("$(packagedir)/libtiff/tif_apple.c");
+                source.AddFiles("$(packagedir)/libtiff/tif_unix.c");
             }
 
             // note these dependencies are on SOURCE, as the headers are needed for compilation
@@ -177,6 +178,14 @@ namespace tiff
                         var compiler = settings as C.ICommonCompilerSettings;
                         compiler.PreprocessorDefines.Add("HAVE_FCNTL_H");
                     });
+            }
+            else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
+            {
+                source.PrivatePatch(settings =>
+                {
+                    var compiler = settings as C.ICommonCompilerSettings;
+                    compiler.DisableWarnings.AddUnique("int-to-void-pointer-cast");
+                });
             }
         }
     }
