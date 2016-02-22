@@ -122,6 +122,7 @@ namespace tiff
                     contents.AppendLine("#define HAVE_STRING_H");
                     contents.AppendLine("#define HOST_FILLORDER FILLORDER_LSB2MSB");
                     contents.AppendLine("#define HAVE_IEEEFP 1");
+                    contents.AppendLine("#define HAVE_UNISTD_H 1");
                     return contents.ToString();
                 }
             }
@@ -171,6 +172,12 @@ namespace tiff
                     }
                 });
 
+            source.PrivatePatch(settings =>
+                {
+                    var cCompiler = settings as C.ICOnlyCompilerSettings;
+                    cCompiler.LanguageStandard = C.ELanguageStandard.C99; // some C++ style comments
+                });
+
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
                 source.PrivatePatch(settings =>
@@ -182,10 +189,19 @@ namespace tiff
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
             {
                 source.PrivatePatch(settings =>
-                {
-                    var compiler = settings as C.ICommonCompilerSettings;
-                    compiler.DisableWarnings.AddUnique("int-to-void-pointer-cast");
-                });
+                    {
+                        var compiler = settings as C.ICommonCompilerSettings;
+                        compiler.DisableWarnings.AddUnique("int-to-void-pointer-cast");
+                    });
+            }
+            else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
+            {
+                source.PrivatePatch(settings =>
+                    {
+                        var compiler = settings as C.ICommonCompilerSettings;
+                        compiler.DisableWarnings.AddUnique("pointer-to-int-cast");
+                        compiler.DisableWarnings.AddUnique("int-to-pointer-cast");
+                    });
             }
         }
     }
