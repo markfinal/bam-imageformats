@@ -123,6 +123,10 @@ namespace tiff
                     contents.AppendLine("#define HOST_FILLORDER FILLORDER_LSB2MSB");
                     contents.AppendLine("#define HAVE_IEEEFP 1");
                     contents.AppendLine("#define HAVE_UNISTD_H 1");
+                    if (this.BuildEnvironment.Platform.Includes(EPlatform.OSX))
+                    {
+                        contents.AppendLine("#define HAVE_GETOPT 1");
+                    }
                     return contents.ToString();
                 }
             }
