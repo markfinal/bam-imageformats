@@ -135,7 +135,7 @@ namespace tiff
 
     [ModuleGroup("Thirdparty/tiff")]
     sealed class LibTiff :
-        C.StaticLibrary
+        C.DynamicLibrary
     {
         protected override void
         Init(
@@ -143,13 +143,18 @@ namespace tiff
         {
             base.Init(parent);
 
+            this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("tiff");
+            this.Macros["MajorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("3");
+            this.Macros["MinorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("9");
+            this.Macros["PatchVersion"] = Bam.Core.TokenizedString.CreateVerbatim("7");
+
             var source = this.CreateCSourceContainer("$(packagedir)/libtiff/*.c", filter: new System.Text.RegularExpressions.Regex(@"^((?!.*acorn)(?!.*apple)(?!.*atari)(?!.*msdos)(?!.*unix)(?!.*win3).*)$"));
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
                 source.AddFiles("$(packagedir)/libtiff/tif_win32.c");
-                if (this.Librarian is VisualCCommon.Librarian)
+                if (this.Linker is VisualCCommon.LinkerBase)
                 {
-                    this.CompileAgainst<WindowsSDK.WindowsSDK>(source);
+                    this.CompileAndLinkAgainst<WindowsSDK.WindowsSDK>(source);
                 }
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
@@ -205,6 +210,10 @@ namespace tiff
                         var compiler = settings as C.ICommonCompilerSettings;
                         compiler.DisableWarnings.AddUnique("pointer-to-int-cast");
                         compiler.DisableWarnings.AddUnique("int-to-pointer-cast");
+
+                        // TODO: can this be less brute force?
+                        var gccCompiler = settings as GccCommon.ICommonCompilerSettings;
+                        gccCompiler.Visibility = GccCommon.EVisibility.Default;
                     });
             }
         }
