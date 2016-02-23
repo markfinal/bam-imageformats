@@ -148,14 +148,13 @@ namespace tiff
             this.Macros["MinorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("9");
             this.Macros["PatchVersion"] = Bam.Core.TokenizedString.CreateVerbatim("7");
 
+            var headers = this.CreateHeaderContainer("$(packagedir)/libtiff/*.h");
             var source = this.CreateCSourceContainer("$(packagedir)/libtiff/*.c", filter: new System.Text.RegularExpressions.Regex(@"^((?!.*acorn)(?!.*apple)(?!.*atari)(?!.*msdos)(?!.*unix)(?!.*win3).*)$"));
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
+                headers.AddFiles("$(packagedir)/port/*.h");
                 source.AddFiles("$(packagedir)/libtiff/tif_win32.c");
-                if (this.Linker is VisualCCommon.LinkerBase)
-                {
-                    this.CompileAndLinkAgainst<WindowsSDK.WindowsSDK>(source);
-                }
+                source.AddFiles("$(packagedir)/port/getopt.c");
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
             {
@@ -193,7 +192,39 @@ namespace tiff
                     {
                         var compiler = settings as C.ICommonCompilerSettings;
                         compiler.PreprocessorDefines.Add("HAVE_FCNTL_H");
+                        compiler.PreprocessorDefines.Add("USE_WIN32_FILEIO"); // see tiffio.h
+
+                        var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
+                        if (null != vcCompiler)
+                        {
+                            vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level2;
+                        }
+
+                        var mingwCompiler = settings as MingwCommon.ICommonCompilerSettings;
+                        if (null != mingwCompiler)
+                        {
+                            mingwCompiler.AllWarnings = false;
+                            mingwCompiler.ExtraWarnings = false;
+                            mingwCompiler.Pedantic = true;
+                        }
                     });
+
+                this.PrivatePatch(settings =>
+                    {
+                        if (this.Linker is VisualCCommon.LinkerBase)
+                        {
+                            var linker = settings as C.ICommonLinkerSettings;
+                            linker.Libraries.Add("USER32.lib");
+                        }
+
+                        var winLinker = settings as C.ICommonLinkerSettingsWin;
+                        winLinker.ExportDefinitionFile = this.CreateTokenizedString("$(packagedir)/libtiff/libtiff.def");
+                    });
+
+                if (this.Linker is VisualCCommon.LinkerBase)
+                {
+                    this.CompilePubliclyAndLinkAgainst<WindowsSDK.WindowsSDK>(source);
+                }
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
             {
