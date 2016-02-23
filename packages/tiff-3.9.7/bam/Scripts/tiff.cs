@@ -245,6 +245,10 @@ namespace tiff
                         // TODO: can this be less brute force?
                         var gccCompiler = settings as GccCommon.ICommonCompilerSettings;
                         gccCompiler.Visibility = GccCommon.EVisibility.Default;
+
+                        gccCompiler.AllWarnings = false;
+                        gccCompiler.ExtraWarnings = false;
+                        gccCompiler.Pedantic = true;
                     });
             }
         }
