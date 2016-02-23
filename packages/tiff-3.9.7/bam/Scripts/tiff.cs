@@ -232,6 +232,10 @@ namespace tiff
                     {
                         var compiler = settings as C.ICommonCompilerSettings;
                         compiler.DisableWarnings.AddUnique("int-to-void-pointer-cast");
+
+                        // TODO: can this be less brute force?
+                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                        clangCompiler.Visibility = ClangCommon.EVisibility.Default;
                     });
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
