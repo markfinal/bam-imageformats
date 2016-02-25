@@ -196,6 +196,9 @@ namespace tiff
                         compiler.PreprocessorDefines.Add("HAVE_FCNTL_H");
                         compiler.PreprocessorDefines.Add("USE_WIN32_FILEIO"); // see tiffio.h
 
+                        var winCompiler = settings as C.ICommonCompilerSettingsWin;
+                        winCompiler.CharacterSet = C.ECharacterSet.NotSet;
+
                         var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
                         if (null != vcCompiler)
                         {
