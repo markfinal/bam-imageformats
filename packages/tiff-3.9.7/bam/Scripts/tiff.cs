@@ -241,6 +241,10 @@ namespace tiff
                         // TODO: can this be less brute force?
                         var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
                         clangCompiler.Visibility = ClangCommon.EVisibility.Default;
+
+                        clangCompiler.AllWarnings = false;
+                        clangCompiler.ExtraWarnings = false;
+                        clangCompiler.Pedantic = true;
                     });
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
