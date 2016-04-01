@@ -171,8 +171,6 @@ namespace tiff
             var generateConfig = Graph.Instance.FindReferencedModule<GenerateConfigHeader>();
             source.DependsOn(copyStandardHeaders, generateConf, generateConfig);
 
-            this.Requires(copyStandardHeaders); // this is for IDE projects, which require a different level of granularity
-
             this.PublicPatch((settings, appliedTo) =>
                 {
                     var compiler = settings as C.ICommonCompilerSettings;
