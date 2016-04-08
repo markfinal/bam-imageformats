@@ -50,6 +50,15 @@ namespace tiff
                 this.RegisterGeneratedFile(Key, this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders"));
             }
 
+            this.PublicPatch((settings, appliedTo) =>
+                {
+                    var compiler = settings as C.ICommonCompilerSettings;
+                    if (null != compiler)
+                    {
+                        compiler.IncludePaths.AddUnique(this.GeneratedPaths[Key]);
+                    }
+                });
+
             var tiffHeader = this.IncludeFile(this.CreateTokenizedString("$(packagedir)/libtiff/tiff.h"), ".");
             this.IncludeFile(this.CreateTokenizedString("$(packagedir)/libtiff/tiffvers.h"), ".", tiffHeader);
             this.IncludeFile(this.CreateTokenizedString("$(packagedir)/libtiff/tiffio.h"), ".", tiffHeader);
@@ -171,14 +180,8 @@ namespace tiff
             var generateConfig = Graph.Instance.FindReferencedModule<GenerateConfigHeader>();
             source.DependsOn(copyStandardHeaders, generateConf, generateConfig);
 
-            this.PublicPatch((settings, appliedTo) =>
-                {
-                    var compiler = settings as C.ICommonCompilerSettings;
-                    if (null != compiler)
-                    {
-                        compiler.IncludePaths.AddUnique(copyStandardHeaders.GeneratedPaths[Publisher.Collation.Key]);
-                    }
-                });
+            // export the public headers
+            this.UsePublicPatches(copyStandardHeaders);
 
             source.PrivatePatch(settings =>
                 {
