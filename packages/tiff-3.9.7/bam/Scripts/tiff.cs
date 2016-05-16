@@ -267,4 +267,108 @@ namespace tiff
             }
         }
     }
+
+    // there is no API export/import markup, so sometimes a static library is essential (especially on Windows)
+    [ModuleGroup("Thirdparty/tiff")]
+    sealed class LibTiff_static :
+        C.StaticLibrary
+    {
+        protected override void
+        Init(
+            Bam.Core.Module parent)
+        {
+            base.Init(parent);
+
+            this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("tiff");
+            this.Macros["MajorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("3");
+            this.Macros["MinorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("9");
+            this.Macros["PatchVersion"] = Bam.Core.TokenizedString.CreateVerbatim("7");
+
+            var headers = this.CreateHeaderContainer("$(packagedir)/libtiff/*.h");
+            var source = this.CreateCSourceContainer("$(packagedir)/libtiff/*.c", filter: new System.Text.RegularExpressions.Regex(@"^((?!.*acorn)(?!.*apple)(?!.*atari)(?!.*msdos)(?!.*unix)(?!.*win3).*)$"));
+            if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
+            {
+                headers.AddFiles("$(packagedir)/port/*.h");
+                source.AddFiles("$(packagedir)/libtiff/tif_win32.c");
+                source.AddFiles("$(packagedir)/port/getopt.c");
+            }
+            else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
+            {
+                source.AddFiles("$(packagedir)/libtiff/tif_unix.c");
+            }
+            else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
+            {
+                source.AddFiles("$(packagedir)/libtiff/tif_unix.c");
+            }
+
+            // note these dependencies are on SOURCE, as the headers are needed for compilation
+            var copyStandardHeaders = Graph.Instance.FindReferencedModule<CopyStandardHeaders>();
+            var generateConf = Graph.Instance.FindReferencedModule<GenerateConfHeader>();
+            var generateConfig = Graph.Instance.FindReferencedModule<GenerateConfigHeader>();
+            source.DependsOn(copyStandardHeaders, generateConf, generateConfig);
+
+            // export the public headers
+            this.UsePublicPatches(copyStandardHeaders);
+
+            source.PrivatePatch(settings =>
+                {
+                    var cCompiler = settings as C.ICOnlyCompilerSettings;
+                    cCompiler.LanguageStandard = C.ELanguageStandard.C99; // some C++ style comments
+                });
+
+            if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
+            {
+                source.PrivatePatch(settings =>
+                {
+                    var compiler = settings as C.ICommonCompilerSettings;
+                    compiler.PreprocessorDefines.Add("HAVE_FCNTL_H");
+                    compiler.PreprocessorDefines.Add("USE_WIN32_FILEIO"); // see tiffio.h
+
+                    var winCompiler = settings as C.ICommonCompilerSettingsWin;
+                    winCompiler.CharacterSet = C.ECharacterSet.NotSet;
+
+                    var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
+                    if (null != vcCompiler)
+                    {
+                        vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level2;
+                    }
+
+                    var mingwCompiler = settings as MingwCommon.ICommonCompilerSettings;
+                    if (null != mingwCompiler)
+                    {
+                        mingwCompiler.AllWarnings = false;
+                        mingwCompiler.ExtraWarnings = false;
+                        mingwCompiler.Pedantic = true;
+                    }
+                });
+            }
+            else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
+            {
+                source.PrivatePatch(settings =>
+                    {
+                        var compiler = settings as C.ICommonCompilerSettings;
+                        compiler.DisableWarnings.AddUnique("int-to-void-pointer-cast");
+
+                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                        clangCompiler.AllWarnings = false;
+                        clangCompiler.ExtraWarnings = false;
+                        clangCompiler.Pedantic = true;
+                    });
+            }
+            else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
+            {
+                source.PrivatePatch(settings =>
+                    {
+                        var compiler = settings as C.ICommonCompilerSettings;
+                        compiler.DisableWarnings.AddUnique("pointer-to-int-cast");
+                        compiler.DisableWarnings.AddUnique("int-to-pointer-cast");
+
+                        var gccCompiler = settings as GccCommon.ICommonCompilerSettings;
+                        gccCompiler.AllWarnings = false;
+                        gccCompiler.ExtraWarnings = false;
+                        gccCompiler.Pedantic = true;
+                    });
+            }
+        }
+    }
 }
