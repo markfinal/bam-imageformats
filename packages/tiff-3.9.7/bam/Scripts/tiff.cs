@@ -92,6 +92,7 @@ namespace tiff
                 {
                     var contents = new System.Text.StringBuilder();
                     contents.AppendLine("#define SIZEOF_INT 4");
+                    contents.AppendLine("#define LZW_SUPPORT 1");
                     return contents.ToString();
                 }
             }
