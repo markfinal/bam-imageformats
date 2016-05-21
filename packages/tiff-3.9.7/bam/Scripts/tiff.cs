@@ -143,7 +143,7 @@ namespace tiff
     }
 
     [ModuleGroup("Thirdparty/tiff")]
-    sealed class LibTiff :
+    class LibTiff :
         C.DynamicLibrary
     {
         protected override void
@@ -274,7 +274,7 @@ namespace tiff
 
     // there is no API export/import markup, so sometimes a static library is essential (especially on Windows)
     [ModuleGroup("Thirdparty/tiff")]
-    sealed class LibTiff_static :
+    class LibTiff_static :
         C.StaticLibrary
     {
         protected override void
@@ -380,6 +380,102 @@ namespace tiff
                         gccCompiler.ExtraWarnings = false;
                         gccCompiler.Pedantic = true;
                     });
+            }
+        }
+    }
+
+    namespace tests
+    {
+        [ModuleGroup("Thirdparty/tiff/tests")]
+        sealed class AsciiTagTest :
+            C.ConsoleApplication
+        {
+            protected override void
+            Init(
+                Bam.Core.Module parent)
+            {
+                base.Init(parent);
+
+                this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("ascii_tag");
+
+                var source = this.CreateCSourceContainer("$(packagedir)/test/ascii_tag.c");
+                this.CompileAndLinkAgainst<LibTiff_static>(source);
+
+                if (this.Linker is VisualCCommon.LinkerBase)
+                {
+                    this.LinkAgainst<WindowsSDK.WindowsSDK>();
+                }
+            }
+        }
+
+        [ModuleGroup("Thirdparty/tiff/tests")]
+        sealed class LongTagTest :
+            C.ConsoleApplication
+        {
+            protected override void
+            Init(
+                Bam.Core.Module parent)
+            {
+                base.Init(parent);
+
+                this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("long_tag");
+
+                var source = this.CreateCSourceContainer("$(packagedir)/test/long_tag.c");
+                source.AddFiles("$(packagedir)/test/check_tag.c");
+                this.CompileAndLinkAgainst<LibTiff_static>(source);
+
+                if (this.Linker is VisualCCommon.LinkerBase)
+                {
+                    this.LinkAgainst<WindowsSDK.WindowsSDK>();
+                }
+            }
+        }
+
+        [ModuleGroup("Thirdparty/tiff/tests")]
+        sealed class ShortTagTest :
+            C.ConsoleApplication
+        {
+            protected override void
+            Init(
+                Bam.Core.Module parent)
+            {
+                base.Init(parent);
+
+                this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("short_tag");
+
+                var source = this.CreateCSourceContainer("$(packagedir)/test/short_tag.c");
+                source.AddFiles("$(packagedir)/test/check_tag.c");
+                this.CompileAndLinkAgainst<LibTiff_static>(source);
+
+                if (this.Linker is VisualCCommon.LinkerBase)
+                {
+                    this.LinkAgainst<WindowsSDK.WindowsSDK>();
+                }
+            }
+        }
+
+        [ModuleGroup("Thirdparty/tiff/tests")]
+        sealed class StripRwTest :
+            C.ConsoleApplication
+        {
+            protected override void
+            Init(
+                Bam.Core.Module parent)
+            {
+                base.Init(parent);
+
+                this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("strip_rw");
+
+                this.CreateHeaderContainer("$(packagedir)/test/test_arrays.h");
+                var source = this.CreateCSourceContainer("$(packagedir)/test/strip_rw.c");
+                source.AddFiles("$(packagedir)/test/strip.c");
+                source.AddFiles("$(packagedir)/test/test_arrays.c");
+                this.CompileAndLinkAgainst<LibTiff_static>(source);
+
+                if (this.Linker is VisualCCommon.LinkerBase)
+                {
+                    this.LinkAgainst<WindowsSDK.WindowsSDK>();
+                }
             }
         }
     }
