@@ -33,6 +33,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "tiffio.h"
 
 #include <string.h>
+#include <stdlib.h>
 
 int
 TestReader()

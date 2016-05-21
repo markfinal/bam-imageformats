@@ -39,13 +39,15 @@ createCheckerboardImage(
     int tilesize = 8;
     char colour = 255;
     char *current = imageBuf;
-    for (auto y = 0; y < height; ++y)
+    int y;
+    for (y = 0; y < height; ++y)
     {
         if (0 == (y % tilesize))
         {
             colour ^= 255;
         }
-        for (auto x = 0; x < width; ++x)
+        int x;
+        for (x = 0; x < width; ++x)
         {
             if (0 == (x % tilesize))
             {

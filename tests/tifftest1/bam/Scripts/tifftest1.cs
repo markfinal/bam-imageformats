@@ -47,6 +47,15 @@ namespace tifftest1
             {
                 this.LinkAgainst<WindowsSDK.WindowsSDK>();
             }
+
+            if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
+            {
+                this.PrivatePatch(settings =>
+                {
+                    var linker = settings as C.ICommonLinkerSettings;
+                    linker.Libraries.AddUnique("-lm");
+                });
+            }
         }
     }
 }

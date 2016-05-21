@@ -74,7 +74,8 @@ TestWriter()
     }
     TIFFSetField(tif, TIFFTAG_ROWSPERSTRIP, TIFFDefaultStripSize(tif, linebytes));
     createCheckerboardImage(image, width, height, samplesperpixel);
-    for (unsigned int row = 0; row < height; ++row)
+    unsigned int row;
+    for (row = 0; row < height; ++row)
     {
         memcpy(buf, &image[(height - row - 1) * linebytes], linebytes);
         if (TIFFWriteScanline(tif, buf, row, 0) < 0)
