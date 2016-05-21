@@ -323,32 +323,32 @@ namespace tiff
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
                 source.PrivatePatch(settings =>
-                {
-                    var compiler = settings as C.ICommonCompilerSettings;
-                    compiler.PreprocessorDefines.Add("HAVE_FCNTL_H");
-                    compiler.PreprocessorDefines.Add("USE_WIN32_FILEIO"); // see tiffio.h
-
-                    // TODO: expose this as a configuration option
-                    // the alternative is TIF_PLATFORM_WINDOWED
-                    compiler.PreprocessorDefines.Add("TIF_PLATFORM_CONSOLE");
-
-                    var winCompiler = settings as C.ICommonCompilerSettingsWin;
-                    winCompiler.CharacterSet = C.ECharacterSet.NotSet;
-
-                    var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
-                    if (null != vcCompiler)
                     {
-                        vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level2;
-                    }
+                        var compiler = settings as C.ICommonCompilerSettings;
+                        compiler.PreprocessorDefines.Add("HAVE_FCNTL_H");
+                        compiler.PreprocessorDefines.Add("USE_WIN32_FILEIO"); // see tiffio.h
 
-                    var mingwCompiler = settings as MingwCommon.ICommonCompilerSettings;
-                    if (null != mingwCompiler)
-                    {
-                        mingwCompiler.AllWarnings = false;
-                        mingwCompiler.ExtraWarnings = false;
-                        mingwCompiler.Pedantic = true;
-                    }
-                });
+                        // TODO: expose this as a configuration option
+                        // the alternative is TIF_PLATFORM_WINDOWED
+                        compiler.PreprocessorDefines.Add("TIF_PLATFORM_CONSOLE");
+
+                        var winCompiler = settings as C.ICommonCompilerSettingsWin;
+                        winCompiler.CharacterSet = C.ECharacterSet.NotSet;
+
+                        var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
+                        if (null != vcCompiler)
+                        {
+                            vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level2;
+                        }
+
+                        var mingwCompiler = settings as MingwCommon.ICommonCompilerSettings;
+                        if (null != mingwCompiler)
+                        {
+                            mingwCompiler.AllWarnings = false;
+                            mingwCompiler.ExtraWarnings = false;
+                            mingwCompiler.Pedantic = true;
+                        }
+                    });
                 if (this.Librarian is VisualCCommon.Librarian)
                 {
                     this.CompileAgainst<WindowsSDK.WindowsSDK>(source);
