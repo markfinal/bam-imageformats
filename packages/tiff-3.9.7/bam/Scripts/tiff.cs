@@ -349,6 +349,10 @@ namespace tiff
                         mingwCompiler.Pedantic = true;
                     }
                 });
+                if (this.Librarian is VisualCCommon.Librarian)
+                {
+                    this.CompileAgainst<WindowsSDK.WindowsSDK>(source);
+                }
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
             {
