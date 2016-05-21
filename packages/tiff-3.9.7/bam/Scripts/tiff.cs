@@ -197,6 +197,10 @@ namespace tiff
                         compiler.PreprocessorDefines.Add("HAVE_FCNTL_H");
                         compiler.PreprocessorDefines.Add("USE_WIN32_FILEIO"); // see tiffio.h
 
+                        // TODO: expose this as a configuration option
+                        // the alternative is TIF_PLATFORM_WINDOWED
+                        compiler.PreprocessorDefines.Add("TIF_PLATFORM_CONSOLE");
+
                         var winCompiler = settings as C.ICommonCompilerSettingsWin;
                         winCompiler.CharacterSet = C.ECharacterSet.NotSet;
 
@@ -323,6 +327,10 @@ namespace tiff
                     var compiler = settings as C.ICommonCompilerSettings;
                     compiler.PreprocessorDefines.Add("HAVE_FCNTL_H");
                     compiler.PreprocessorDefines.Add("USE_WIN32_FILEIO"); // see tiffio.h
+
+                    // TODO: expose this as a configuration option
+                    // the alternative is TIF_PLATFORM_WINDOWED
+                    compiler.PreprocessorDefines.Add("TIF_PLATFORM_CONSOLE");
 
                     var winCompiler = settings as C.ICommonCompilerSettingsWin;
                     winCompiler.CharacterSet = C.ECharacterSet.NotSet;
