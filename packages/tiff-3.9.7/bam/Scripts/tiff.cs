@@ -216,6 +216,17 @@ namespace tiff
 
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
+                source["tif_dirinfo.c"].ForEach(item =>
+                    {
+                        item.PrivatePatch(settings =>
+                            {
+                                if (this.Linker is VisualCCommon.LinkerBase)
+                                {
+                                    var compiler = settings as C.ICommonCompilerSettings;
+                                    compiler.DisableWarnings.AddUnique("4133"); // tiff-3.9.7\libtiff\tif_dirinfo.c(797): warning C4133: 'function' : incompatible types - from 'size_t *' to 'unsigned int *'
+                                }
+                            });
+                    });
                 source.PrivatePatch(settings =>
                     {
                         var compiler = settings as C.ICommonCompilerSettings;
@@ -347,6 +358,17 @@ namespace tiff
 
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
+                source["tif_dirinfo.c"].ForEach(item =>
+                    {
+                        item.PrivatePatch(settings =>
+                            {
+                                if (this.Librarian is VisualCCommon.Librarian)
+                                {
+                                    var compiler = settings as C.ICommonCompilerSettings;
+                                    compiler.DisableWarnings.AddUnique("4133"); // tiff-3.9.7\libtiff\tif_dirinfo.c(797): warning C4133: 'function' : incompatible types - from 'size_t *' to 'unsigned int *'
+                                }
+                            });
+                    });
                 source.PrivatePatch(settings =>
                     {
                         var compiler = settings as C.ICommonCompilerSettings;
