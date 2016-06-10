@@ -77,6 +77,18 @@ namespace tiff
             }
         }
 
+        protected override string GuardString
+        {
+            get
+            {
+                if (Bam.Core.OSUtilities.IsWindowsHosting)
+                {
+                    return null;
+                }
+                return base.GuardString;
+            }
+        }
+
         protected override string Contents
         {
             get
@@ -108,6 +120,18 @@ namespace tiff
             get
             {
                 return this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders/tif_config.h");
+            }
+        }
+
+        protected override string GuardString
+        {
+            get
+            {
+                if (Bam.Core.OSUtilities.IsWindowsHosting)
+                {
+                    return null;
+                }
+                return base.GuardString;
             }
         }
 
