@@ -227,6 +227,31 @@ namespace tiff
                                 }
                             });
                     });
+                source["tif_fax3.c"].ForEach(item =>
+                    {
+                        item.PrivatePatch(settings =>
+                            {
+                                if (this.Linker is VisualCCommon.LinkerBase)
+                                {
+                                    // VisualC 14.0
+                                    var compiler = settings as C.ICommonCompilerSettings;
+                                    compiler.DisableWarnings.AddUnique("4311"); // tiff-3.9.7\libtiff\tif_fax3.c(395): warning C4311: 'type cast': pointer truncation from 'unsigned char *' to 'unsigned long'
+                                }
+                            });
+                    });
+                source["tif_win32.c"].ForEach(item =>
+                    {
+                        item.PrivatePatch(settings =>
+                            {
+                                if (this.Linker is VisualCCommon.LinkerBase)
+                                {
+                                    // VisualC 14.0
+                                    var compiler = settings as C.ICommonCompilerSettings;
+                                    compiler.DisableWarnings.AddUnique("4311"); // tiff-3.9.7\libtiff\tif_win32.c(212): warning C4311: 'type cast': pointer truncation from 'thandle_t' to 'int'
+                                    compiler.DisableWarnings.AddUnique("4312"); // tiff-3.9.7\libtiff\tif_win32.c(156): warning C4312: 'type cast': conversion from 'int' to 'thandle_t' of greater size
+                                }
+                            });
+                    });
                 source.PrivatePatch(settings =>
                     {
                         var compiler = settings as C.ICommonCompilerSettings;
@@ -366,6 +391,31 @@ namespace tiff
                                 {
                                     var compiler = settings as C.ICommonCompilerSettings;
                                     compiler.DisableWarnings.AddUnique("4133"); // tiff-3.9.7\libtiff\tif_dirinfo.c(797): warning C4133: 'function' : incompatible types - from 'size_t *' to 'unsigned int *'
+                                }
+                            });
+                    });
+                source["tif_fax3.c"].ForEach(item =>
+                    {
+                        item.PrivatePatch(settings =>
+                            {
+                                if (this.Librarian is VisualCCommon.Librarian)
+                                {
+                                    // VisualC 14.0
+                                    var compiler = settings as C.ICommonCompilerSettings;
+                                    compiler.DisableWarnings.AddUnique("4311"); // tiff-3.9.7\libtiff\tif_fax3.c(395): warning C4311: 'type cast': pointer truncation from 'unsigned char *' to 'unsigned long'
+                                }
+                            });
+                    });
+                source["tif_win32.c"].ForEach(item =>
+                    {
+                        item.PrivatePatch(settings =>
+                            {
+                                if (this.Librarian is VisualCCommon.Librarian)
+                                {
+                                    // VisualC 14.0
+                                    var compiler = settings as C.ICommonCompilerSettings;
+                                    compiler.DisableWarnings.AddUnique("4311"); // tiff-3.9.7\libtiff\tif_win32.c(212): warning C4311: 'type cast': pointer truncation from 'thandle_t' to 'int'
+                                    compiler.DisableWarnings.AddUnique("4312"); // tiff-3.9.7\libtiff\tif_win32.c(156): warning C4312: 'type cast': conversion from 'int' to 'thandle_t' of greater size
                                 }
                             });
                     });
