@@ -117,7 +117,7 @@ namespace tiff
             {
                 if (this.BuildEnvironment.Platform.Includes(EPlatform.Windows))
                 {
-                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.CreateTokenizedString("$(packagedir)/libtiff/tiffconf.vc.h").Parse()))
+                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.CreateTokenizedString("$(packagedir)/libtiff/tif_config.vc.h").Parse()))
                     {
                         return readFile.ReadToEnd();
                     }
