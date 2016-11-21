@@ -48,16 +48,17 @@ namespace pngtest1
                 this.LinkAgainst<WindowsSDK.WindowsSDK>();
             }
 
-#if false
-            if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
+            this.PrivatePatch(settings =>
                 {
-                    this.PrivatePatch(settings =>
+                    var gccLinker = settings as GccCommon.ICommonLinkerSettings;
+                    if (null != gccLinker)
                     {
+                        gccLinker.CanUseOrigin = true;
+                        gccLinker.RPath.AddUnique("$ORIGIN");
                         var linker = settings as C.ICommonLinkerSettings;
                         linker.Libraries.AddUnique("-lm");
-                    });
-                }
-#endif
+                    }
+                });
         }
     }
 

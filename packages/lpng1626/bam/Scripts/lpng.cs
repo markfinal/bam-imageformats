@@ -14,7 +14,7 @@ namespace lpng
             this.Macros["MajorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("1");
             this.Macros["MinorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("6");
             this.Macros["PatchVersion"] = Bam.Core.TokenizedString.CreateVerbatim("26");
-            this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("libpng");
+            this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("png");
 
             var source = this.CreateCSourceContainer("$(packagedir)/*.c", filter: new System.Text.RegularExpressions.Regex(@"^((?!.*example)(?!.*pngtest).*)$"));
 
@@ -37,6 +37,15 @@ namespace lpng
                     {
                         vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level4;
                         compiler.PreprocessorDefines.Add("PNG_BUILD_DLL");
+                    }
+
+                    var gccCompiler = settings as GccCommon.ICommonCompilerSettings;
+                    if (null != gccCompiler)
+                    {
+                        gccCompiler.AllWarnings = true;
+                        gccCompiler.ExtraWarnings = true;
+                        gccCompiler.Pedantic = true;
+                        gccCompiler.Visibility = GccCommon.EVisibility.Default;
                     }
 
                     if (this.BuildEnvironment.Configuration == EConfiguration.Debug)
@@ -98,6 +107,18 @@ namespace lpng
                 {
                     this.LinkAgainst<WindowsSDK.WindowsSDK>();
                 }
+
+                this.PrivatePatch(settings =>
+                    {
+                        var gccLinker = settings as GccCommon.ICommonLinkerSettings;
+                        if (null != gccLinker)
+                        {
+                            gccLinker.CanUseOrigin = true;
+                            gccLinker.RPath.AddUnique("$ORIGIN");
+                            var linker = settings as C.ICommonLinkerSettings;
+                            linker.Libraries.AddUnique("-lm");
+                        }
+                    });
             }
         }
 
@@ -126,6 +147,18 @@ namespace lpng
                 {
                     this.LinkAgainst<WindowsSDK.WindowsSDK>();
                 }
+
+                this.PrivatePatch(settings =>
+                    {
+                        var gccLinker = settings as GccCommon.ICommonLinkerSettings;
+                        if (null != gccLinker)
+                        {
+                            gccLinker.CanUseOrigin = true;
+                            gccLinker.RPath.AddUnique("$ORIGIN");
+                            var linker = settings as C.ICommonLinkerSettings;
+                            linker.Libraries.AddUnique("-lm");
+                        }
+                    });
             }
         }
 
@@ -154,6 +187,18 @@ namespace lpng
                 {
                     this.LinkAgainst<WindowsSDK.WindowsSDK>();
                 }
+
+                this.PrivatePatch(settings =>
+                    {
+                        var gccLinker = settings as GccCommon.ICommonLinkerSettings;
+                        if (null != gccLinker)
+                        {
+                            gccLinker.CanUseOrigin = true;
+                            gccLinker.RPath.AddUnique("$ORIGIN");
+                            var linker = settings as C.ICommonLinkerSettings;
+                            linker.Libraries.AddUnique("-lm");
+                        }
+                    });
             }
         }
 
@@ -182,6 +227,18 @@ namespace lpng
                 {
                     this.LinkAgainst<WindowsSDK.WindowsSDK>();
                 }
+
+                this.PrivatePatch(settings =>
+                    {
+                        var gccLinker = settings as GccCommon.ICommonLinkerSettings;
+                        if (null != gccLinker)
+                        {
+                            gccLinker.CanUseOrigin = true;
+                            gccLinker.RPath.AddUnique("$ORIGIN");
+                            var linker = settings as C.ICommonLinkerSettings;
+                            linker.Libraries.AddUnique("-lm");
+                        }
+                    });
             }
         }
 
@@ -210,6 +267,18 @@ namespace lpng
                 {
                     this.LinkAgainst<WindowsSDK.WindowsSDK>();
                 }
+
+                this.PrivatePatch(settings =>
+                    {
+                        var gccLinker = settings as GccCommon.ICommonLinkerSettings;
+                        if (null != gccLinker)
+                        {
+                            gccLinker.CanUseOrigin = true;
+                            gccLinker.RPath.AddUnique("$ORIGIN");
+                            var linker = settings as C.ICommonLinkerSettings;
+                            linker.Libraries.AddUnique("-lm");
+                        }
+                    });
             }
         }
 

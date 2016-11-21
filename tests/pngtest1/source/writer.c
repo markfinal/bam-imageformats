@@ -58,9 +58,10 @@ TestWriter()
     png_write_info(png_ptr, info_ptr);
 
     png_bytep *row_pointers = (png_bytep*)malloc(sizeof(png_bytep) * height);
-    for (int y = 0; y < height; ++y)
+    int y;
+    for (y = 0; y < height; ++y)
     {
-        png_bytep offset = (0 == y) ? image : (row_pointers[y - 1] + (width * samplesperpixel * bitsperpixel) / 8);
+        png_bytep offset = (0 == y) ? (png_bytep)image : (row_pointers[y - 1] + (width * samplesperpixel * bitsperpixel) / 8);
         row_pointers[y] = offset;
     }
     png_write_image(png_ptr, row_pointers);

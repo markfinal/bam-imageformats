@@ -65,7 +65,8 @@ TestReader()
     png_read_update_info(png_ptr, info_ptr);
 
     png_bytep *row_pointers = (png_bytep*)malloc(sizeof(png_bytep) * height);
-    for (int y = 0; y < height; ++y)
+    int y;
+    for (y = 0; y < height; ++y)
     {
         row_pointers[y] = (png_byte*)malloc(png_get_rowbytes(png_ptr, info_ptr));
     }
@@ -82,7 +83,7 @@ TestReader()
     }
     createCheckerboardImage(compare, width, height, 4);
     const int rowLength = (width * bit_depth * 4) / 8;
-    for (int y = 0; y < height; ++y)
+    for (y = 0; y < height; ++y)
     {
         if (0 != memcmp(row_pointers[y], compare + y * rowLength, rowLength))
         {
@@ -91,7 +92,7 @@ TestReader()
     }
     free(compare);
 
-    for (int y = 0; y < height; ++y)
+    for (y = 0; y < height; ++y)
     {
         free(row_pointers[y]);
     }
