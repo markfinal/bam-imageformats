@@ -41,7 +41,7 @@ TestReader()
 {
     FILE *fp = fopen("new.png", "rb");
 
-    char header[8];
+    unsigned char header[8];
     if (8 != fread(header, 1, 8, fp))
     {
         fclose(fp);

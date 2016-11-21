@@ -48,6 +48,15 @@ namespace lpng
                         gccCompiler.Visibility = GccCommon.EVisibility.Default;
                     }
 
+                    var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                    if (null != clangCompiler)
+                    {
+                        clangCompiler.AllWarnings = true;
+                        clangCompiler.ExtraWarnings = true;
+                        clangCompiler.Pedantic = true;
+                        clangCompiler.Visibility = ClangCommon.EVisibility.Default;
+                    }
+
                     if (this.BuildEnvironment.Configuration == EConfiguration.Debug)
                     {
                         compiler.PreprocessorDefines.Add("PNG_DEBUG");
