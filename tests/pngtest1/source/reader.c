@@ -42,7 +42,11 @@ TestReader()
     FILE *fp = fopen("new.png", "rb");
 
     char header[8];
-    fread(header, 1, 8, fp);
+    if (8 != fread(header, 1, 8, fp))
+    {
+        fclose(fp);
+        return -1;
+    }
     if (png_sig_cmp(header, 0, 8) > 0)
     {
         fclose(fp);
