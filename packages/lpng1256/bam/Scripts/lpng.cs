@@ -113,6 +113,11 @@ namespace lpng
                             {
                                 gccCompiler.Pedantic = false;
                             }
+                            var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                            if (null != clangCompiler)
+                            {
+                                compiler.DisableWarnings.AddUnique("empty-translation-unit"); // lpng1256/pnggccrd.c:26:7: error: ISO C requires a translation unit to contain at least one declaration
+                            }
                         });
                 });
 
@@ -218,6 +223,11 @@ namespace lpng
                             if (null != gccCompiler)
                             {
                                 gccCompiler.Pedantic = false;
+                            }
+                            var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                            if (null != clangCompiler)
+                            {
+                                compiler.DisableWarnings.AddUnique("empty-translation-unit"); // lpng1256/pnggccrd.c:26:7: error: ISO C requires a translation unit to contain at least one declaration
                             }
                         });
                 });
