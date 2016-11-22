@@ -14,7 +14,14 @@ namespace lpng
             this.Macros["MajorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("1");
             this.Macros["MinorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("6");
             this.Macros["PatchVersion"] = Bam.Core.TokenizedString.CreateVerbatim("26");
-            this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("png");
+            this.Macros["OutputName"] = this.CreateTokenizedString("png$(MajorVersion)$(MinorVersion)");
+
+            if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
+            {
+                // to match that in the CMakeLists.txt
+                this.Macros["sonameext"] = Bam.Core.TokenizedString.CreateInline(".so.$(MajorVersion)$(MinorVersion)");
+                this.Macros["dynamicext"] = Bam.Core.TokenizedString.CreateInline(".so.$(MajorVersion)$(MinorVersion).$(PatchVersion).0");
+            }
 
             var source = this.CreateCSourceContainer("$(packagedir)/*.c", filter: new System.Text.RegularExpressions.Regex(@"^((?!.*example)(?!.*pngtest).*)$"));
 
