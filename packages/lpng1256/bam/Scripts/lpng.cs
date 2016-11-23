@@ -11,6 +11,20 @@ namespace lpng
         {
             base.Init(parent);
 
+            if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
+            {
+                var versionScript = Bam.Core.Graph.Instance.FindReferencedModule<PNGVersionScript>();
+                this.DependsOn(versionScript);
+                this.PrivatePatch(settings =>
+                    {
+                        var gccLinker = settings as GccCommon.ICommonLinkerSettings;
+                        if (null != gccLinker)
+                        {
+                            gccLinker.VersionScript = versionScript.InputPath;
+                        }
+                    });
+            }
+
             this.Macros["MajorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("1");
             this.Macros["MinorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("2");
             this.Macros["PatchVersion"] = Bam.Core.TokenizedString.CreateVerbatim("56");
