@@ -71,7 +71,7 @@ TestWriter()
     while (cinfo.next_scanline < cinfo.image_height)
     {
         JSAMPROW row_pointer[1];
-        row_pointer[0] = image + cinfo.next_scanline * (width * samplesperpixel * bitsperpixel) / 8;
+        row_pointer[0] = (JSAMPROW)(image + cinfo.next_scanline * (width * samplesperpixel * bitsperpixel) / 8);
         (void)jpeg_write_scanlines(&cinfo, row_pointer, 1);
     }
 

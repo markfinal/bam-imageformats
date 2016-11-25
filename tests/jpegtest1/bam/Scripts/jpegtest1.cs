@@ -71,7 +71,7 @@ namespace jpegtest1
         {
             base.Init(parent);
 
-            var app = this.Include<JPEGTest1>(C.ConsoleApplication.Key, EPublishingType.ConsoleApplication, ".");
+            /*var app = */this.Include<JPEGTest1>(C.ConsoleApplication.Key, EPublishingType.ConsoleApplication, ".");
         }
     }
 }
