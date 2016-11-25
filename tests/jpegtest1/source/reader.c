@@ -30,7 +30,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "reader.h"
 #include "checkerboard.h"
 
-#include <stdio.h> // for FILE
+#include <stdio.h> /* for FILE */
 #include "jpeglib.h"
 
 #include <string.h>
