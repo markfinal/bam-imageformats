@@ -34,10 +34,6 @@ namespace jpeg
                 {
                     sourceHeaderPath = "$(packagedir)/jconfig.vc";
                 }
-                else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
-                {
-                    sourceHeaderPath = "$(packagedir)/jconfig.mac";
-                }
                 if (null != sourceHeaderPath)
                 {
                     using (System.IO.TextReader readFile = new System.IO.StreamReader(this.CreateTokenizedString(sourceHeaderPath).Parse()))
@@ -47,7 +43,13 @@ namespace jpeg
                 }
                 else
                 {
-                    return "";
+                    var contents = new System.Text.StringBuilder();
+                    contents.AppendLine("#define HAVE_PROTOTYPES");
+                    contents.AppendLine("#define HAVE_UNSIGNED_CHAR");
+                    contents.AppendLine("#define HAVE_UNSIGNED_SHORT");
+                    contents.AppendLine("#define HAVE_STDDEF_H");
+                    contents.AppendLine("#define HAVE_STDLIB_H");
+                    return contents.ToString();
                 }
             }
         }

@@ -45,6 +45,11 @@ namespace jpeg
                         {
                             compiler.DisableWarnings.AddUnique("4100"); // jpeg-9b\jccoefct.c(346): warning C4100: 'input_buf': unreferenced formal parameter
                         }
+                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                        if (null != clangCompiler)
+                        {
+                            compiler.DisableWarnings.AddUnique("unused-parameter"); // jpeg-9b/jccoefct.c:346:51: error: unused parameter 'input_buf'
+                        }
                     }));
 
             source["jccolor.c"].ForEach(item =>
@@ -55,6 +60,11 @@ namespace jpeg
                         if (null != vcCompiler)
                         {
                             compiler.DisableWarnings.AddUnique("4100"); // jpeg-9b\jccolor.c(427): warning C4100: 'cinfo': unreferenced formal parameter
+                        }
+                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                        if (null != clangCompiler)
+                        {
+                            compiler.DisableWarnings.AddUnique("unused-parameter"); // jpeg-9b/jccolor.c:427:29: error: unused parameter 'cinfo'
                         }
                     }));
 
@@ -67,6 +77,11 @@ namespace jpeg
                         {
                             compiler.DisableWarnings.AddUnique("4100"); // jpeg-9b\jcsample.c(84): warning C4100: 'cinfo': unreferenced formal parameter
                         }
+                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                        if (null != clangCompiler)
+                        {
+                            compiler.DisableWarnings.AddUnique("unused-parameter"); // jpeg-9b/jcsample.c:84:39: error: unused parameter 'cinfo'
+                        }
                     }));
 
             source["jctrans.c"].ForEach(item =>
@@ -77,6 +92,11 @@ namespace jpeg
                         if (null != vcCompiler)
                         {
                             compiler.DisableWarnings.AddUnique("4100"); // jpeg-9b\jctrans.c(275): warning C4100: 'input_buf': unreferenced formal parameter
+                        }
+                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                        if (null != clangCompiler)
+                        {
+                            compiler.DisableWarnings.AddUnique("unused-parameter"); // jpeg-9b/jctrans.c:275:51: error: unused parameter 'input_buf'
                         }
                     }));
 
@@ -90,6 +110,11 @@ namespace jpeg
                             compiler.DisableWarnings.AddUnique("4244"); // jpeg-9b\jdarith.c(480): warning C4244: '+=': conversion from 'int' to 'JCOEF', possible loss of data
                             compiler.DisableWarnings.AddUnique("4100"); // jpeg-9b\jdarith.c(753): warning C4100: 'cinfo': unreferenced formal parameter
                         }
+                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                        if (null != clangCompiler)
+                        {
+                            compiler.DisableWarnings.AddUnique("unused-parameter"); // jpeg-9b/jdarith.c:753:31: error: unused parameter 'cinfo'
+                        }
                     }));
 
             source["jdatadst.c"].ForEach(item =>
@@ -102,6 +127,11 @@ namespace jpeg
                             compiler.DisableWarnings.AddUnique("4100"); // jpeg-9b\jdatadst.c(78): warning C4100: 'cinfo': unreferenced formal parameter
                             compiler.DisableWarnings.AddUnique("4267"); // jpeg-9b\jdatadst.c(185): warning C4267: '=': conversion from 'size_t' to 'unsigned long', possible loss of data
                         }
+                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                        if (null != clangCompiler)
+                        {
+                            compiler.DisableWarnings.AddUnique("unused-parameter"); // jpeg-9b/jdatadst.c:78:38: error: unused parameter 'cinfo'
+                        }
                     }));
 
             source["jdatasrc.c"].ForEach(item =>
@@ -112,6 +142,11 @@ namespace jpeg
                         if (null != vcCompiler)
                         {
                             compiler.DisableWarnings.AddUnique("4100"); // jpeg-9b\jdatasrc.c(57): warning C4100: 'cinfo': unreferenced formal parameter
+                        }
+                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                        if (null != clangCompiler)
+                        {
+                            compiler.DisableWarnings.AddUnique("unused-parameter"); // jpeg-9b/jdatasrc.c:57:35: error: unused parameter 'cinfo'
                         }
                     }));
 
@@ -124,6 +159,11 @@ namespace jpeg
                         {
                             compiler.DisableWarnings.AddUnique("4100"); // jpeg-9b\jdcoefct.c(230): warning C4100: 'cinfo': unreferenced formal parameter
                         }
+                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                        if (null != clangCompiler)
+                        {
+                            compiler.DisableWarnings.AddUnique("unused-parameter"); // jpeg-9b/jdcoefct.c:230:38: error: unused parameter 'cinfo'
+                        }
                     }));
 
             source["jdcolor.c"].ForEach(item =>
@@ -134,6 +174,11 @@ namespace jpeg
                         if (null != vcCompiler)
                         {
                             compiler.DisableWarnings.AddUnique("4100"); // jpeg-9b\jdcolor.c(558): warning C4100: 'cinfo': unreferenced formal parameter
+                        }
+                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                        if (null != clangCompiler)
+                        {
+                            compiler.DisableWarnings.AddUnique("unused-parameter"); // jpeg-9b/jdcolor.c:558:37: error: unused parameter 'cinfo'
                         }
                     }));
 
@@ -190,6 +235,11 @@ namespace jpeg
                         {
                             compiler.DisableWarnings.AddUnique("4100"); // jpeg-9b\jdsample.c(92): warning C4100: 'in_row_groups_avail': unreferenced formal parameter
                         }
+                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                        if (null != clangCompiler)
+                        {
+                            compiler.DisableWarnings.AddUnique("unused-parameter"); // jpeg-9b/jdsample.c:92:19: error: unused parameter 'in_row_groups_avail'
+                        }
                     }));
 
             source["jerror.c"].ForEach(item =>
@@ -213,6 +263,11 @@ namespace jpeg
                             compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                             compiler.DisableWarnings.AddUnique("4100"); // jpeg-9b\jmemansi.c(36): warning C4100: 'cinfo': unreferenced formal parameter
                         }
+                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                        if (null != clangCompiler)
+                        {
+                            compiler.DisableWarnings.AddUnique("unused-parameter"); // jpeg-9b/jmemansi.c:36:30: error: unused parameter 'cinfo'
+                        }
                     }));
 
             source["jmemmgr.c"].ForEach(item =>
@@ -225,6 +280,28 @@ namespace jpeg
                             compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                             compiler.DisableWarnings.AddUnique("4267"); // jpeg-9b\jmemmgr.c(307): warning C4267: '+=': conversion from 'size_t' to 'long', possible loss of data
                             compiler.DisableWarnings.AddUnique("4127"); // jpeg-9b\jmemmgr.c(1045): warning C4127: conditional expression is constant
+                        }
+                    }));
+
+            source["jdmerge.c"].ForEach(item =>
+                item.PrivatePatch(settings =>
+                    {
+                        var compiler = settings as C.ICommonCompilerSettings;
+                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                        if (null != clangCompiler)
+                        {
+                            compiler.DisableWarnings.AddUnique("unused-parameter"); // jpeg-9b/jdmerge.c:188:18: error: unused parameter 'in_row_groups_avail'
+                        }
+                    }));
+
+            source["jdpostct.c"].ForEach(item =>
+                item.PrivatePatch(settings =>
+                    {
+                        var compiler = settings as C.ICommonCompilerSettings;
+                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                        if (null != clangCompiler)
+                        {
+                            compiler.DisableWarnings.AddUnique("unused-parameter"); // jpeg-9b/jdpostct.c:161:20: error: unused parameter 'output_buf'
                         }
                     }));
 
@@ -251,6 +328,11 @@ namespace jpeg
                         {
                             compiler.DisableWarnings.AddUnique("4100"); // jpeg-9b\jquant1.c(246): warning C4100: 'ci': unreferenced formal parameter
                         }
+                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                        if (null != clangCompiler)
+                        {
+                            compiler.DisableWarnings.AddUnique("unused-parameter"); // jpeg-9b/jquant1.c:246:32: error: unused parameter 'cinfo'
+                        }
                     }));
 
             source["jquant2.c"].ForEach(item =>
@@ -261,6 +343,11 @@ namespace jpeg
                         if (null != vcCompiler)
                         {
                             compiler.DisableWarnings.AddUnique("4100"); // jpeg-9b\jquant2.c(226): warning C4100: 'output_buf': unreferenced formal parameter
+                        }
+                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                        if (null != clangCompiler)
+                        {
+                            compiler.DisableWarnings.AddUnique("unused-parameter"); // jpeg-9b/jquant2.c:226:16: error: unused parameter 'output_buf'
                         }
                     }));
         }
