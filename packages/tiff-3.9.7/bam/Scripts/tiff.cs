@@ -387,7 +387,7 @@ namespace tiff
                     {
                         item.PrivatePatch(settings =>
                             {
-                                if (this.Librarian is VisualCCommon.Librarian)
+                                if (item.Compiler is VisualCCommon.CompilerBase)
                                 {
                                     var compiler = settings as C.ICommonCompilerSettings;
                                     compiler.DisableWarnings.AddUnique("4133"); // tiff-3.9.7\libtiff\tif_dirinfo.c(797): warning C4133: 'function' : incompatible types - from 'size_t *' to 'unsigned int *'
@@ -398,7 +398,7 @@ namespace tiff
                     {
                         item.PrivatePatch(settings =>
                             {
-                                if (this.Librarian is VisualCCommon.Librarian)
+                                if (item.Compiler is VisualCCommon.CompilerBase)
                                 {
                                     // VisualC 14.0
                                     var compiler = settings as C.ICommonCompilerSettings;
@@ -410,7 +410,7 @@ namespace tiff
                     {
                         item.PrivatePatch(settings =>
                             {
-                                if (this.Librarian is VisualCCommon.Librarian)
+                                if (item.Compiler is VisualCCommon.CompilerBase)
                                 {
                                     // VisualC 14.0
                                     var compiler = settings as C.ICommonCompilerSettings;
