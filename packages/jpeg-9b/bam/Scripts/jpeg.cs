@@ -31,7 +31,7 @@ using Bam.Core;
 namespace jpeg
 {
     [ModuleGroup("Thirdparty/libjpeg")]
-    sealed class JpegLibrary :
+    class JpegLibrary :
         C.StaticLibrary
     {
         protected override void
