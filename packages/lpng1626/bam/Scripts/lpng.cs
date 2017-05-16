@@ -344,6 +344,7 @@ namespace lpng
 
                 this.Include<PNGLibrary>(C.DynamicLibrary.Key, ".", app);
                 this.Include<zlib.ZLib>(C.DynamicLibrary.Key, ".", app);
+                this.IncludeFile("$(packagedir)/pngtest.png", ".", app, false);
             }
         }
     }
