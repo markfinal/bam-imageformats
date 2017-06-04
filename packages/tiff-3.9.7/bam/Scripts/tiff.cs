@@ -308,8 +308,8 @@ namespace tiff
                         var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
                         clangCompiler.Visibility = ClangCommon.EVisibility.Default;
 
-                        clangCompiler.AllWarnings = false;
-                        clangCompiler.ExtraWarnings = false;
+                        clangCompiler.AllWarnings = true;
+                        clangCompiler.ExtraWarnings = true;
                         clangCompiler.Pedantic = true;
                     });
             }
@@ -459,10 +459,40 @@ namespace tiff
                         compiler.DisableWarnings.AddUnique("int-to-void-pointer-cast");
 
                         var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
-                        clangCompiler.AllWarnings = false;
-                        clangCompiler.ExtraWarnings = false;
+                        clangCompiler.AllWarnings = true;
+                        clangCompiler.ExtraWarnings = true;
                         clangCompiler.Pedantic = true;
                     });
+
+                source["tif_lzw.c"].ForEach(item =>
+                    item.PrivatePatch(settings =>
+                        {
+                            var compiler = settings as C.ICommonCompilerSettings;
+                            if (null != compiler)
+                            {
+                                compiler.DisableWarnings.AddUnique("unused-parameter"); // tiff-3.9.7/libtiff/tif_lzw.c:1060:28: error: unused parameter 'scheme' [-Werror,-Wunused-parameter]
+                            }
+                        }));
+
+                source["tif_print.c"].ForEach(item =>
+                    item.PrivatePatch(settings =>
+                        {
+                            var compiler = settings as C.ICommonCompilerSettings;
+                            if (null != compiler)
+                            {
+                                compiler.DisableWarnings.AddUnique("unused-variable"); // tiff-3.9.7/libtiff/tif_print.c:118:17: error: unused variable 'td' [-Werror,-Wunused-variable]
+                            }
+                        }));
+
+                source["tif_write.c"].ForEach(item =>
+                    item.PrivatePatch(settings =>
+                        {
+                            var compiler = settings as C.ICommonCompilerSettings;
+                            if (null != compiler)
+                            {
+                                compiler.DisableWarnings.AddUnique("sign-compare"); // tiff-3.9.7/libtiff/tif_write.c:633:49: error: comparison of integers of different signs: 'toff_t' (aka 'unsigned int') and 'tsize_t' (aka 'int') [-Werror,-Wsign-compare]
+                            }
+                        }));
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
             {
@@ -498,6 +528,16 @@ namespace tiff
                 var source = this.CreateCSourceContainer("$(packagedir)/test/ascii_tag.c");
                 this.CompileAndLinkAgainst<LibTiff_static>(source);
 
+                source.PrivatePatch(settings =>
+                    {
+                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                        if (null != clangCompiler)
+                        {
+                            var compiler = settings as C.ICommonCompilerSettings;
+                            compiler.DisableWarnings.AddUnique("tautological-constant-out-of-range-compare"); // tiff-3.9.7/test/ascii_tag.c:128:41: error: comparison of constant 0 with boolean expression is always false [-Werror,-Wtautological-constant-out-of-range-compare]
+                        }
+                    });
+
                 if (this.Linker is VisualCCommon.LinkerBase)
                 {
                     this.LinkAgainst<WindowsSDK.WindowsSDK>();
@@ -521,6 +561,16 @@ namespace tiff
                 source.AddFiles("$(packagedir)/test/check_tag.c");
                 this.CompileAndLinkAgainst<LibTiff_static>(source);
 
+                source.PrivatePatch(settings =>
+                    {
+                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                        if (null != clangCompiler)
+                        {
+                            var compiler = settings as C.ICommonCompilerSettings;
+                            compiler.DisableWarnings.AddUnique("tautological-constant-out-of-range-compare"); // tiff-3.9.7/test/long_tag.c:112:41: error: comparison of constant 0 with boolean expression is always false [-Werror,-Wtautological-constant-out-of-range-compare]
+                        }
+                    });
+
                 if (this.Linker is VisualCCommon.LinkerBase)
                 {
                     this.LinkAgainst<WindowsSDK.WindowsSDK>();
@@ -543,6 +593,16 @@ namespace tiff
                 var source = this.CreateCSourceContainer("$(packagedir)/test/short_tag.c");
                 source.AddFiles("$(packagedir)/test/check_tag.c");
                 this.CompileAndLinkAgainst<LibTiff_static>(source);
+
+                source.PrivatePatch(settings =>
+                    {
+                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
+                        if (null != clangCompiler)
+                        {
+                            var compiler = settings as C.ICommonCompilerSettings;
+                            compiler.DisableWarnings.AddUnique("tautological-constant-out-of-range-compare"); // tiff-3.9.7/test/short_tag.c:126:41: error: comparison of constant 0 with boolean expression is always false [-Werror,-Wtautological-constant-out-of-range-compare]
+                        }
+                    });
 
                 if (this.Linker is VisualCCommon.LinkerBase)
                 {
