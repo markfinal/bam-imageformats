@@ -312,6 +312,36 @@ namespace tiff
                         clangCompiler.ExtraWarnings = true;
                         clangCompiler.Pedantic = true;
                     });
+
+                source["tif_lzw.c"].ForEach(item =>
+                    item.PrivatePatch(settings =>
+                        {
+                            var compiler = settings as C.ICommonCompilerSettings;
+                            if (null != compiler)
+                            {
+                                compiler.DisableWarnings.AddUnique("unused-parameter"); // tiff-3.9.7/libtiff/tif_lzw.c:1060:28: error: unused parameter 'scheme' [-Werror,-Wunused-parameter]
+                            }
+                        }));
+
+                source["tif_print.c"].ForEach(item =>
+                    item.PrivatePatch(settings =>
+                        {
+                            var compiler = settings as C.ICommonCompilerSettings;
+                            if (null != compiler)
+                            {
+                                compiler.DisableWarnings.AddUnique("unused-variable"); // tiff-3.9.7/libtiff/tif_print.c:118:17: error: unused variable 'td' [-Werror,-Wunused-variable]
+                            }
+                        }));
+
+                source["tif_write.c"].ForEach(item =>
+                    item.PrivatePatch(settings =>
+                        {
+                            var compiler = settings as C.ICommonCompilerSettings;
+                            if (null != compiler)
+                            {
+                                compiler.DisableWarnings.AddUnique("sign-compare"); // tiff-3.9.7/libtiff/tif_write.c:633:49: error: comparison of integers of different signs: 'toff_t' (aka 'unsigned int') and 'tsize_t' (aka 'int') [-Werror,-Wsign-compare]
+                            }
+                        }));
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
             {
