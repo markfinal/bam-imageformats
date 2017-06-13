@@ -351,7 +351,6 @@ namespace tiff
                         compiler.DisableWarnings.AddUnique("pointer-to-int-cast");
                         compiler.DisableWarnings.AddUnique("int-to-pointer-cast");
 
-                        // TODO: can this be less brute force?
                         var gccCompiler = settings as GccCommon.ICommonCompilerSettings;
                         gccCompiler.Visibility = GccCommon.EVisibility.Default;
 
@@ -359,11 +358,23 @@ namespace tiff
                         gccCompiler.ExtraWarnings = false;
                         gccCompiler.Pedantic = true;
                     });
+
+                var versionScript = Bam.Core.Graph.Instance.FindReferencedModule<VersionScript>();
+                this.DependsOn(versionScript);
+                this.PrivatePatch(settings =>
+                    {
+                        var gccLinker = settings as GccCommon.ICommonLinkerSettings;
+                        if (null != gccLinker)
+                        {
+                            gccLinker.VersionScript = versionScript.InputPath;
+                        }
+                    });
             }
         }
     }
 
-    // there is no API export/import markup, so sometimes a static library is essential (especially on Windows)
+    // Dynamic library exports are via .def file (Windows), and .map file (Linux) [brute force on OSX]
+    // however, sometimes a static library is preferred
     [ModuleGroup("Thirdparty/tiff")]
     class LibTiff_static :
         C.StaticLibrary
@@ -572,6 +583,14 @@ namespace tiff
                 {
                     this.LinkAgainst<WindowsSDK.WindowsSDK>();
                 }
+                else if (this.Linker is GccCommon.LinkerBase)
+                {
+                    this.PrivatePatch(settings =>
+                        {
+                            var linker = settings as C.ICommonLinkerSettings;
+                            linker.Libraries.AddUnique("-lm");
+                        });
+                }
             }
         }
 
@@ -604,6 +623,14 @@ namespace tiff
                 if (this.Linker is VisualCCommon.LinkerBase)
                 {
                     this.LinkAgainst<WindowsSDK.WindowsSDK>();
+                }
+                else if (this.Linker is GccCommon.LinkerBase)
+                {
+                    this.PrivatePatch(settings =>
+                        {
+                            var linker = settings as C.ICommonLinkerSettings;
+                            linker.Libraries.AddUnique("-lm");
+                        });
                 }
             }
         }
@@ -638,6 +665,14 @@ namespace tiff
                 {
                     this.LinkAgainst<WindowsSDK.WindowsSDK>();
                 }
+                else if (this.Linker is GccCommon.LinkerBase)
+                {
+                    this.PrivatePatch(settings =>
+                        {
+                            var linker = settings as C.ICommonLinkerSettings;
+                            linker.Libraries.AddUnique("-lm");
+                        });
+                }
             }
         }
 
@@ -662,6 +697,14 @@ namespace tiff
                 if (this.Linker is VisualCCommon.LinkerBase)
                 {
                     this.LinkAgainst<WindowsSDK.WindowsSDK>();
+                }
+                else if (this.Linker is GccCommon.LinkerBase)
+                {
+                    this.PrivatePatch(settings =>
+                        {
+                            var linker = settings as C.ICommonLinkerSettings;
+                            linker.Libraries.AddUnique("-lm");
+                        });
                 }
             }
         }
