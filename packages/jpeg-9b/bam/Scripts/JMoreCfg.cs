@@ -34,6 +34,14 @@ namespace jpeg
     class GenerateJMoreCfgHeader :
         C.ProceduralHeaderFile
     {
+        protected override void
+        Init(
+            Bam.Core.Module parent)
+        {
+            base.Init(parent);
+            this.Macros.Add("templateConfig", this.CreateTokenizedString("$(packagedir)/jmorecfg.h"));
+        }
+
         protected override TokenizedString OutputPath
         {
             get
@@ -57,7 +65,7 @@ namespace jpeg
                 if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
                 {
                     var contents = new System.Text.StringBuilder();
-                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.CreateTokenizedString("$(packagedir)/jmorecfg.h").Parse()))
+                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros["templateConfig"].ToString()))
                     {
                         for (;;)
                         {
@@ -86,7 +94,7 @@ namespace jpeg
                 }
                 else
                 {
-                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.CreateTokenizedString("$(packagedir)/jmorecfg.h").Parse()))
+                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros["templateConfig"].ToString()))
                     {
                         return readFile.ReadToEnd();
                     }

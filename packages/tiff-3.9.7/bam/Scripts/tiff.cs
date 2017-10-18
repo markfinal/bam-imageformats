@@ -69,6 +69,17 @@ namespace tiff
     class GenerateConfHeader :
         C.ProceduralHeaderFile
     {
+        protected override void
+        Init(
+            Bam.Core.Module parent)
+        {
+            base.Init(parent);
+            if (this.BuildEnvironment.Platform.Includes(EPlatform.Windows))
+            {
+                this.Macros.Add("templatetiffconf", this.CreateTokenizedString("$(packagedir)/libtiff/tiffconf.vc.h"));
+            }
+        }
+
         protected override TokenizedString OutputPath
         {
             get
@@ -95,7 +106,7 @@ namespace tiff
             {
                 if (this.BuildEnvironment.Platform.Includes(EPlatform.Windows))
                 {
-                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.CreateTokenizedString("$(packagedir)/libtiff/tiffconf.vc.h").Parse()))
+                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros["templatetiffconf"].ToString()))
                     {
                         return readFile.ReadToEnd();
                     }
@@ -115,6 +126,17 @@ namespace tiff
     class GenerateConfigHeader :
         C.ProceduralHeaderFile
     {
+        protected override void
+        Init(
+            Bam.Core.Module parent)
+        {
+            base.Init(parent);
+            if (this.BuildEnvironment.Platform.Includes(EPlatform.Windows))
+            {
+                this.Macros.Add("templateConfig", this.CreateTokenizedString("$(packagedir)/libtiff/tif_config.vc.h"));
+            }
+        }
+
         protected override TokenizedString OutputPath
         {
             get
@@ -141,7 +163,7 @@ namespace tiff
             {
                 if (this.BuildEnvironment.Platform.Includes(EPlatform.Windows))
                 {
-                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.CreateTokenizedString("$(packagedir)/libtiff/tif_config.vc.h").Parse()))
+                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros["templateConfig"].ToString()))
                     {
                         return readFile.ReadToEnd();
                     }

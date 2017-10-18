@@ -34,6 +34,14 @@ namespace lpng
     class GeneratePngConfHeader :
         C.ProceduralHeaderFile
     {
+        protected override void
+        Init(
+            Bam.Core.Module parent)
+        {
+            base.Init(parent);
+            this.Macros.Add("templateConfig", this.CreateTokenizedString("$(packagedir)/scripts/pnglibconf.h.prebuilt"));
+        }
+        
         protected override TokenizedString OutputPath
         {
             get
@@ -58,7 +66,7 @@ namespace lpng
         {
             get
             {
-                using (System.IO.TextReader readFile = new System.IO.StreamReader(this.CreateTokenizedString("$(packagedir)/scripts/pnglibconf.h.prebuilt").Parse()))
+                using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros["templateConfig"].ToString()))
                 {
                     return readFile.ReadToEnd();
                 }

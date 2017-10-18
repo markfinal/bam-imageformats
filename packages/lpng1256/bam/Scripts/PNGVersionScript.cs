@@ -34,6 +34,14 @@ namespace lpng
     class PNGVersionScript :
         C.VersionScript
     {
+        protected override void
+        Init(
+            Bam.Core.Module parent)
+        {
+            base.Init(parent);
+            this.Macros.Add("templateConfig", this.CreateTokenizedString("$(packagedir)/png.h"));
+        }
+
         public override TokenizedString OutputPath
         {
             get
@@ -47,13 +55,12 @@ namespace lpng
             get
             {
                 var exportRegEx = new System.Text.RegularExpressions.Regex(@"PNG_EXPORT\([A-za-z_0-9]*,([A-za-z_0-9]*)\)");
-                var pngh = this.CreateTokenizedString("$(packagedir)/png.h");
 
                 var contents = new System.Text.StringBuilder();
                 contents.AppendLine("PNG12_0"); // to match that from MakeFile.elf
                 contents.AppendLine("{");
                 contents.AppendLine("global:");
-                using (System.IO.TextReader readFile = new System.IO.StreamReader(pngh.Parse()))
+                using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros["templateConfig"].ToString()))
                 {
                     for (;;)
                     {

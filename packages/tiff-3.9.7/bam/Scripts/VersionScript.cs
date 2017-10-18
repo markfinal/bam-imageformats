@@ -34,6 +34,14 @@ namespace tiff
     class VersionScript :
         C.VersionScript
     {
+        protected override void
+        Init(
+            Bam.Core.Module parent)
+        {
+            base.Init(parent);
+            this.Macros.Add("templateConfig", this.CreateTokenizedString("$(packagedir)/libtiff/libtiff.map"));
+        }
+
         public override TokenizedString OutputPath
         {
             get
@@ -47,7 +55,7 @@ namespace tiff
             get
             {
                 string contents = string.Empty;
-                using (System.IO.StreamReader streamReader = new System.IO.StreamReader(this.CreateTokenizedString("$(packagedir)/libtiff/libtiff.map").Parse()))
+                using (System.IO.StreamReader streamReader = new System.IO.StreamReader(this.Macros["templateConfig"].ToString()))
                 {
                     contents = streamReader.ReadToEnd();
                 }

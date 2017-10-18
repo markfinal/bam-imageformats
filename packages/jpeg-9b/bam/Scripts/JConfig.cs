@@ -34,6 +34,17 @@ namespace jpeg
     class GenerateJConfigHeader :
         C.ProceduralHeaderFile
     {
+        protected override void
+        Init(
+            Bam.Core.Module parent)
+        {
+            base.Init(parent);
+            if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
+            {
+                this.Macros.Add("templateConfig", this.CreateTokenizedString("$(packagedir)/jconfig.vc"));
+            }
+        }
+
         protected override TokenizedString OutputPath
         {
             get
@@ -58,14 +69,9 @@ namespace jpeg
         {
             get
             {
-                string sourceHeaderPath = null;
                 if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
                 {
-                    sourceHeaderPath = "$(packagedir)/jconfig.vc";
-                }
-                if (null != sourceHeaderPath)
-                {
-                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.CreateTokenizedString(sourceHeaderPath).Parse()))
+                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros["templateConfig"].ToString()))
                     {
                         return readFile.ReadToEnd();
                     }
