@@ -60,6 +60,7 @@ namespace jpeg
             });
 
             /*var jpegHeader = */this.IncludeFile(this.CreateTokenizedString("$(packagedir)/jpeglib.h"), ".");
+            this.IncludeFile(this.CreateTokenizedString("$(packagedir)/jerror.h"), ".");
         }
     }
 }
