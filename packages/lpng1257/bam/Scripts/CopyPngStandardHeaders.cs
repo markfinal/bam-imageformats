@@ -34,6 +34,8 @@ namespace lpng
     class CopyPngStandardHeaders :
         Publisher.Collation
     {
+#if D_NEW_PUBLISHING
+#else
         protected override void
         Init(
             Bam.Core.Module parent)
@@ -62,5 +64,6 @@ namespace lpng
             var pngHeader = this.IncludeFile(this.CreateTokenizedString("$(packagedir)/png.h"), ".");
             this.IncludeFile(this.CreateTokenizedString("$(packagedir)/pngconf.h"), ".", pngHeader);
         }
+#endif
     }
 }

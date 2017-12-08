@@ -34,6 +34,8 @@ namespace jpeg
     class CopyJpegStandardHeaders :
         Publisher.Collation
     {
+#if D_NEW_PUBLISHING
+#else
         protected override void
         Init(
             Bam.Core.Module parent)
@@ -62,5 +64,6 @@ namespace jpeg
             /*var jpegHeader = */this.IncludeFile(this.CreateTokenizedString("$(packagedir)/jpeglib.h"), ".");
             this.IncludeFile(this.CreateTokenizedString("$(packagedir)/jerror.h"), ".");
         }
+#endif
     }
 }

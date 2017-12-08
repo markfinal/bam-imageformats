@@ -62,8 +62,8 @@ namespace lpng
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
             {
                 // to match that in the CMakeLists.txt
-                this.Macros["sonameext"] = Bam.Core.TokenizedString.CreateInline(".so.0");
-                this.Macros["dynamicext"] = Bam.Core.TokenizedString.CreateInline(".so.0.$(PatchVersion).0");
+                this.Macros["sonameext"] = Bam.Core.TokenizedString.CreateVerbatim(".so.0");
+                this.Macros["dynamicext"] = Bam.Core.TokenizedString.Create(".so.0.$(PatchVersion).0", null);
             }
 
             var source = this.CreateCSourceContainer("$(packagedir)/*.c", filter: new System.Text.RegularExpressions.Regex(@"^((?!.*example)(?!.*pngtest).*)$"));
@@ -370,6 +370,8 @@ namespace lpng
         sealed class PNGTestRuntime :
             Publisher.Collation
         {
+#if D_NEW_PUBLISHING
+#else
             protected override void
             Init(
                 Bam.Core.Module parent)
@@ -382,6 +384,7 @@ namespace lpng
                 this.Include<zlib.ZLib>(C.DynamicLibrary.Key, ".", app);
                 this.IncludeFile("$(packagedir)/pngtest.png", ".", app, false);
             }
+#endif
         }
     }
 }

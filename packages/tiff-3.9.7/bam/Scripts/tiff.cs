@@ -34,6 +34,8 @@ namespace tiff
     class CopyStandardHeaders :
         Publisher.Collation
     {
+#if D_NEW_PUBLISHING
+#else
         protected override void
         Init(
             Bam.Core.Module parent)
@@ -63,6 +65,7 @@ namespace tiff
             this.IncludeFile(this.CreateTokenizedString("$(packagedir)/libtiff/tiffvers.h"), ".", tiffHeader);
             this.IncludeFile(this.CreateTokenizedString("$(packagedir)/libtiff/tiffio.h"), ".", tiffHeader);
         }
+#endif
     }
 
     [ModuleGroup("Thirdparty/tiff")]
