@@ -34,14 +34,28 @@ namespace tiff
     class CopyStandardHeaders :
         Publisher.Collation
     {
-#if D_NEW_PUBLISHING
-#else
         protected override void
         Init(
             Bam.Core.Module parent)
         {
             base.Init(parent);
 
+#if D_NEW_PUBLISHING
+            var publishRoot = this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders");
+
+            this.PublicPatch((settings, appliedTo) =>
+                {
+                    var compiler = settings as C.ICommonCompilerSettings;
+                    if (null != compiler)
+                    {
+                        compiler.IncludePaths.AddUnique(publishRoot);
+                    }
+                });
+
+            this.IncludeFiles<CopyStandardHeaders>("$(packagedir)/libtiff/tiff.h", publishRoot);
+            this.IncludeFiles<CopyStandardHeaders>("$(packagedir)/libtiff/tiffvers.h", publishRoot);
+            this.IncludeFiles<CopyStandardHeaders>("$(packagedir)/libtiff/tiffio.h", publishRoot);
+#else
             // the build mode depends on whether this path has been set or not
             if (this.GeneratedPaths.ContainsKey(Key))
             {
@@ -64,8 +78,8 @@ namespace tiff
             var tiffHeader = this.IncludeFile(this.CreateTokenizedString("$(packagedir)/libtiff/tiff.h"), ".");
             this.IncludeFile(this.CreateTokenizedString("$(packagedir)/libtiff/tiffvers.h"), ".", tiffHeader);
             this.IncludeFile(this.CreateTokenizedString("$(packagedir)/libtiff/tiffio.h"), ".", tiffHeader);
-        }
 #endif
+        }
     }
 
     [ModuleGroup("Thirdparty/tiff")]

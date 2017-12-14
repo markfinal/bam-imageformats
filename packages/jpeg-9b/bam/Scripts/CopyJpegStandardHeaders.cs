@@ -34,14 +34,27 @@ namespace jpeg
     class CopyJpegStandardHeaders :
         Publisher.Collation
     {
-#if D_NEW_PUBLISHING
-#else
         protected override void
         Init(
             Bam.Core.Module parent)
         {
             base.Init(parent);
 
+#if D_NEW_PUBLISHING
+            var publishRoot = this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders");
+
+            this.PublicPatch((settings, appliedTo) =>
+                {
+                    var compiler = settings as C.ICommonCompilerSettings;
+                    if (null != compiler)
+                    {
+                        compiler.IncludePaths.AddUnique(publishRoot);
+                    }
+                });
+
+            this.IncludeFiles<CopyJpegStandardHeaders>("$(packagedir)/jpeglib.h", publishRoot);
+            this.IncludeFiles<CopyJpegStandardHeaders>("$(packagedir)/jerror.h", publishRoot);
+#else
             // the build mode depends on whether this path has been set or not
             if (this.GeneratedPaths.ContainsKey(Key))
             {
@@ -63,7 +76,7 @@ namespace jpeg
 
             /*var jpegHeader = */this.IncludeFile(this.CreateTokenizedString("$(packagedir)/jpeglib.h"), ".");
             this.IncludeFile(this.CreateTokenizedString("$(packagedir)/jerror.h"), ".");
-        }
 #endif
+        }
     }
 }
