@@ -52,8 +52,16 @@ namespace jpeg
                     }
                 });
 
-            this.IncludeFiles<CopyJpegStandardHeaders>("$(packagedir)/jpeglib.h", publishRoot);
-            this.IncludeFiles<CopyJpegStandardHeaders>("$(packagedir)/jerror.h", publishRoot);
+            var headerPaths = new Bam.Core.StringArray
+            {
+                "jpeglib.h",
+                "jerror.h"
+            };
+
+            foreach (var header in headerPaths)
+            {
+                this.IncludeFiles<CopyJpegStandardHeaders>("$(packagedir)/" + header, publishRoot, null);
+            }
 #else
             // the build mode depends on whether this path has been set or not
             if (this.GeneratedPaths.ContainsKey(Key))

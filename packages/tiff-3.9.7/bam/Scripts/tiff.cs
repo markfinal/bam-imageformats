@@ -52,9 +52,17 @@ namespace tiff
                     }
                 });
 
-            this.IncludeFiles<CopyStandardHeaders>("$(packagedir)/libtiff/tiff.h", publishRoot);
-            this.IncludeFiles<CopyStandardHeaders>("$(packagedir)/libtiff/tiffvers.h", publishRoot);
-            this.IncludeFiles<CopyStandardHeaders>("$(packagedir)/libtiff/tiffio.h", publishRoot);
+            var headerPaths = new Bam.Core.StringArray
+            {
+                "tiff.h",
+                "tiffvers.h",
+                "tiffio.h"
+            };
+
+            foreach (var header in headerPaths)
+            {
+                this.IncludeFiles<CopyStandardHeaders>("$(packagedir)/libtiff/" + header, publishRoot, null);
+            }
 #else
             // the build mode depends on whether this path has been set or not
             if (this.GeneratedPaths.ContainsKey(Key))
