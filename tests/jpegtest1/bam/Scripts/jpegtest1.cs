@@ -71,7 +71,12 @@ namespace jpegtest1
         {
             base.Init(parent);
 
+#if D_NEW_PUBLISHING
+            this.SetDefaultMacros(EPublishingType.ConsoleApplication);
+            this.Include<JPEGTest1>(C.ConsoleApplication.Key);
+#else
             /*var app = */this.Include<JPEGTest1>(C.ConsoleApplication.Key, EPublishingType.ConsoleApplication, ".");
+#endif
         }
     }
 }
