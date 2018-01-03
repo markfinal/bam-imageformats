@@ -72,7 +72,7 @@ namespace pngtest1
             base.Init(parent);
 
 #if D_NEW_PUBLISHING
-            this.SetDefaultMacros(EPublishingType.ConsoleApplication);
+            this.SetDefaultMacrosAndMappings(EPublishingType.ConsoleApplication);
             this.Include<PNGTest1>(C.ConsoleApplication.Key);
 #else
             var app = this.Include<PNGTest1>(C.ConsoleApplication.Key, EPublishingType.ConsoleApplication, ".");
