@@ -52,8 +52,16 @@ namespace lpng
                     }
                 });
 
-            this.IncludeFiles<CopyPngStandardHeaders>("$(packagedir)/png.h", publishRoot);
-            this.IncludeFiles<CopyPngStandardHeaders>("$(packagedir)/pngconf.h", publishRoot);
+            var headerPaths = new Bam.Core.StringArray
+            {
+                "png.h",
+                "pngconf.h"
+            };
+
+            foreach (var header in headerPaths)
+            {
+                this.IncludeFiles<CopyPngStandardHeaders>("$(packagedir)/" + header, publishRoot, null);
+            }
 #else
             // the build mode depends on whether this path has been set or not
             if (this.GeneratedPaths.ContainsKey(Key))

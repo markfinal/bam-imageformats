@@ -40,6 +40,29 @@ namespace lpng
         {
             base.Init(parent);
 
+#if D_NEW_PUBLISHING
+            var publishRoot = this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders");
+
+            this.PublicPatch((settings, appliedTo) =>
+                {
+                    var compiler = settings as C.ICommonCompilerSettings;
+                    if (null != compiler)
+                    {
+                        compiler.IncludePaths.AddUnique(publishRoot);
+                    }
+                });
+
+            var headerPaths = new Bam.Core.StringArray
+            {
+                "png.h",
+                "pngconf.h"
+            };
+
+            foreach (var header in headerPaths)
+            {
+                this.IncludeFiles<CopyPngStandardHeaders>("$(packagedir)/" + header, publishRoot, null);
+            }
+#else
             // the build mode depends on whether this path has been set or not
             if (this.GeneratedPaths.ContainsKey(Key))
             {
@@ -61,6 +84,7 @@ namespace lpng
 
             var pngHeader = this.IncludeFile(this.CreateTokenizedString("$(packagedir)/png.h"), ".");
             this.IncludeFile(this.CreateTokenizedString("$(packagedir)/pngconf.h"), ".", pngHeader);
+#endif
         }
     }
 }
