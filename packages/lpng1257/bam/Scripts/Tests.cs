@@ -28,6 +28,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
 using Bam.Core;
+using System.Linq;
 namespace lpng
 {
     namespace tests
@@ -77,6 +78,7 @@ namespace lpng
 #if D_NEW_PUBLISHING
                 this.SetDefaultMacrosAndMappings(EPublishingType.ConsoleApplication);
                 this.IncludeAllModulesInNamespace("lpng.tests", C.ConsoleApplication.Key);
+                this.IncludeFiles<PNGTest>("$(packagedir)/pngtest.png", this.ExecutableDir, this.Find<PNGTest>().First());
 #else
                 var app = this.Include<PNGTest>(C.ConsoleApplication.Key, EPublishingType.ConsoleApplication, ".");
 
