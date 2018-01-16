@@ -46,7 +46,7 @@ namespace jpeg
         {
             get
             {
-                return this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders/jmorecfg.h");
+                return this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/jmorecfg.h");
             }
         }
 

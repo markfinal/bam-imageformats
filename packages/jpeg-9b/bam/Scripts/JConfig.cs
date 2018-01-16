@@ -49,7 +49,7 @@ namespace jpeg
         {
             get
             {
-                return this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders/jconfig.h");
+                return this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/jconfig.h");
             }
         }
 

@@ -46,7 +46,7 @@ namespace lpng
         {
             get
             {
-                return this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders/pnglibconf.h");
+                return this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/pnglibconf.h");
             }
         }
 

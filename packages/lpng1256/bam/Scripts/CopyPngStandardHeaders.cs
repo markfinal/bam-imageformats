@@ -41,7 +41,7 @@ namespace lpng
             base.Init(parent);
 
 #if D_NEW_PUBLISHING
-            var publishRoot = this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders");
+            var publishRoot = this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders");
 
             this.PublicPatch((settings, appliedTo) =>
                 {

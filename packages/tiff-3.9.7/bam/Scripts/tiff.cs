@@ -41,7 +41,7 @@ namespace tiff
             base.Init(parent);
 
 #if D_NEW_PUBLISHING
-            var publishRoot = this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders");
+            var publishRoot = this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders");
 
             this.PublicPatch((settings, appliedTo) =>
                 {
@@ -109,7 +109,7 @@ namespace tiff
         {
             get
             {
-                return this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders/tiffconf.h");
+                return this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/tiffconf.h");
             }
         }
 
@@ -166,7 +166,7 @@ namespace tiff
         {
             get
             {
-                return this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders/tif_config.h");
+                return this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/tif_config.h");
             }
         }
 
