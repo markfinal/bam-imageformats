@@ -225,9 +225,7 @@ namespace tiff
             base.Init(parent);
 
             this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("tiff");
-            this.Macros["MajorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("3");
-            this.Macros["MinorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("9");
-            this.Macros["PatchVersion"] = Bam.Core.TokenizedString.CreateVerbatim("7");
+            this.SetSemanticVersion(3, 9, 7);
 
             var headers = this.CreateHeaderContainer("$(packagedir)/libtiff/*.h");
             var source = this.CreateCSourceContainer("$(packagedir)/libtiff/*.c", filter: new System.Text.RegularExpressions.Regex(@"^((?!.*acorn)(?!.*apple)(?!.*atari)(?!.*msdos)(?!.*unix)(?!.*win3).*)$"));
@@ -433,9 +431,7 @@ namespace tiff
             base.Init(parent);
 
             this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("tiff");
-            this.Macros["MajorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("3");
-            this.Macros["MinorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("9");
-            this.Macros["PatchVersion"] = Bam.Core.TokenizedString.CreateVerbatim("7");
+            this.SetSemanticVersion(3, 9, 7);
 
             var headers = this.CreateHeaderContainer("$(packagedir)/libtiff/*.h");
             var source = this.CreateCSourceContainer("$(packagedir)/libtiff/*.c", filter: new System.Text.RegularExpressions.Regex(@"^((?!.*acorn)(?!.*apple)(?!.*atari)(?!.*msdos)(?!.*unix)(?!.*win3).*)$"));

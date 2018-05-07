@@ -54,9 +54,7 @@ namespace lpng
                     });
             }
 
-            this.Macros["MajorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("1");
-            this.Macros["MinorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("2");
-            this.Macros["PatchVersion"] = Bam.Core.TokenizedString.CreateVerbatim("57");
+            this.SetSemanticVersion(1, 2, 57);
             this.Macros["OutputName"] = this.CreateTokenizedString("png$(MajorVersion)$(MinorVersion)");
 
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
