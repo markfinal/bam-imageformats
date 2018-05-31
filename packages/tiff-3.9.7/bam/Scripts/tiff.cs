@@ -336,11 +336,6 @@ namespace tiff
                         var winLinker = settings as C.ICommonLinkerSettingsWin;
                         winLinker.ExportDefinitionFile = this.CreateTokenizedString("$(packagedir)/libtiff/libtiff.def");
                     });
-
-                if (this.Linker is VisualCCommon.LinkerBase)
-                {
-                    this.CompilePubliclyAndLinkAgainst<WindowsSDK.WindowsSDK>(source);
-                }
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
             {
@@ -530,10 +525,6 @@ namespace tiff
                             mingwCompiler.Pedantic = true;
                         }
                     });
-                if (this.Librarian is VisualCCommon.LibrarianBase)
-                {
-                    this.CompileAgainst<WindowsSDK.WindowsSDK>(source);
-                }
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
             {

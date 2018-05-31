@@ -57,11 +57,7 @@ namespace tiff
                         }
                     });
 
-                if (this.Linker is VisualCCommon.LinkerBase)
-                {
-                    this.LinkAgainst<WindowsSDK.WindowsSDK>();
-                }
-                else if (this.Linker is GccCommon.LinkerBase)
+                if (this.Linker is GccCommon.LinkerBase)
                 {
                     this.PrivatePatch(settings =>
                         {
@@ -98,11 +94,7 @@ namespace tiff
                         }
                     });
 
-                if (this.Linker is VisualCCommon.LinkerBase)
-                {
-                    this.LinkAgainst<WindowsSDK.WindowsSDK>();
-                }
-                else if (this.Linker is GccCommon.LinkerBase)
+                if (this.Linker is GccCommon.LinkerBase)
                 {
                     this.PrivatePatch(settings =>
                         {
@@ -139,11 +131,7 @@ namespace tiff
                         }
                     });
 
-                if (this.Linker is VisualCCommon.LinkerBase)
-                {
-                    this.LinkAgainst<WindowsSDK.WindowsSDK>();
-                }
-                else if (this.Linker is GccCommon.LinkerBase)
+                if (this.Linker is GccCommon.LinkerBase)
                 {
                     this.PrivatePatch(settings =>
                         {
@@ -172,11 +160,7 @@ namespace tiff
                 source.AddFiles("$(packagedir)/test/test_arrays.c");
                 this.CompileAndLinkAgainst<LibTiff_static>(source);
 
-                if (this.Linker is VisualCCommon.LinkerBase)
-                {
-                    this.LinkAgainst<WindowsSDK.WindowsSDK>();
-                }
-                else if (this.Linker is GccCommon.LinkerBase)
+                if (this.Linker is GccCommon.LinkerBase)
                 {
                     this.PrivatePatch(settings =>
                         {

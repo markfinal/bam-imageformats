@@ -47,11 +47,6 @@ namespace lpng
                 this.CompileAndLinkAgainst<PNGLibrary>(source);
                 this.CompileAndLinkAgainst<zlib.ZLib>(source);
 
-                if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
-                {
-                    this.LinkAgainst<WindowsSDK.WindowsSDK>();
-                }
-
                 this.PrivatePatch(settings =>
                     {
                         var gccLinker = settings as GccCommon.ICommonLinkerSettings;
