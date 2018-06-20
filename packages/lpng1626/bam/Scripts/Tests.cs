@@ -47,11 +47,6 @@ namespace lpng
                 this.CompileAndLinkAgainst<PNGLibrary>(source);
                 this.CompileAndLinkAgainst<zlib.ZLib>(source);
 
-                if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
-                {
-                    this.LinkAgainst<WindowsSDK.WindowsSDK>();
-                }
-
                 this.PrivatePatch(settings =>
                     {
                         var gccLinker = settings as GccCommon.ICommonLinkerSettings;
@@ -86,11 +81,6 @@ namespace lpng
                         compiler.PreprocessorDefines.Add("PNG_FREESTANDING_TESTS");
                         compiler.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)/contrib/visupng"));
                     });
-
-                if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
-                {
-                    this.LinkAgainst<WindowsSDK.WindowsSDK>();
-                }
 
                 this.PrivatePatch(settings =>
                     {
@@ -127,11 +117,6 @@ namespace lpng
                         compiler.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)/contrib/visupng"));
                     });
 
-                if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
-                {
-                    this.LinkAgainst<WindowsSDK.WindowsSDK>();
-                }
-
                 this.PrivatePatch(settings =>
                     {
                         var gccLinker = settings as GccCommon.ICommonLinkerSettings;
@@ -167,11 +152,6 @@ namespace lpng
                         compiler.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)/contrib/visupng"));
                     });
 
-                if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
-                {
-                    this.LinkAgainst<WindowsSDK.WindowsSDK>();
-                }
-
                 this.PrivatePatch(settings =>
                     {
                         var gccLinker = settings as GccCommon.ICommonLinkerSettings;
@@ -206,11 +186,6 @@ namespace lpng
                         compiler.PreprocessorDefines.Add("PNG_FREESTANDING_TESTS");
                         compiler.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)/contrib/visupng"));
                     });
-
-                if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
-                {
-                    this.LinkAgainst<WindowsSDK.WindowsSDK>();
-                }
 
                 this.PrivatePatch(settings =>
                     {

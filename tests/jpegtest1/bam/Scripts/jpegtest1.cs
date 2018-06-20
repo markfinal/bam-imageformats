@@ -43,11 +43,6 @@ namespace jpegtest1
             var source = this.CreateCSourceContainer("$(packagedir)/source/*.c");
             this.CompileAndLinkAgainst<jpeg.JpegLibrary>(source);
 
-            if (this.Linker is VisualCCommon.LinkerBase)
-            {
-                this.LinkAgainst<WindowsSDK.WindowsSDK>();
-            }
-
             this.PrivatePatch(settings =>
                 {
                     var gccLinker = settings as GccCommon.ICommonLinkerSettings;
