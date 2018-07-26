@@ -210,21 +210,9 @@ namespace lpng
             {
                 base.Init(parent);
 
-#if D_NEW_PUBLISHING
                 this.SetDefaultMacrosAndMappings(EPublishingType.ConsoleApplication);
                 this.IncludeAllModulesInNamespace("lpng.tests", C.ConsoleApplication.Key);
                 this.IncludeFiles<PNGTest>("$(packagedir)/pngtest.png", this.ExecutableDir, this.Find<PNGTest>().First());
-#else
-                var app = this.Include<PNGTest>(C.ConsoleApplication.Key, EPublishingType.ConsoleApplication, ".");
-                this.Include<PNGValid>(C.ConsoleApplication.Key, ".", app);
-                this.Include<PNGstest>(C.ConsoleApplication.Key, ".", app);
-                this.Include<PNGunknown>(C.ConsoleApplication.Key, ".", app);
-                this.Include<PNGimage>(C.ConsoleApplication.Key, ".", app);
-
-                this.Include<PNGLibrary>(C.DynamicLibrary.Key, ".", app);
-                this.Include<zlib.ZLib>(C.DynamicLibrary.Key, ".", app);
-                this.IncludeFile("$(packagedir)/pngtest.png", ".", app, false);
-#endif
             }
         }
     }

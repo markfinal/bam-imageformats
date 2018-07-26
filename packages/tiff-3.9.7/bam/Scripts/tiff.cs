@@ -40,7 +40,6 @@ namespace tiff
         {
             base.Init(parent);
 
-#if D_NEW_PUBLISHING
             var publishRoot = this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders");
 
             this.PublicPatch((settings, appliedTo) =>
@@ -63,30 +62,6 @@ namespace tiff
             {
                 this.IncludeFiles<CopyStandardHeaders>("$(packagedir)/libtiff/" + header, publishRoot, null);
             }
-#else
-            // the build mode depends on whether this path has been set or not
-            if (this.GeneratedPaths.ContainsKey(Key))
-            {
-                this.GeneratedPaths[Key].Aliased(this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders"));
-            }
-            else
-            {
-                this.RegisterGeneratedFile(Key, this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders"));
-            }
-
-            this.PublicPatch((settings, appliedTo) =>
-                {
-                    var compiler = settings as C.ICommonCompilerSettings;
-                    if (null != compiler)
-                    {
-                        compiler.IncludePaths.AddUnique(this.GeneratedPaths[Key]);
-                    }
-                });
-
-            var tiffHeader = this.IncludeFile(this.CreateTokenizedString("$(packagedir)/libtiff/tiff.h"), ".");
-            this.IncludeFile(this.CreateTokenizedString("$(packagedir)/libtiff/tiffvers.h"), ".", tiffHeader);
-            this.IncludeFile(this.CreateTokenizedString("$(packagedir)/libtiff/tiffio.h"), ".", tiffHeader);
-#endif
         }
     }
 

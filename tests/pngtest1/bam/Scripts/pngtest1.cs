@@ -66,15 +66,8 @@ namespace pngtest1
         {
             base.Init(parent);
 
-#if D_NEW_PUBLISHING
             this.SetDefaultMacrosAndMappings(EPublishingType.ConsoleApplication);
             this.Include<PNGTest1>(C.ConsoleApplication.Key);
-#else
-            var app = this.Include<PNGTest1>(C.ConsoleApplication.Key, EPublishingType.ConsoleApplication, ".");
-
-            this.Include<lpng.PNGLibrary>(C.DynamicLibrary.Key, ".", app);
-            this.Include<zlib.ZLib>(C.DynamicLibrary.Key, ".", app);
-#endif
         }
     }
 }

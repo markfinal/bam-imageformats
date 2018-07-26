@@ -5,6 +5,8 @@
     <Repo dir="../../../../bam-compress/packages/" />
   </PackageRepositories>
   <Dependents>
+    <Package name="Clang" version="Xcode4" />
+    <Package name="Clang" version="Xcode5" />
     <Package name="Clang" version="Xcode6" />
     <Package name="Clang" version="Xcode7" />
     <Package name="Clang" version="Xcode8" default="true" />
@@ -15,8 +17,11 @@
     <Package name="NativeBuilder" />
     <Package name="MakeFileBuilder" />
     <Package name="Publisher" />
-    <Package name="VisualC" version="14.0" default="true" />
+    <Package name="VisualC" version="10.0" />
+    <Package name="VisualC" version="11.0" />
     <Package name="VisualC" version="12.0" />
+    <Package name="VisualC" version="14.0" default="true" />
+    <Package name="VisualC" version="15.0" />
     <Package name="VSSolutionBuilder" />
     <Package name="XcodeBuilder" />
     <Package name="zlib" version="1.2.8" />

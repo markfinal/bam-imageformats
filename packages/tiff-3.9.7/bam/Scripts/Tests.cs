@@ -180,11 +180,8 @@ namespace tiff
             {
                 base.Init(parent);
 
-#if D_NEW_PUBLISHING
                 this.SetDefaultMacrosAndMappings(EPublishingType.ConsoleApplication);
                 this.IncludeAllModulesInNamespace("tiff.tests", C.ConsoleApplication.Key);
-#else
-#endif
             }
         }
     }
