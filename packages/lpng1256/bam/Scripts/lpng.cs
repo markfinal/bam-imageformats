@@ -1,5 +1,5 @@
 #region License
-// Copyright (c) 2010-2017, Mark Final
+// Copyright (c) 2010-2018, Mark Final
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -62,8 +62,8 @@ namespace lpng
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
             {
                 // to match that in the CMakeLists.txt
-                this.Macros["sonameext"] = Bam.Core.TokenizedString.CreateInline(".so.0");
-                this.Macros["dynamicext"] = Bam.Core.TokenizedString.CreateInline(".so.0.$(PatchVersion).0");
+                this.Macros["sonameext"] = Bam.Core.TokenizedString.CreateVerbatim(".so.0");
+                this.Macros["dynamicext"] = Bam.Core.TokenizedString.Create(".so.0.$(PatchVersion).0", null);
             }
 
             var source = this.CreateCSourceContainer("$(packagedir)/*.c", filter: new System.Text.RegularExpressions.Regex(@"^((?!.*example)(?!.*pngtest).*)$"));
@@ -324,64 +324,6 @@ namespace lpng
                             }
                         });
                 });
-
-            if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
-            {
-                this.LinkAgainst<WindowsSDK.WindowsSDK>();
-            }
-        }
-    }
-
-    namespace tests
-    {
-        [ModuleGroup("Thirdparty/libpng/tests")]
-        sealed class PNGTest :
-            C.ConsoleApplication
-        {
-            protected override void
-            Init(
-                Bam.Core.Module parent)
-            {
-                base.Init(parent);
-
-                var source = this.CreateCSourceContainer("$(packagedir)/pngtest.c");
-                this.CompileAndLinkAgainst<PNGLibrary>(source);
-                this.CompileAndLinkAgainst<zlib.ZLib>(source);
-
-                if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
-                {
-                    this.LinkAgainst<WindowsSDK.WindowsSDK>();
-                }
-
-                this.PrivatePatch(settings =>
-                    {
-                        var gccLinker = settings as GccCommon.ICommonLinkerSettings;
-                        if (null != gccLinker)
-                        {
-                            gccLinker.CanUseOrigin = true;
-                            gccLinker.RPath.AddUnique("$ORIGIN");
-                            var linker = settings as C.ICommonLinkerSettings;
-                            linker.Libraries.AddUnique("-lm");
-                        }
-                    });
-            }
-        }
-
-        sealed class PNGTestRuntime :
-            Publisher.Collation
-        {
-            protected override void
-            Init(
-                Bam.Core.Module parent)
-            {
-                base.Init(parent);
-
-                var app = this.Include<PNGTest>(C.ConsoleApplication.Key, EPublishingType.ConsoleApplication, ".");
-
-                this.Include<PNGLibrary>(C.DynamicLibrary.Key, ".", app);
-                this.Include<zlib.ZLib>(C.DynamicLibrary.Key, ".", app);
-                this.IncludeFile("$(packagedir)/pngtest.png", ".", app, false);
-            }
         }
     }
 }

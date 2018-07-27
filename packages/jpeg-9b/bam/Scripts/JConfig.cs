@@ -1,5 +1,5 @@
 #region License
-// Copyright (c) 2010-2017, Mark Final
+// Copyright (c) 2010-2018, Mark Final
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,11 +34,22 @@ namespace jpeg
     class GenerateJConfigHeader :
         C.ProceduralHeaderFile
     {
+        protected override void
+        Init(
+            Bam.Core.Module parent)
+        {
+            base.Init(parent);
+            if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
+            {
+                this.Macros.Add("templateConfig", this.CreateTokenizedString("$(packagedir)/jconfig.vc"));
+            }
+        }
+
         protected override TokenizedString OutputPath
         {
             get
             {
-                return this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders/jconfig.h");
+                return this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/jconfig.h");
             }
         }
 
@@ -58,14 +69,9 @@ namespace jpeg
         {
             get
             {
-                string sourceHeaderPath = null;
                 if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
                 {
-                    sourceHeaderPath = "$(packagedir)/jconfig.vc";
-                }
-                if (null != sourceHeaderPath)
-                {
-                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.CreateTokenizedString(sourceHeaderPath).Parse()))
+                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros["templateConfig"].ToString()))
                     {
                         return readFile.ReadToEnd();
                     }

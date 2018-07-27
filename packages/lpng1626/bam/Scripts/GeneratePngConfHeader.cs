@@ -1,5 +1,5 @@
 #region License
-// Copyright (c) 2010-2017, Mark Final
+// Copyright (c) 2010-2018, Mark Final
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,11 +34,19 @@ namespace lpng
     class GeneratePngConfHeader :
         C.ProceduralHeaderFile
     {
+        protected override void
+        Init(
+            Bam.Core.Module parent)
+        {
+            base.Init(parent);
+            this.Macros.Add("templateConfig", this.CreateTokenizedString("$(packagedir)/scripts/pnglibconf.h.prebuilt"));
+        }
+        
         protected override TokenizedString OutputPath
         {
             get
             {
-                return this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders/pnglibconf.h");
+                return this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/pnglibconf.h");
             }
         }
 
@@ -58,7 +66,7 @@ namespace lpng
         {
             get
             {
-                using (System.IO.TextReader readFile = new System.IO.StreamReader(this.CreateTokenizedString("$(packagedir)/scripts/pnglibconf.h.prebuilt").Parse()))
+                using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros["templateConfig"].ToString()))
                 {
                     return readFile.ReadToEnd();
                 }

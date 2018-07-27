@@ -28,46 +28,52 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
 using Bam.Core;
-namespace pngtest1
+using System.Linq;
+namespace lpng
 {
-    sealed class PNGTest1 :
-        C.ConsoleApplication
+    namespace tests
     {
-        protected override void
-        Init(
-            Bam.Core.Module parent)
+        [ModuleGroup("Thirdparty/libpng/tests")]
+        class PNGTest :
+            C.ConsoleApplication
         {
-            base.Init(parent);
+            protected override void
+            Init(
+                Bam.Core.Module parent)
+            {
+                base.Init(parent);
 
-            this.CreateHeaderContainer("$(packagedir)/source/*.h");
-            var source = this.CreateCSourceContainer("$(packagedir)/source/*.c");
-            this.CompileAndLinkAgainst<lpng.PNGLibrary>(source);
+                var source = this.CreateCSourceContainer("$(packagedir)/pngtest.c");
+                this.CompileAndLinkAgainst<PNGLibrary>(source);
+                this.CompileAndLinkAgainst<zlib.ZLib>(source);
 
-            this.PrivatePatch(settings =>
-                {
-                    var gccLinker = settings as GccCommon.ICommonLinkerSettings;
-                    if (null != gccLinker)
+                this.PrivatePatch(settings =>
                     {
-                        gccLinker.CanUseOrigin = true;
-                        gccLinker.RPath.AddUnique("$ORIGIN");
-                        var linker = settings as C.ICommonLinkerSettings;
-                        linker.Libraries.AddUnique("-lm");
-                    }
-                });
+                        var gccLinker = settings as GccCommon.ICommonLinkerSettings;
+                        if (null != gccLinker)
+                        {
+                            gccLinker.CanUseOrigin = true;
+                            gccLinker.RPath.AddUnique("$ORIGIN");
+                            var linker = settings as C.ICommonLinkerSettings;
+                            linker.Libraries.AddUnique("-lm");
+                        }
+                    });
+            }
         }
-    }
 
-    sealed class PNGTest1Runtime :
-        Publisher.Collation
-    {
-        protected override void
-        Init(
-            Bam.Core.Module parent)
+        sealed class PNGTestRuntime :
+            Publisher.Collation
         {
-            base.Init(parent);
+            protected override void
+            Init(
+                Bam.Core.Module parent)
+            {
+                base.Init(parent);
 
-            this.SetDefaultMacrosAndMappings(EPublishingType.ConsoleApplication);
-            this.Include<PNGTest1>(C.ConsoleApplication.Key);
+                this.SetDefaultMacrosAndMappings(EPublishingType.ConsoleApplication);
+                this.IncludeAllModulesInNamespace("lpng.tests", C.ConsoleApplication.Key);
+                this.IncludeFiles<PNGTest>("$(packagedir)/pngtest.png", this.ExecutableDir, this.Find<PNGTest>().First());
+            }
         }
     }
 }

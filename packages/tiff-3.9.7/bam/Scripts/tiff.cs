@@ -1,5 +1,5 @@
 #region License
-// Copyright (c) 2010-2017, Mark Final
+// Copyright (c) 2010-2018, Mark Final
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -40,28 +40,28 @@ namespace tiff
         {
             base.Init(parent);
 
-            // the build mode depends on whether this path has been set or not
-            if (this.GeneratedPaths.ContainsKey(Key))
-            {
-                this.GeneratedPaths[Key].Aliased(this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders"));
-            }
-            else
-            {
-                this.RegisterGeneratedFile(Key, this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders"));
-            }
+            var publishRoot = this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders");
 
             this.PublicPatch((settings, appliedTo) =>
                 {
                     var compiler = settings as C.ICommonCompilerSettings;
                     if (null != compiler)
                     {
-                        compiler.IncludePaths.AddUnique(this.GeneratedPaths[Key]);
+                        compiler.IncludePaths.AddUnique(publishRoot);
                     }
                 });
 
-            var tiffHeader = this.IncludeFile(this.CreateTokenizedString("$(packagedir)/libtiff/tiff.h"), ".");
-            this.IncludeFile(this.CreateTokenizedString("$(packagedir)/libtiff/tiffvers.h"), ".", tiffHeader);
-            this.IncludeFile(this.CreateTokenizedString("$(packagedir)/libtiff/tiffio.h"), ".", tiffHeader);
+            var headerPaths = new Bam.Core.StringArray
+            {
+                "tiff.h",
+                "tiffvers.h",
+                "tiffio.h"
+            };
+
+            foreach (var header in headerPaths)
+            {
+                this.IncludeFiles<CopyStandardHeaders>("$(packagedir)/libtiff/" + header, publishRoot, null);
+            }
         }
     }
 
@@ -69,11 +69,22 @@ namespace tiff
     class GenerateConfHeader :
         C.ProceduralHeaderFile
     {
+        protected override void
+        Init(
+            Bam.Core.Module parent)
+        {
+            base.Init(parent);
+            if (this.BuildEnvironment.Platform.Includes(EPlatform.Windows))
+            {
+                this.Macros.Add("templatetiffconf", this.CreateTokenizedString("$(packagedir)/libtiff/tiffconf.vc.h"));
+            }
+        }
+
         protected override TokenizedString OutputPath
         {
             get
             {
-                return this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders/tiffconf.h");
+                return this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/tiffconf.h");
             }
         }
 
@@ -95,7 +106,7 @@ namespace tiff
             {
                 if (this.BuildEnvironment.Platform.Includes(EPlatform.Windows))
                 {
-                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.CreateTokenizedString("$(packagedir)/libtiff/tiffconf.vc.h").Parse()))
+                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros["templatetiffconf"].ToString()))
                     {
                         return readFile.ReadToEnd();
                     }
@@ -115,11 +126,22 @@ namespace tiff
     class GenerateConfigHeader :
         C.ProceduralHeaderFile
     {
+        protected override void
+        Init(
+            Bam.Core.Module parent)
+        {
+            base.Init(parent);
+            if (this.BuildEnvironment.Platform.Includes(EPlatform.Windows))
+            {
+                this.Macros.Add("templateConfig", this.CreateTokenizedString("$(packagedir)/libtiff/tif_config.vc.h"));
+            }
+        }
+
         protected override TokenizedString OutputPath
         {
             get
             {
-                return this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders/tif_config.h");
+                return this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/tif_config.h");
             }
         }
 
@@ -141,7 +163,7 @@ namespace tiff
             {
                 if (this.BuildEnvironment.Platform.Includes(EPlatform.Windows))
                 {
-                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.CreateTokenizedString("$(packagedir)/libtiff/tif_config.vc.h").Parse()))
+                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros["templateConfig"].ToString()))
                     {
                         return readFile.ReadToEnd();
                     }
@@ -178,9 +200,7 @@ namespace tiff
             base.Init(parent);
 
             this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("tiff");
-            this.Macros["MajorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("3");
-            this.Macros["MinorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("9");
-            this.Macros["PatchVersion"] = Bam.Core.TokenizedString.CreateVerbatim("7");
+            this.SetSemanticVersion(3, 9, 7);
 
             var headers = this.CreateHeaderContainer("$(packagedir)/libtiff/*.h");
             var source = this.CreateCSourceContainer("$(packagedir)/libtiff/*.c", filter: new System.Text.RegularExpressions.Regex(@"^((?!.*acorn)(?!.*apple)(?!.*atari)(?!.*msdos)(?!.*unix)(?!.*win3).*)$"));
@@ -291,11 +311,6 @@ namespace tiff
                         var winLinker = settings as C.ICommonLinkerSettingsWin;
                         winLinker.ExportDefinitionFile = this.CreateTokenizedString("$(packagedir)/libtiff/libtiff.def");
                     });
-
-                if (this.Linker is VisualCCommon.LinkerBase)
-                {
-                    this.CompilePubliclyAndLinkAgainst<WindowsSDK.WindowsSDK>(source);
-                }
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
             {
@@ -386,9 +401,7 @@ namespace tiff
             base.Init(parent);
 
             this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("tiff");
-            this.Macros["MajorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("3");
-            this.Macros["MinorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("9");
-            this.Macros["PatchVersion"] = Bam.Core.TokenizedString.CreateVerbatim("7");
+            this.SetSemanticVersion(3, 9, 7);
 
             var headers = this.CreateHeaderContainer("$(packagedir)/libtiff/*.h");
             var source = this.CreateCSourceContainer("$(packagedir)/libtiff/*.c", filter: new System.Text.RegularExpressions.Regex(@"^((?!.*acorn)(?!.*apple)(?!.*atari)(?!.*msdos)(?!.*unix)(?!.*win3).*)$"));
@@ -487,10 +500,6 @@ namespace tiff
                             mingwCompiler.Pedantic = true;
                         }
                     });
-                if (this.Librarian is VisualCCommon.LibrarianBase)
-                {
-                    this.CompileAgainst<WindowsSDK.WindowsSDK>(source);
-                }
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
             {
@@ -548,164 +557,6 @@ namespace tiff
                         gccCompiler.ExtraWarnings = false;
                         gccCompiler.Pedantic = true;
                     });
-            }
-        }
-    }
-
-    namespace tests
-    {
-        [ModuleGroup("Thirdparty/tiff/tests")]
-        sealed class AsciiTagTest :
-            C.ConsoleApplication
-        {
-            protected override void
-            Init(
-                Bam.Core.Module parent)
-            {
-                base.Init(parent);
-
-                this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("ascii_tag");
-
-                var source = this.CreateCSourceContainer("$(packagedir)/test/ascii_tag.c");
-                this.CompileAndLinkAgainst<LibTiff_static>(source);
-
-                source.PrivatePatch(settings =>
-                    {
-                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
-                        if (null != clangCompiler)
-                        {
-                            var compiler = settings as C.ICommonCompilerSettings;
-                            compiler.DisableWarnings.AddUnique("tautological-constant-out-of-range-compare"); // tiff-3.9.7/test/ascii_tag.c:128:41: error: comparison of constant 0 with boolean expression is always false [-Werror,-Wtautological-constant-out-of-range-compare]
-                        }
-                    });
-
-                if (this.Linker is VisualCCommon.LinkerBase)
-                {
-                    this.LinkAgainst<WindowsSDK.WindowsSDK>();
-                }
-                else if (this.Linker is GccCommon.LinkerBase)
-                {
-                    this.PrivatePatch(settings =>
-                        {
-                            var linker = settings as C.ICommonLinkerSettings;
-                            linker.Libraries.AddUnique("-lm");
-                        });
-                }
-            }
-        }
-
-        [ModuleGroup("Thirdparty/tiff/tests")]
-        sealed class LongTagTest :
-            C.ConsoleApplication
-        {
-            protected override void
-            Init(
-                Bam.Core.Module parent)
-            {
-                base.Init(parent);
-
-                this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("long_tag");
-
-                var source = this.CreateCSourceContainer("$(packagedir)/test/long_tag.c");
-                source.AddFiles("$(packagedir)/test/check_tag.c");
-                this.CompileAndLinkAgainst<LibTiff_static>(source);
-
-                source.PrivatePatch(settings =>
-                    {
-                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
-                        if (null != clangCompiler)
-                        {
-                            var compiler = settings as C.ICommonCompilerSettings;
-                            compiler.DisableWarnings.AddUnique("tautological-constant-out-of-range-compare"); // tiff-3.9.7/test/long_tag.c:112:41: error: comparison of constant 0 with boolean expression is always false [-Werror,-Wtautological-constant-out-of-range-compare]
-                        }
-                    });
-
-                if (this.Linker is VisualCCommon.LinkerBase)
-                {
-                    this.LinkAgainst<WindowsSDK.WindowsSDK>();
-                }
-                else if (this.Linker is GccCommon.LinkerBase)
-                {
-                    this.PrivatePatch(settings =>
-                        {
-                            var linker = settings as C.ICommonLinkerSettings;
-                            linker.Libraries.AddUnique("-lm");
-                        });
-                }
-            }
-        }
-
-        [ModuleGroup("Thirdparty/tiff/tests")]
-        sealed class ShortTagTest :
-            C.ConsoleApplication
-        {
-            protected override void
-            Init(
-                Bam.Core.Module parent)
-            {
-                base.Init(parent);
-
-                this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("short_tag");
-
-                var source = this.CreateCSourceContainer("$(packagedir)/test/short_tag.c");
-                source.AddFiles("$(packagedir)/test/check_tag.c");
-                this.CompileAndLinkAgainst<LibTiff_static>(source);
-
-                source.PrivatePatch(settings =>
-                    {
-                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
-                        if (null != clangCompiler)
-                        {
-                            var compiler = settings as C.ICommonCompilerSettings;
-                            compiler.DisableWarnings.AddUnique("tautological-constant-out-of-range-compare"); // tiff-3.9.7/test/short_tag.c:126:41: error: comparison of constant 0 with boolean expression is always false [-Werror,-Wtautological-constant-out-of-range-compare]
-                        }
-                    });
-
-                if (this.Linker is VisualCCommon.LinkerBase)
-                {
-                    this.LinkAgainst<WindowsSDK.WindowsSDK>();
-                }
-                else if (this.Linker is GccCommon.LinkerBase)
-                {
-                    this.PrivatePatch(settings =>
-                        {
-                            var linker = settings as C.ICommonLinkerSettings;
-                            linker.Libraries.AddUnique("-lm");
-                        });
-                }
-            }
-        }
-
-        [ModuleGroup("Thirdparty/tiff/tests")]
-        sealed class StripRwTest :
-            C.ConsoleApplication
-        {
-            protected override void
-            Init(
-                Bam.Core.Module parent)
-            {
-                base.Init(parent);
-
-                this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("strip_rw");
-
-                this.CreateHeaderContainer("$(packagedir)/test/test_arrays.h");
-                var source = this.CreateCSourceContainer("$(packagedir)/test/strip_rw.c");
-                source.AddFiles("$(packagedir)/test/strip.c");
-                source.AddFiles("$(packagedir)/test/test_arrays.c");
-                this.CompileAndLinkAgainst<LibTiff_static>(source);
-
-                if (this.Linker is VisualCCommon.LinkerBase)
-                {
-                    this.LinkAgainst<WindowsSDK.WindowsSDK>();
-                }
-                else if (this.Linker is GccCommon.LinkerBase)
-                {
-                    this.PrivatePatch(settings =>
-                        {
-                            var linker = settings as C.ICommonLinkerSettings;
-                            linker.Libraries.AddUnique("-lm");
-                        });
-                }
             }
         }
     }

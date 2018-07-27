@@ -1,5 +1,5 @@
 #region License
-// Copyright (c) 2010-2017, Mark Final
+// Copyright (c) 2010-2018, Mark Final
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,11 +34,19 @@ namespace jpeg
     class GenerateJMoreCfgHeader :
         C.ProceduralHeaderFile
     {
+        protected override void
+        Init(
+            Bam.Core.Module parent)
+        {
+            base.Init(parent);
+            this.Macros.Add("templateConfig", this.CreateTokenizedString("$(packagedir)/jmorecfg.h"));
+        }
+
         protected override TokenizedString OutputPath
         {
             get
             {
-                return this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders/jmorecfg.h");
+                return this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/jmorecfg.h");
             }
         }
 
@@ -57,7 +65,7 @@ namespace jpeg
                 if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
                 {
                     var contents = new System.Text.StringBuilder();
-                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.CreateTokenizedString("$(packagedir)/jmorecfg.h").Parse()))
+                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros["templateConfig"].ToString()))
                     {
                         for (;;)
                         {
@@ -86,7 +94,7 @@ namespace jpeg
                 }
                 else
                 {
-                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.CreateTokenizedString("$(packagedir)/jmorecfg.h").Parse()))
+                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros["templateConfig"].ToString()))
                     {
                         return readFile.ReadToEnd();
                     }

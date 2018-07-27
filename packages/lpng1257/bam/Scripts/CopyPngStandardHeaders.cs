@@ -1,5 +1,5 @@
 #region License
-// Copyright (c) 2010-2017, Mark Final
+// Copyright (c) 2010-2018, Mark Final
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -40,27 +40,27 @@ namespace lpng
         {
             base.Init(parent);
 
-            // the build mode depends on whether this path has been set or not
-            if (this.GeneratedPaths.ContainsKey(Key))
-            {
-                this.GeneratedPaths[Key].Aliased(this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders"));
-            }
-            else
-            {
-                this.RegisterGeneratedFile(Key, this.CreateTokenizedString("$(packagebuilddir)/PublicHeaders"));
-            }
+            var publishRoot = this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders");
 
             this.PublicPatch((settings, appliedTo) =>
                 {
                     var compiler = settings as C.ICommonCompilerSettings;
                     if (null != compiler)
                     {
-                        compiler.IncludePaths.AddUnique(this.GeneratedPaths[Key]);
+                        compiler.IncludePaths.AddUnique(publishRoot);
                     }
                 });
 
-            var pngHeader = this.IncludeFile(this.CreateTokenizedString("$(packagedir)/png.h"), ".");
-            this.IncludeFile(this.CreateTokenizedString("$(packagedir)/pngconf.h"), ".", pngHeader);
+            var headerPaths = new Bam.Core.StringArray
+            {
+                "png.h",
+                "pngconf.h"
+            };
+
+            foreach (var header in headerPaths)
+            {
+                this.IncludeFiles<CopyPngStandardHeaders>("$(packagedir)/" + header, publishRoot, null);
+            }
         }
     }
 }

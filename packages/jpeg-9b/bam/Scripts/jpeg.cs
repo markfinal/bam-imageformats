@@ -1,5 +1,5 @@
 #region License
-// Copyright (c) 2010-2017, Mark Final
+// Copyright (c) 2010-2018, Mark Final
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -40,8 +40,7 @@ namespace jpeg
         {
             base.Init(parent);
 
-            this.Macros["MajorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("9");
-            this.Macros["MinorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("b");
+            this.SetSemanticVersion("9", "b", null);
             this.Macros["OutputName"] = this.CreateTokenizedString("jpeg");
 
             var source = this.CreateCSourceContainer("$(packagedir)/j*.c",

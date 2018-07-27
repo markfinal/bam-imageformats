@@ -1,5 +1,5 @@
 #region License
-// Copyright (c) 2010-2017, Mark Final
+// Copyright (c) 2010-2018, Mark Final
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -43,11 +43,6 @@ namespace jpegtest1
             var source = this.CreateCSourceContainer("$(packagedir)/source/*.c");
             this.CompileAndLinkAgainst<jpeg.JpegLibrary>(source);
 
-            if (this.Linker is VisualCCommon.LinkerBase)
-            {
-                this.LinkAgainst<WindowsSDK.WindowsSDK>();
-            }
-
             this.PrivatePatch(settings =>
                 {
                     var gccLinker = settings as GccCommon.ICommonLinkerSettings;
@@ -71,7 +66,8 @@ namespace jpegtest1
         {
             base.Init(parent);
 
-            /*var app = */this.Include<JPEGTest1>(C.ConsoleApplication.Key, EPublishingType.ConsoleApplication, ".");
+            this.SetDefaultMacrosAndMappings(EPublishingType.ConsoleApplication);
+            this.Include<JPEGTest1>(C.ConsoleApplication.Key);
         }
     }
 }
