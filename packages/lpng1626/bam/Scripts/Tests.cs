@@ -211,7 +211,7 @@ namespace lpng
                 base.Init(parent);
 
                 this.SetDefaultMacrosAndMappings(EPublishingType.ConsoleApplication);
-                this.IncludeAllModulesInNamespace("lpng.tests", C.ConsoleApplication.Key);
+                this.IncludeAllModulesInNamespace("lpng.tests", C.ConsoleApplication.ExecutableKey);
                 this.IncludeFiles<PNGTest>("$(packagedir)/pngtest.png", this.ExecutableDir, this.Find<PNGTest>().First());
             }
         }

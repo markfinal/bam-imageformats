@@ -67,7 +67,7 @@ namespace pngtest1
             base.Init(parent);
 
             this.SetDefaultMacrosAndMappings(EPublishingType.ConsoleApplication);
-            this.Include<PNGTest1>(C.ConsoleApplication.Key);
+            this.Include<PNGTest1>(C.ConsoleApplication.ExecutableKey);
         }
     }
 }

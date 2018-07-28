@@ -181,7 +181,7 @@ namespace tiff
                 base.Init(parent);
 
                 this.SetDefaultMacrosAndMappings(EPublishingType.ConsoleApplication);
-                this.IncludeAllModulesInNamespace("tiff.tests", C.ConsoleApplication.Key);
+                this.IncludeAllModulesInNamespace("tiff.tests", C.ConsoleApplication.ExecutableKey);
             }
         }
     }
