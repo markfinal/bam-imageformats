@@ -67,7 +67,7 @@ namespace jpegtest1
             base.Init(parent);
 
             this.SetDefaultMacrosAndMappings(EPublishingType.ConsoleApplication);
-            this.Include<JPEGTest1>(C.ConsoleApplication.Key);
+            this.Include<JPEGTest1>(C.ConsoleApplication.ExecutableKey);
         }
     }
 }
