@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageDefinition xsi:schemaLocation="http://www.buildamation.com ./Schema/BamPackageDefinitionV1.xsd" name="lpng" version="1256" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.buildamation.com">
   <Description>libpng library and tests, version 1.2.56</Description>
+  <Source type="http" path="https://sourceforge.net/projects/libpng/files/libpng12/older-releases/1.2.56/libpng-1.2.56.tar.xz/download" subdir="libpng-1.2.56" />
   <PackageRepositories>
     <Repo dir="../../../../bam-compress/packages" />
   </PackageRepositories>
