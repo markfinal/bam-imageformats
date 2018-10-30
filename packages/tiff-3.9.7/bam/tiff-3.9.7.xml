@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageDefinition xsi:schemaLocation="http://www.buildamation.com ./Schema/BamPackageDefinitionV1.xsd" name="tiff" version="3.9.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.buildamation.com">
   <Description>tiff version 3.9.7</Description>
-  <Source type="http" path="http://download.osgeo.org/libtiff/tiff-3.9.7.tar.gz" subdir="tiff-3.9.7" />
+  <Sources>
+    <Source type="http" path="http://download.osgeo.org/libtiff/tiff-3.9.7.tar.gz" subdir="tiff-3.9.7" />
+  </Sources>
   <Dependents>
     <Package name="C" />
     <Package name="Clang" version="Xcode4" />
