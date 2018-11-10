@@ -30,7 +30,7 @@
 using Bam.Core;
 namespace jpeg
 {
-    [ModuleGroup("Thirdparty/libjpeg")]
+    [Bam.Core.ModuleGroup("Thirdparty/libjpeg")]
     class GenerateJMoreCfgHeader :
         C.ProceduralHeaderFile
     {
@@ -42,21 +42,8 @@ namespace jpeg
             this.Macros.Add("templateConfig", this.CreateTokenizedString("$(packagedir)/jmorecfg.h"));
         }
 
-        protected override TokenizedString OutputPath
-        {
-            get
-            {
-                return this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/jmorecfg.h");
-            }
-        }
-
-        protected override string GuardString
-        {
-            get
-            {
-                return null;
-            }
-        }
+        protected override Bam.Core.TokenizedString OutputPath => this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/jmorecfg.h");
+        protected override string GuardString => null;
 
         protected override string Contents
         {

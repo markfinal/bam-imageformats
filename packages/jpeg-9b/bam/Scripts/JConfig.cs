@@ -30,7 +30,7 @@
 using Bam.Core;
 namespace jpeg
 {
-    [ModuleGroup("Thirdparty/libjpeg")]
+    [Bam.Core.ModuleGroup("Thirdparty/libjpeg")]
     class GenerateJConfigHeader :
         C.ProceduralHeaderFile
     {
@@ -45,13 +45,7 @@ namespace jpeg
             }
         }
 
-        protected override TokenizedString OutputPath
-        {
-            get
-            {
-                return this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/jconfig.h");
-            }
-        }
+        protected override Bam.Core.TokenizedString OutputPath => this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/jconfig.h");
 
         protected override string GuardString
         {
