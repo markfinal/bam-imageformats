@@ -30,7 +30,7 @@
 using Bam.Core;
 namespace tiff
 {
-    [ModuleGroup("Thirdparty/tiff")]
+    [Bam.Core.ModuleGroup("Thirdparty/tiff")]
     class CopyStandardHeaders :
         Publisher.Collation
     {
@@ -44,8 +44,7 @@ namespace tiff
 
             this.PublicPatch((settings, appliedTo) =>
                 {
-                    var compiler = settings as C.ICommonCompilerSettings;
-                    if (null != compiler)
+                    if (settings is C.ICommonCompilerSettings compiler)
                     {
                         compiler.IncludePaths.AddUnique(publishRoot);
                     }
@@ -65,7 +64,7 @@ namespace tiff
         }
     }
 
-    [ModuleGroup("Thirdparty/tiff")]
+    [Bam.Core.ModuleGroup("Thirdparty/tiff")]
     class GenerateConfHeader :
         C.ProceduralHeaderFile
     {
@@ -74,19 +73,13 @@ namespace tiff
             Bam.Core.Module parent)
         {
             base.Init(parent);
-            if (this.BuildEnvironment.Platform.Includes(EPlatform.Windows))
+            if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
                 this.Macros.Add("templatetiffconf", this.CreateTokenizedString("$(packagedir)/libtiff/tiffconf.vc.h"));
             }
         }
 
-        protected override TokenizedString OutputPath
-        {
-            get
-            {
-                return this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/tiffconf.h");
-            }
-        }
+        protected override Bam.Core.TokenizedString OutputPath => this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/tiffconf.h");
 
         protected override string GuardString
         {
@@ -104,7 +97,7 @@ namespace tiff
         {
             get
             {
-                if (this.BuildEnvironment.Platform.Includes(EPlatform.Windows))
+                if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
                 {
                     using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros["templatetiffconf"].ToString()))
                     {
@@ -122,7 +115,7 @@ namespace tiff
         }
     }
 
-    [ModuleGroup("Thirdparty/tiff")]
+    [Bam.Core.ModuleGroup("Thirdparty/tiff")]
     class GenerateConfigHeader :
         C.ProceduralHeaderFile
     {
@@ -131,19 +124,13 @@ namespace tiff
             Bam.Core.Module parent)
         {
             base.Init(parent);
-            if (this.BuildEnvironment.Platform.Includes(EPlatform.Windows))
+            if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
                 this.Macros.Add("templateConfig", this.CreateTokenizedString("$(packagedir)/libtiff/tif_config.vc.h"));
             }
         }
 
-        protected override TokenizedString OutputPath
-        {
-            get
-            {
-                return this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/tif_config.h");
-            }
-        }
+        protected override Bam.Core.TokenizedString OutputPath => this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/tif_config.h");
 
         protected override string GuardString
         {
@@ -189,7 +176,7 @@ namespace tiff
         }
     }
 
-    [ModuleGroup("Thirdparty/tiff")]
+    [Bam.Core.ModuleGroup("Thirdparty/tiff")]
     class LibTiff :
         C.DynamicLibrary
     {
@@ -220,9 +207,9 @@ namespace tiff
             }
 
             // note these dependencies are on SOURCE, as the headers are needed for compilation
-            var copyStandardHeaders = Graph.Instance.FindReferencedModule<CopyStandardHeaders>();
-            var generateConf = Graph.Instance.FindReferencedModule<GenerateConfHeader>();
-            var generateConfig = Graph.Instance.FindReferencedModule<GenerateConfigHeader>();
+            var copyStandardHeaders = Bam.Core.Graph.Instance.FindReferencedModule<CopyStandardHeaders>();
+            var generateConf = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfHeader>();
+            var generateConfig = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfigHeader>();
             source.DependsOn(copyStandardHeaders, generateConf, generateConfig);
 
             // export the public headers
@@ -240,7 +227,7 @@ namespace tiff
                     {
                         item.PrivatePatch(settings =>
                             {
-                                if (this.Linker is VisualCCommon.LinkerBase)
+                                if (settings is VisualCCommon.ICommonCompilerSettings)
                                 {
                                     var compiler = settings as C.ICommonCompilerSettings;
                                     compiler.DisableWarnings.AddUnique("4133"); // tiff-3.9.7\libtiff\tif_dirinfo.c(797): warning C4133: 'function' : incompatible types - from 'size_t *' to 'unsigned int *'
@@ -251,7 +238,7 @@ namespace tiff
                     {
                         item.PrivatePatch(settings =>
                             {
-                                if (this.Linker is VisualCCommon.LinkerBase)
+                                if (settings is VisualCCommon.ICommonCompilerSettings)
                                 {
                                     // VisualC 14.0
                                     var compiler = settings as C.ICommonCompilerSettings;
@@ -263,7 +250,7 @@ namespace tiff
                     {
                         item.PrivatePatch(settings =>
                             {
-                                if (this.Linker is VisualCCommon.LinkerBase)
+                                if (settings is VisualCCommon.ICommonCompilerSettings)
                                 {
                                     // VisualC 14.0
                                     var compiler = settings as C.ICommonCompilerSettings;
@@ -285,14 +272,12 @@ namespace tiff
                         var winCompiler = settings as C.ICommonCompilerSettingsWin;
                         winCompiler.CharacterSet = C.ECharacterSet.NotSet;
 
-                        var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
-                        if (null != vcCompiler)
+                        if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                         {
                             vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level2;
                         }
 
-                        var mingwCompiler = settings as MingwCommon.ICommonCompilerSettings;
-                        if (null != mingwCompiler)
+                        if (settings is MingwCommon.ICommonCompilerSettings mingwCompiler)
                         {
                             mingwCompiler.AllWarnings = false;
                             mingwCompiler.ExtraWarnings = false;
@@ -302,7 +287,7 @@ namespace tiff
 
                 this.PrivatePatch(settings =>
                     {
-                        if (this.Linker is VisualCCommon.LinkerBase)
+                        if (settings is VisualCCommon.ICommonLinkerSettings)
                         {
                             var linker = settings as C.ICommonLinkerSettings;
                             linker.Libraries.Add("USER32.lib");
@@ -332,30 +317,21 @@ namespace tiff
                     item.PrivatePatch(settings =>
                         {
                             var compiler = settings as C.ICommonCompilerSettings;
-                            if (null != compiler)
-                            {
-                                compiler.DisableWarnings.AddUnique("unused-parameter"); // tiff-3.9.7/libtiff/tif_lzw.c:1060:28: error: unused parameter 'scheme' [-Werror,-Wunused-parameter]
-                            }
+                            compiler.DisableWarnings.AddUnique("unused-parameter"); // tiff-3.9.7/libtiff/tif_lzw.c:1060:28: error: unused parameter 'scheme' [-Werror,-Wunused-parameter]
                         }));
 
                 source["tif_print.c"].ForEach(item =>
                     item.PrivatePatch(settings =>
                         {
                             var compiler = settings as C.ICommonCompilerSettings;
-                            if (null != compiler)
-                            {
-                                compiler.DisableWarnings.AddUnique("unused-variable"); // tiff-3.9.7/libtiff/tif_print.c:118:17: error: unused variable 'td' [-Werror,-Wunused-variable]
-                            }
+                            compiler.DisableWarnings.AddUnique("unused-variable"); // tiff-3.9.7/libtiff/tif_print.c:118:17: error: unused variable 'td' [-Werror,-Wunused-variable]
                         }));
 
                 source["tif_write.c"].ForEach(item =>
                     item.PrivatePatch(settings =>
                         {
                             var compiler = settings as C.ICommonCompilerSettings;
-                            if (null != compiler)
-                            {
-                                compiler.DisableWarnings.AddUnique("sign-compare"); // tiff-3.9.7/libtiff/tif_write.c:633:49: error: comparison of integers of different signs: 'toff_t' (aka 'unsigned int') and 'tsize_t' (aka 'int') [-Werror,-Wsign-compare]
-                            }
+                            compiler.DisableWarnings.AddUnique("sign-compare"); // tiff-3.9.7/libtiff/tif_write.c:633:49: error: comparison of integers of different signs: 'toff_t' (aka 'unsigned int') and 'tsize_t' (aka 'int') [-Werror,-Wsign-compare]
                         }));
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
@@ -379,10 +355,7 @@ namespace tiff
                 this.PrivatePatch(settings =>
                     {
                         var gccLinker = settings as GccCommon.ICommonLinkerSettings;
-                        if (null != gccLinker)
-                        {
-                            gccLinker.VersionScript = versionScript.InputPath;
-                        }
+                        gccLinker.VersionScript = versionScript.InputPath;
                     });
             }
         }
@@ -390,7 +363,7 @@ namespace tiff
 
     // Dynamic library exports are via .def file (Windows), and .map file (Linux) [brute force on OSX]
     // however, sometimes a static library is preferred
-    [ModuleGroup("Thirdparty/tiff")]
+    [Bam.Core.ModuleGroup("Thirdparty/tiff")]
     class LibTiff_static :
         C.StaticLibrary
     {
@@ -421,9 +394,9 @@ namespace tiff
             }
 
             // note these dependencies are on SOURCE, as the headers are needed for compilation
-            var copyStandardHeaders = Graph.Instance.FindReferencedModule<CopyStandardHeaders>();
-            var generateConf = Graph.Instance.FindReferencedModule<GenerateConfHeader>();
-            var generateConfig = Graph.Instance.FindReferencedModule<GenerateConfigHeader>();
+            var copyStandardHeaders = Bam.Core.Graph.Instance.FindReferencedModule<CopyStandardHeaders>();
+            var generateConf = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfHeader>();
+            var generateConfig = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfigHeader>();
             source.DependsOn(copyStandardHeaders, generateConf, generateConfig);
 
             // export the public headers
@@ -441,7 +414,7 @@ namespace tiff
                     {
                         item.PrivatePatch(settings =>
                             {
-                                if (item.Compiler is VisualCCommon.CompilerBase)
+                                if (settings is VisualCCommon.ICommonCompilerSettings)
                                 {
                                     var compiler = settings as C.ICommonCompilerSettings;
                                     compiler.DisableWarnings.AddUnique("4133"); // tiff-3.9.7\libtiff\tif_dirinfo.c(797): warning C4133: 'function' : incompatible types - from 'size_t *' to 'unsigned int *'
@@ -452,7 +425,7 @@ namespace tiff
                     {
                         item.PrivatePatch(settings =>
                             {
-                                if (item.Compiler is VisualCCommon.CompilerBase)
+                                if (settings is VisualCCommon.ICommonCompilerSettings)
                                 {
                                     // VisualC 14.0
                                     var compiler = settings as C.ICommonCompilerSettings;
@@ -464,7 +437,7 @@ namespace tiff
                     {
                         item.PrivatePatch(settings =>
                             {
-                                if (item.Compiler is VisualCCommon.CompilerBase)
+                                if (settings is VisualCCommon.ICommonCompilerSettings)
                                 {
                                     // VisualC 14.0
                                     var compiler = settings as C.ICommonCompilerSettings;
@@ -486,14 +459,12 @@ namespace tiff
                         var winCompiler = settings as C.ICommonCompilerSettingsWin;
                         winCompiler.CharacterSet = C.ECharacterSet.NotSet;
 
-                        var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
-                        if (null != vcCompiler)
+                        if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                         {
                             vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level2;
                         }
 
-                        var mingwCompiler = settings as MingwCommon.ICommonCompilerSettings;
-                        if (null != mingwCompiler)
+                        if (settings is MingwCommon.ICommonCompilerSettings mingwCompiler)
                         {
                             mingwCompiler.AllWarnings = false;
                             mingwCompiler.ExtraWarnings = false;
@@ -518,30 +489,21 @@ namespace tiff
                     item.PrivatePatch(settings =>
                         {
                             var compiler = settings as C.ICommonCompilerSettings;
-                            if (null != compiler)
-                            {
-                                compiler.DisableWarnings.AddUnique("unused-parameter"); // tiff-3.9.7/libtiff/tif_lzw.c:1060:28: error: unused parameter 'scheme' [-Werror,-Wunused-parameter]
-                            }
+                            compiler.DisableWarnings.AddUnique("unused-parameter"); // tiff-3.9.7/libtiff/tif_lzw.c:1060:28: error: unused parameter 'scheme' [-Werror,-Wunused-parameter]
                         }));
 
                 source["tif_print.c"].ForEach(item =>
                     item.PrivatePatch(settings =>
                         {
                             var compiler = settings as C.ICommonCompilerSettings;
-                            if (null != compiler)
-                            {
-                                compiler.DisableWarnings.AddUnique("unused-variable"); // tiff-3.9.7/libtiff/tif_print.c:118:17: error: unused variable 'td' [-Werror,-Wunused-variable]
-                            }
+                            compiler.DisableWarnings.AddUnique("unused-variable"); // tiff-3.9.7/libtiff/tif_print.c:118:17: error: unused variable 'td' [-Werror,-Wunused-variable]
                         }));
 
                 source["tif_write.c"].ForEach(item =>
                     item.PrivatePatch(settings =>
                         {
                             var compiler = settings as C.ICommonCompilerSettings;
-                            if (null != compiler)
-                            {
-                                compiler.DisableWarnings.AddUnique("sign-compare"); // tiff-3.9.7/libtiff/tif_write.c:633:49: error: comparison of integers of different signs: 'toff_t' (aka 'unsigned int') and 'tsize_t' (aka 'int') [-Werror,-Wsign-compare]
-                            }
+                            compiler.DisableWarnings.AddUnique("sign-compare"); // tiff-3.9.7/libtiff/tif_write.c:633:49: error: comparison of integers of different signs: 'toff_t' (aka 'unsigned int') and 'tsize_t' (aka 'int') [-Werror,-Wsign-compare]
                         }));
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))

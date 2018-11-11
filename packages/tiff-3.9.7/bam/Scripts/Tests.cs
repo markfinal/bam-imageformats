@@ -27,12 +27,11 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
-using Bam.Core;
 namespace tiff
 {
     namespace tests
     {
-        [ModuleGroup("Thirdparty/tiff/tests")]
+        [Bam.Core.ModuleGroup("Thirdparty/tiff/tests")]
         class AsciiTagTest :
             C.ConsoleApplication
         {
@@ -49,8 +48,7 @@ namespace tiff
 
                 source.PrivatePatch(settings =>
                     {
-                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
-                        if (null != clangCompiler)
+                        if (settings is ClangCommon.ICommonCompilerSettings)
                         {
                             var compiler = settings as C.ICommonCompilerSettings;
                             compiler.DisableWarnings.AddUnique("tautological-constant-out-of-range-compare"); // tiff-3.9.7/test/ascii_tag.c:128:41: error: comparison of constant 0 with boolean expression is always false [-Werror,-Wtautological-constant-out-of-range-compare]
@@ -68,7 +66,7 @@ namespace tiff
             }
         }
 
-        [ModuleGroup("Thirdparty/tiff/tests")]
+        [Bam.Core.ModuleGroup("Thirdparty/tiff/tests")]
         class LongTagTest :
             C.ConsoleApplication
         {
@@ -86,8 +84,7 @@ namespace tiff
 
                 source.PrivatePatch(settings =>
                     {
-                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
-                        if (null != clangCompiler)
+                        if (settings is ClangCommon.ICommonCompilerSettings)
                         {
                             var compiler = settings as C.ICommonCompilerSettings;
                             compiler.DisableWarnings.AddUnique("tautological-constant-out-of-range-compare"); // tiff-3.9.7/test/long_tag.c:112:41: error: comparison of constant 0 with boolean expression is always false [-Werror,-Wtautological-constant-out-of-range-compare]
@@ -105,7 +102,7 @@ namespace tiff
             }
         }
 
-        [ModuleGroup("Thirdparty/tiff/tests")]
+        [Bam.Core.ModuleGroup("Thirdparty/tiff/tests")]
         class ShortTagTest :
             C.ConsoleApplication
         {
@@ -123,8 +120,7 @@ namespace tiff
 
                 source.PrivatePatch(settings =>
                     {
-                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
-                        if (null != clangCompiler)
+                        if (settings is ClangCommon.ICommonCompilerSettings)
                         {
                             var compiler = settings as C.ICommonCompilerSettings;
                             compiler.DisableWarnings.AddUnique("tautological-constant-out-of-range-compare"); // tiff-3.9.7/test/short_tag.c:126:41: error: comparison of constant 0 with boolean expression is always false [-Werror,-Wtautological-constant-out-of-range-compare]
@@ -142,7 +138,7 @@ namespace tiff
             }
         }
 
-        [ModuleGroup("Thirdparty/tiff/tests")]
+        [Bam.Core.ModuleGroup("Thirdparty/tiff/tests")]
         class StripRwTest :
             C.ConsoleApplication
         {

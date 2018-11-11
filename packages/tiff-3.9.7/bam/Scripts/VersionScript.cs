@@ -27,10 +27,9 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
-using Bam.Core;
 namespace tiff
 {
-    [ModuleGroup("Thirdparty/tiff")]
+    [Bam.Core.ModuleGroup("Thirdparty/tiff")]
     class VersionScript :
         C.VersionScript
     {
@@ -42,13 +41,7 @@ namespace tiff
             this.Macros.Add("templateConfig", this.CreateTokenizedString("$(packagedir)/libtiff/libtiff.map"));
         }
 
-        public override TokenizedString OutputPath
-        {
-            get
-            {
-                return this.CreateTokenizedString("$(packagebuilddir)/$(config)/libtiff.map");
-            }
-        }
+        public override Bam.Core.TokenizedString OutputPath => this.CreateTokenizedString("$(packagebuilddir)/$(config)/libtiff.map");
 
         protected override string Contents
         {
