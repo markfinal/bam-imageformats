@@ -27,10 +27,9 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
-using Bam.Core;
 namespace lpng
 {
-    [ModuleGroup("Thirdparty/libpng")]
+    [Bam.Core.ModuleGroup("Thirdparty/libpng")]
     class PNGVersionScript :
         C.VersionScript
     {
@@ -42,13 +41,7 @@ namespace lpng
             this.Macros.Add("templateConfig", this.CreateTokenizedString("$(packagedir)/png.h"));
         }
 
-        public override TokenizedString OutputPath
-        {
-            get
-            {
-                return this.CreateTokenizedString("$(packagebuilddir)/$(config)/png12.map");
-            }
-        }
+        public override Bam.Core.TokenizedString OutputPath => this.CreateTokenizedString("$(packagebuilddir)/$(config)/png12.map");
 
         protected override string Contents
         {
@@ -72,20 +65,19 @@ namespace lpng
                         var matches = exportRegEx.Matches(line);
                         if (matches.Count > 0)
                         {
-                            Bam.Core.Log.DebugMessage("Found {0} matches on {1}", matches.Count, line);
+                            Bam.Core.Log.DebugMessage($"Found {matches.Count} matches on {line}");
                             foreach (System.Text.RegularExpressions.Match match in matches)
                             {
-                                Bam.Core.Log.DebugMessage("\t{0} captures", match.Captures.Count);
+                                Bam.Core.Log.DebugMessage($"\t{match.Captures.Count} captures");
                                 foreach (System.Text.RegularExpressions.Capture capture in match.Captures)
                                 {
-                                    Bam.Core.Log.DebugMessage("\t\t{0}", capture.Value);
+                                    Bam.Core.Log.DebugMessage($"\t\t{capture.Value}");
                                 }
-                                Bam.Core.Log.DebugMessage("\t{0} groups", match.Groups.Count);
+                                Bam.Core.Log.DebugMessage($"\t{match.Groups.Count} groups");
                                 if (match.Groups[0].Success)
                                 {
-                                    Bam.Core.Log.DebugMessage("\t\t{0}", match.Groups[1].Value);
-                                    contents.AppendFormat("{0};", match.Groups[1].Value);
-                                    contents.AppendLine();
+                                    Bam.Core.Log.DebugMessage($"\t\t{match.Groups[1].Value}");
+                                    contents.AppendLine($"{match.Groups[1].Value};");
                                 }
                             }
                         }

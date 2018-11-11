@@ -27,10 +27,9 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
-using Bam.Core;
 namespace lpng
 {
-    [ModuleGroup("Thirdparty/libpng")]
+    [Bam.Core.ModuleGroup("Thirdparty/libpng")]
     class CopyPngStandardHeaders :
         Publisher.Collation
     {
@@ -44,8 +43,7 @@ namespace lpng
 
             this.PublicPatch((settings, appliedTo) =>
                 {
-                    var compiler = settings as C.ICommonCompilerSettings;
-                    if (null != compiler)
+                    if (settings is C.ICommonCompilerSettings compiler)
                     {
                         compiler.IncludePaths.AddUnique(publishRoot);
                     }
