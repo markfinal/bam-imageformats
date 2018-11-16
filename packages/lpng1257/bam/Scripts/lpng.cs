@@ -30,7 +30,7 @@
 using Bam.Core;
 namespace lpng
 {
-    [ModuleGroup("Thirdparty/libpng")]
+    [Bam.Core.ModuleGroup("Thirdparty/libpng")]
     class PNGLibrary :
         C.DynamicLibrary
     {
@@ -46,8 +46,7 @@ namespace lpng
                 this.DependsOn(versionScript);
                 this.PrivatePatch(settings =>
                     {
-                        var gccLinker = settings as GccCommon.ICommonLinkerSettings;
-                        if (null != gccLinker)
+                        if (settings is GccCommon.ICommonLinkerSettings gccLinker)
                         {
                             gccLinker.VersionScript = versionScript.InputPath;
                         }
@@ -77,8 +76,7 @@ namespace lpng
 
             this.PublicPatch((settings, appliedTo) =>
                 {
-                    var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
-                    if (null != vcCompiler)
+                    if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                     {
                         var compiler = settings as C.ICommonCompilerSettings;
                         compiler.PreprocessorDefines.Add("PNG_DLL");
@@ -89,16 +87,14 @@ namespace lpng
                 {
                     var compiler = settings as C.ICommonCompilerSettings;
 
-                    var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
-                    if (null != vcCompiler)
+                    if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                     {
                         vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level4;
                         compiler.PreprocessorDefines.Add("PNG_BUILD_DLL");
                         compiler.PreprocessorDefines.Add("PNG_NO_MODULEDEF");
                     }
 
-                    var gccCompiler = settings as GccCommon.ICommonCompilerSettings;
-                    if (null != gccCompiler)
+                    if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
                     {
                         gccCompiler.AllWarnings = true;
                         gccCompiler.ExtraWarnings = true;
@@ -106,8 +102,7 @@ namespace lpng
                         gccCompiler.Visibility = GccCommon.EVisibility.Default;
                     }
 
-                    var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
-                    if (null != clangCompiler)
+                    if (settings is ClangCommon.ICommonCompilerSettings clangCompiler)
                     {
                         clangCompiler.AllWarnings = true;
                         clangCompiler.ExtraWarnings = true;
@@ -126,13 +121,11 @@ namespace lpng
                     item.PrivatePatch(settings =>
                         {
                             var compiler = settings as C.ICommonCompilerSettings;
-                            var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
-                            if (null != vcCompiler)
+                            if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                             {
                                 compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                             }
-                            var gccCompiler = settings as GccCommon.ICommonCompilerSettings;
-                            if (null != gccCompiler)
+                            if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
                             {
                                 compiler.DisableWarnings.AddUnique("implicit-function-declaration");
                             }
@@ -144,18 +137,15 @@ namespace lpng
                     item.PrivatePatch(settings =>
                         {
                             var compiler = settings as C.ICommonCompilerSettings;
-                            var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
-                            if (null != vcCompiler)
+                            if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                             {
                                 compiler.DisableWarnings.AddUnique("4206"); // lpng1256\pnggccrd.c(27): warning C4206: nonstandard extension used: translation unit is empty
                             }
-                            var gccCompiler = settings as GccCommon.ICommonCompilerSettings;
-                            if (null != gccCompiler)
+                            if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
                             {
                                 gccCompiler.Pedantic = false;
                             }
-                            var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
-                            if (null != clangCompiler)
+                            if (settings is ClangCommon.ICommonCompilerSettings clangCompiler)
                             {
                                 compiler.DisableWarnings.AddUnique("empty-translation-unit"); // lpng1256/pnggccrd.c:26:7: error: ISO C requires a translation unit to contain at least one declaration
                             }
@@ -167,8 +157,7 @@ namespace lpng
                     item.PrivatePatch(settings =>
                     {
                         var compiler = settings as C.ICommonCompilerSettings;
-                        var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
-                        if (null != vcCompiler)
+                        if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                         {
                             compiler.DisableWarnings.AddUnique("4267"); // lpng1256\pngpread.c(572): warning C4267: '-=': conversion from 'size_t' to 'png_uint_32', possible loss of data
                         }
@@ -180,13 +169,11 @@ namespace lpng
                     item.PrivatePatch(settings =>
                         {
                             var compiler = settings as C.ICommonCompilerSettings;
-                            var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
-                            if (null != vcCompiler)
+                            if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                             {
                                 compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                             }
-                            var gccCompiler = settings as GccCommon.ICommonCompilerSettings;
-                            if (null != gccCompiler)
+                            if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
                             {
                                 compiler.DisableWarnings.AddUnique("implicit-function-declaration");
                             }
@@ -198,13 +185,11 @@ namespace lpng
                     item.PrivatePatch(settings =>
                         {
                             var compiler = settings as C.ICommonCompilerSettings;
-                            var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
-                            if (null != vcCompiler)
+                            if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                             {
                                 compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                             }
-                            var gccCompiler = settings as GccCommon.ICommonCompilerSettings;
-                            if (null != gccCompiler)
+                            if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
                             {
                                 compiler.DisableWarnings.AddUnique("implicit-function-declaration");
                             }
@@ -216,15 +201,13 @@ namespace lpng
                     item.PrivatePatch(settings =>
                         {
                             var compiler = settings as C.ICommonCompilerSettings;
-                            var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
-                            if (null != vcCompiler)
+                            if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                             {
                                 compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                                 compiler.DisableWarnings.AddUnique("4267"); // lpng1256\pngrutil.c(228): warning C4267: '=': conversion from 'size_t' to 'uInt', possible loss of data
                                 compiler.DisableWarnings.AddUnique("4310"); // lpng1256\pngrutil.c(1269): warning C4310: cast truncates constant value
                             }
-                            var gccCompiler = settings as GccCommon.ICommonCompilerSettings;
-                            if (null != gccCompiler)
+                            if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
                             {
                                 compiler.DisableWarnings.AddUnique("implicit-function-declaration");
                             }
@@ -236,14 +219,12 @@ namespace lpng
                     item.PrivatePatch(settings =>
                         {
                             var compiler = settings as C.ICommonCompilerSettings;
-                            var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
-                            if (null != vcCompiler)
+                            if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                             {
                                 compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                                 compiler.DisableWarnings.AddUnique("4267"); // lpng1256\pngset.c(305): warning C4267: '=': conversion from 'size_t' to 'png_uint_32', possible loss of data
                             }
-                            var gccCompiler = settings as GccCommon.ICommonCompilerSettings;
-                            if (null != gccCompiler)
+                            if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
                             {
                                 compiler.DisableWarnings.AddUnique("implicit-function-declaration");
                             }
@@ -255,18 +236,15 @@ namespace lpng
                     item.PrivatePatch(settings =>
                         {
                             var compiler = settings as C.ICommonCompilerSettings;
-                            var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
-                            if (null != vcCompiler)
+                            if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                             {
                                 compiler.DisableWarnings.AddUnique("4206"); // lpng1256\pngvcrd.c(14): warning C4206: nonstandard extension used: translation unit is empty
                             }
-                            var gccCompiler = settings as GccCommon.ICommonCompilerSettings;
-                            if (null != gccCompiler)
+                            if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
                             {
                                 gccCompiler.Pedantic = false;
                             }
-                            var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
-                            if (null != clangCompiler)
+                            if (settings is ClangCommon.ICommonCompilerSettings clangCompiler)
                             {
                                 compiler.DisableWarnings.AddUnique("empty-translation-unit"); // lpng1256/pnggccrd.c:26:7: error: ISO C requires a translation unit to contain at least one declaration
                             }
@@ -278,8 +256,7 @@ namespace lpng
                     item.PrivatePatch(settings =>
                     {
                         var compiler = settings as C.ICommonCompilerSettings;
-                        var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
-                        if (null != vcCompiler)
+                        if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                         {
                             compiler.DisableWarnings.AddUnique("4267"); // lpng1256\pngwio.c(60): warning C4267: '=': conversion from 'size_t' to 'png_uint_32', possible loss of data
                         }
@@ -291,13 +268,11 @@ namespace lpng
                     item.PrivatePatch(settings =>
                         {
                             var compiler = settings as C.ICommonCompilerSettings;
-                            var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
-                            if (null != vcCompiler)
+                            if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                             {
                                 compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                             }
-                            var gccCompiler = settings as GccCommon.ICommonCompilerSettings;
-                            if (null != gccCompiler)
+                            if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
                             {
                                 compiler.DisableWarnings.AddUnique("implicit-function-declaration");
                             }
@@ -309,14 +284,12 @@ namespace lpng
                     item.PrivatePatch(settings =>
                         {
                             var compiler = settings as C.ICommonCompilerSettings;
-                            var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
-                            if (null != vcCompiler)
+                            if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                             {
                                 compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                                 compiler.DisableWarnings.AddUnique("4267"); // lpng1256\pngwutil.c(191): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
                             }
-                            var gccCompiler = settings as GccCommon.ICommonCompilerSettings;
-                            if (null != gccCompiler)
+                            if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
                             {
                                 compiler.DisableWarnings.AddUnique("implicit-function-declaration");
                             }

@@ -27,13 +27,12 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
-using Bam.Core;
 using System.Linq;
 namespace lpng
 {
     namespace tests
     {
-        [ModuleGroup("Thirdparty/libpng/tests")]
+        [Bam.Core.ModuleGroup("Thirdparty/libpng/tests")]
         class PNGTest :
             C.ConsoleApplication
         {
@@ -49,8 +48,7 @@ namespace lpng
 
                 this.PrivatePatch(settings =>
                     {
-                        var gccLinker = settings as GccCommon.ICommonLinkerSettings;
-                        if (null != gccLinker)
+                        if (settings is GccCommon.ICommonLinkerSettings gccLinker)
                         {
                             gccLinker.CanUseOrigin = true;
                             gccLinker.RPath.AddUnique("$ORIGIN");

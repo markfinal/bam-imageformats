@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageDefinition xsi:schemaLocation="http://www.buildamation.com ./Schema/BamPackageDefinitionV1.xsd" name="jpeg" version="9b" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.buildamation.com">
-  <Description>A new package called jpeg with version 9b</Description>
+  <Description>jpeg version 9b</Description>
+  <Sources>
+    <Source type="http" path="http://www.ijg.org/files/jpegsr9b.zip" subdir="jpeg-9b" />
+  </Sources>
   <Dependents>
     <Package name="C" />
     <Package name="Clang" version="Xcode4" />
