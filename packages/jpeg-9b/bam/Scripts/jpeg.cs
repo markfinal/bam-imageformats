@@ -251,10 +251,10 @@ namespace jpeg
             source["jdmarker.c"].ForEach(item =>
                 item.PrivatePatch(settings =>
                     {
-                        var compiler = settings as C.ICommonCompilerSettings;
                         if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                         {
-                            compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
+                            var preprocessor = settings as C.ICommonPreprocessorSettings;
+                            preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                         }
                     }));
 
@@ -315,10 +315,10 @@ namespace jpeg
             source["jerror.c"].ForEach(item =>
                 item.PrivatePatch(settings =>
                     {
-                        var compiler = settings as C.ICommonCompilerSettings;
                         if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                         {
-                            compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
+                            var preprocessor = settings as C.ICommonPreprocessorSettings;
+                            preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                         }
                     }));
 
@@ -328,7 +328,8 @@ namespace jpeg
                         var compiler = settings as C.ICommonCompilerSettings;
                         if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                         {
-                            compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
+                            var preprocessor = settings as C.ICommonPreprocessorSettings;
+                            preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                             compiler.DisableWarnings.AddUnique("4100"); // jpeg-9b\jmemansi.c(36): warning C4100: 'cinfo': unreferenced formal parameter
                         }
                         if (settings is ClangCommon.ICommonCompilerSettings clangCompiler)
@@ -347,7 +348,8 @@ namespace jpeg
                         var compiler = settings as C.ICommonCompilerSettings;
                         if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                         {
-                            compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
+                            var preprocessor = settings as C.ICommonPreprocessorSettings;
+                            preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                             compiler.DisableWarnings.AddUnique("4267"); // jpeg-9b\jmemmgr.c(307): warning C4267: '+=': conversion from 'size_t' to 'long', possible loss of data
                             compiler.DisableWarnings.AddUnique("4127"); // jpeg-9b\jmemmgr.c(1045): warning C4127: conditional expression is constant
                         }

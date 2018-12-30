@@ -78,20 +78,20 @@ namespace lpng
                 {
                     if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                     {
-                        var compiler = settings as C.ICommonCompilerSettings;
-                        compiler.PreprocessorDefines.Add("PNG_DLL");
+                        var preprocessor = settings as C.ICommonPreprocessorSettings;
+                        preprocessor.PreprocessorDefines.Add("PNG_DLL");
                     }
                 });
 
             source.PrivatePatch(settings =>
                 {
-                    var compiler = settings as C.ICommonCompilerSettings;
+                    var preprocessor = settings as C.ICommonPreprocessorSettings;
 
                     if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                     {
                         vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level4;
-                        compiler.PreprocessorDefines.Add("PNG_BUILD_DLL");
-                        compiler.PreprocessorDefines.Add("PNG_NO_MODULEDEF");
+                        preprocessor.PreprocessorDefines.Add("PNG_BUILD_DLL");
+                        preprocessor.PreprocessorDefines.Add("PNG_NO_MODULEDEF");
                     }
 
                     if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
@@ -112,7 +112,7 @@ namespace lpng
 
                     if (this.BuildEnvironment.Configuration == EConfiguration.Debug)
                     {
-                        compiler.PreprocessorDefines.Add("PNG_DEBUG");
+                        preprocessor.PreprocessorDefines.Add("PNG_DEBUG");
                     }
                 });
 
@@ -120,13 +120,14 @@ namespace lpng
                 {
                     item.PrivatePatch(settings =>
                         {
-                            var compiler = settings as C.ICommonCompilerSettings;
                             if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                             {
-                                compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
+                                var preprocessor = settings as C.ICommonPreprocessorSettings;
+                                preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                             }
                             if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
                             {
+                                var compiler = settings as C.ICommonCompilerSettings;
                                 compiler.DisableWarnings.AddUnique("implicit-function-declaration");
                             }
                         });
@@ -168,13 +169,14 @@ namespace lpng
                 {
                     item.PrivatePatch(settings =>
                         {
-                            var compiler = settings as C.ICommonCompilerSettings;
                             if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                             {
-                                compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
+                                var preprocessor = settings as C.ICommonPreprocessorSettings;
+                                preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                             }
                             if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
                             {
+                                var compiler = settings as C.ICommonCompilerSettings;
                                 compiler.DisableWarnings.AddUnique("implicit-function-declaration");
                             }
                         });
@@ -184,13 +186,14 @@ namespace lpng
                 {
                     item.PrivatePatch(settings =>
                         {
-                            var compiler = settings as C.ICommonCompilerSettings;
                             if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                             {
-                                compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
+                                var preprocessor = settings as C.ICommonPreprocessorSettings;
+                                preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                             }
                             if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
                             {
+                                var compiler = settings as C.ICommonCompilerSettings;
                                 compiler.DisableWarnings.AddUnique("implicit-function-declaration");
                             }
                         });
@@ -203,7 +206,8 @@ namespace lpng
                             var compiler = settings as C.ICommonCompilerSettings;
                             if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                             {
-                                compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
+                                var preprocessor = settings as C.ICommonPreprocessorSettings;
+                                preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                                 compiler.DisableWarnings.AddUnique("4267"); // lpng1256\pngrutil.c(228): warning C4267: '=': conversion from 'size_t' to 'uInt', possible loss of data
                                 compiler.DisableWarnings.AddUnique("4310"); // lpng1256\pngrutil.c(1269): warning C4310: cast truncates constant value
                             }
@@ -221,7 +225,8 @@ namespace lpng
                             var compiler = settings as C.ICommonCompilerSettings;
                             if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                             {
-                                compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
+                                var preprocessor = settings as C.ICommonPreprocessorSettings;
+                                preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                                 compiler.DisableWarnings.AddUnique("4267"); // lpng1256\pngset.c(305): warning C4267: '=': conversion from 'size_t' to 'png_uint_32', possible loss of data
                             }
                             if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
@@ -270,7 +275,8 @@ namespace lpng
                             var compiler = settings as C.ICommonCompilerSettings;
                             if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                             {
-                                compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
+                                var preprocessor = settings as C.ICommonPreprocessorSettings;
+                                preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                             }
                             if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
                             {
@@ -286,7 +292,8 @@ namespace lpng
                             var compiler = settings as C.ICommonCompilerSettings;
                             if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                             {
-                                compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
+                                var preprocessor = settings as C.ICommonPreprocessorSettings;
+                                preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                                 compiler.DisableWarnings.AddUnique("4267"); // lpng1256\pngwutil.c(191): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
                             }
                             if (settings is GccCommon.ICommonCompilerSettings gccCompiler)

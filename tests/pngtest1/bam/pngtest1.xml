@@ -11,7 +11,6 @@
     <Package name="Clang" version="Xcode9" />
     <Package name="Gcc" version="4.8" default="true" />
     <Package name="Gcc" version="5" />
-    <Package name="lpng" version="1256" />
     <Package name="lpng" version="1257" default="true" />
     <Package name="lpng" version="1626" />
     <Package name="NativeBuilder" />

@@ -27,7 +27,7 @@
     <Package name="VisualC" version="15.0" />
     <Package name="VSSolutionBuilder" />
     <Package name="XcodeBuilder" />
-    <Package name="zlib" version="1.2.8" />
+    <Package name="zlib" version="1.2.11" />
   </Dependents>
   <BamAssemblies>
     <BamAssembly name="Bam.Core" major="2" minor="0" patch="0" />
