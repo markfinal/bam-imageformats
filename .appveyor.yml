@@ -1,0 +1,8 @@
+image:
+  - Visual Studio 2017
+clone_depth: 10
+configuration: Release
+platform: AnyCPU
+install:
+  - appveyor DownloadFile https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.zip?branch=master?job=Ubuntu
+  - 7z x bam.zip -oc:\BuildAMation
