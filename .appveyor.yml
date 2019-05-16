@@ -4,5 +4,5 @@ clone_depth: 10
 configuration: Release
 platform: AnyCPU
 install:
-  - appveyor DownloadFile https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.zip?branch=master&job=Visual%20Studio%2017
+  - appveyor DownloadFile "https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.zip?branch=master&job=Visual%20Studio%2017"
   - 7z x bam.zip -oc:\BuildAMation
