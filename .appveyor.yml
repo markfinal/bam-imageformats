@@ -5,4 +5,5 @@ configuration: Release
 platform: AnyCPU
 install:
   - appveyor downloadfile 'https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.zip?branch=master^&job=Image%3A%20Visual%20Studio%202017' -FileName c:\bam.zip
+  - dir c:\
   - 7z x c:\bam.zip -oc:\BuildAMation
