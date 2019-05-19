@@ -4,9 +4,9 @@ clone_depth: 10
 configuration: Release
 platform: AnyCPU
 install:
-  #- appveyor DownloadFile "https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.zip?branch=master&job=Visual%20Studio%202017" -FileName bam.zip
-  #- ps: Start-FileDownload "https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.zip?branch=master&job=Visual%20Studio%202017"
-  - curl -fsS -o bam.zip "https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.zip?branch=master&job=Visual%20Studio%202017"
+  #- appveyor DownloadFile "https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.zip?branch=master&job=Image%3A%20Visual%20Studio%202017" -FileName bam.zip
+  #- ps: Start-FileDownload "https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.zip?branch=master&job=Image%3A%20Visual%20Studio%202017"
+  - curl -fsS -o bam.zip "https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.zip?branch=master&job=Image%3A%20Visual%20Studio%202017"
   - dir
   - 7z x bam.zip -oc:\BuildAMation
 #on_finish:
