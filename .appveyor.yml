@@ -7,7 +7,7 @@ install:
   #- appveyor DownloadFile "https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.zip?branch=master&job=Image%3A%20Visual%20Studio%202017" -FileName bam.zip
   #- ps: Start-FileDownload "https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.zip?branch=master&job=Image%3A%20Visual%20Studio%202017"
   - curl -V
-  - curl -L -o bam.zip "https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.zip?branch=master&job=Image%3A%20Visual%20Studio%202017"
+  - curl -fsSL -o bam.zip "https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.zip?branch=master&job=Image%3A%20Visual%20Studio%202017"
   - dir
   - type bam.zip
   - 7z x bam.zip -oc:\BuildAMation
