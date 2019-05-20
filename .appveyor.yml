@@ -15,4 +15,4 @@ test_script:
   - cmd: "SET VC_PRERELEASE_ARGS="
   - cmd: python c:\BuildAMation\bam_publish\tests\runtests.py -x Mingw --VisualC.version=%VC_VERSION% %VC_PRERELEASE_ARGS% -b Native -c debug -c profile -j0 -d --nodefaultrepo -r .
   - cmd: python c:\BuildAMation\bam_publish\tests\runtests.py -x Mingw --VisualC.version=%VC_VERSION% %VC_PRERELEASE_ARGS% -b VSSolution -c debug -c profile -j0 -d --nodefaultrepo -r .
-  - cmd: python c:\BuildAMation\bam_publish\tests\runtests.py -x Mingw --VisualC.version=%VC_VERSION% %VC_PRERELEASE_ARGS% -b MakeFile -c debug -c profile -j0 -d --nodefaultrepo -r .
+  - cmd: python c:\BuildAMation\bam_publish\tests\runtests.py -x Mingw --VisualC.version=%VC_VERSION% %VC_PRERELEASE_ARGS% -b MakeFile -c debug -c profile -j0 -d --MakeFile.format=NMAKE --nodefaultrepo -r .
