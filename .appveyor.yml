@@ -7,5 +7,8 @@ install:
   - ps: Start-FileDownload 'https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.zip?branch=master&job=Image%3A%20Visual%20Studio%202017'
   - 7z x bam.zip -oc:\BuildAMation
   - dir c:\BuildAMation
+  - pushd c:\BuildAMation\bam_publish
+  - env.bat
+  - popd
 #on_finish:
 #  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
