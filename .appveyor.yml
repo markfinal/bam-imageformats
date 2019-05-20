@@ -9,6 +9,7 @@ install:
   - pushd c:\BuildAMation\bam_publish
   - env.bat
   - popd
+  - cmd: "SET PATH=C:\\Python27-x64;%PATH%"
   - python c:\BuildAMation\bam_publish\tests\runtests.py -c debug -c profile --VisualC.version=15.0 --nodefaultrepo -r .
 #on_finish:
 #  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
