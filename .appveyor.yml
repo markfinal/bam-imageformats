@@ -6,9 +6,7 @@ platform: AnyCPU
 install:
   - ps: Start-FileDownload 'https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.zip?branch=master&job=Image%3A%20Visual%20Studio%202017'
   - 7z x bam.zip -oc:\BuildAMation
-  - pushd c:\BuildAMation\bam_publish
-  - env.bat
-  - popd
+  - cmd: pushd c:\BuildAMation\bam_publish & env.bat & popd
   - cmd: "SET PATH=C:\\Python27-x64;%PATH%"
   - python c:\BuildAMation\bam_publish\tests\runtests.py -c debug -c profile --VisualC.version=15.0 --nodefaultrepo -r .
 #on_finish:
