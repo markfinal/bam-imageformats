@@ -19,8 +19,8 @@ for:
 install:
   - git clone -q --depth=1 --branch=master https://github.com/markfinal/bam-compress.git ../bam-compress
   - ps: Start-FileDownload 'https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.zip?branch=master&job=Image%3A%20Visual%20Studio%202017'
-  - cmd: 7z x bam.zip -oc:\BuildAMation
-  - sh: unzip bam.zip -d ~/BuildAMation
+  - cmd: 7z x bam.tar -oc:\BuildAMation
+  - sh: tar xf bam.tar -C ~/BuildAMation
 build: off
 test_script:
   - cmd: c:\BuildAMation\bam_publish\env.bat
@@ -28,7 +28,6 @@ test_script:
   - cmd: python c:\BuildAMation\bam_publish\tests\runtests.py -x Mingw --VisualC.version=%VC_VERSION% %VC_PRERELEASE_ARGS% -b Native -c debug -c profile -j0 -d --nodefaultrepo -r .
   - cmd: python c:\BuildAMation\bam_publish\tests\runtests.py -x Mingw --VisualC.version=%VC_VERSION% %VC_PRERELEASE_ARGS% -b VSSolution -c debug -c profile -j0 -d --nodefaultrepo -r .
   - cmd: python c:\BuildAMation\bam_publish\tests\runtests.py -x Mingw --VisualC.version=%VC_VERSION% %VC_PRERELEASE_ARGS% -b MakeFile -c debug -c profile -j0 -d --MakeFile.format=NMAKE --nodefaultrepo -r .
-  - sh: chmod +x ~/BuildAMation/bam_publish/bin/Release/netcoreapp2.1/bam
   - sh: source ~/BuildAMation/bam_publish/env.sh
   - sh: python ~/BuildAMation/bam_publish/tests/runtests.py --Gcc.version=$GCC_VERSION -b Native -c debug -c profile -j0 -d --nodefaultrepo -r .
   - sh: python ~/BuildAMation/bam_publish/tests/runtests.py --Gcc.version=$GCC_VERSION -b MakeFile -c debug -c profile -j0 -d --nodefaultrepo -r .
