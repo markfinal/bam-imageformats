@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageDefinition xsi:schemaLocation="http://www.buildamation.com ./Schema/BamPackageDefinitionV1.xsd" name="jpegtest1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.buildamation.com">
-  <Description>A new package called jpegtest1</Description>
+  <Description>Test package, exercising jpeg packages</Description>
   <Dependents>
     <Package name="C" />
     <Package name="Clang" version="Xcode4" />
@@ -9,8 +9,10 @@
     <Package name="Clang" version="Xcode7" />
     <Package name="Clang" version="Xcode8" default="true" />
     <Package name="Clang" version="Xcode9" />
+    <Package name="Clang" version="Xcode10" />
     <Package name="Gcc" version="4.8" default="true" />
     <Package name="Gcc" version="5" />
+    <Package name="Gcc" version="7" />
     <Package name="jpeg" version="9b" />
     <Package name="NativeBuilder" />
     <Package name="VisualC" version="10.0" />
@@ -18,6 +20,7 @@
     <Package name="VisualC" version="12.0" />
     <Package name="VisualC" version="14.0" default="true" />
     <Package name="VisualC" version="15.0" />
+    <Package name="VisualC" version="16" />
     <Package name="VSSolutionBuilder" />
     <Package name="XcodeBuilder" />
   </Dependents>
