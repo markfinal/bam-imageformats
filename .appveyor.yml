@@ -7,7 +7,6 @@ clone_depth: 10
 configuration: Release
 platform: AnyCPU
 for:
-for:
   - matrix:
       only:
         - image: Ubuntu
