@@ -68,6 +68,7 @@ namespace jpeg
             {
                 this.Add("jccoefct.c", "unused-parameter");
                 this.Add("jccolor.c", "unused-parameter");
+                this.Add("jcmaster.c", GccCommon.ToolchainVersion.GCC_7, null, "implicit-fallthrough");
                 this.Add("jcsample.c", "unused-parameter");
                 this.Add("jctrans.c", "unused-parameter");
                 this.Add("jdarith.c", "unused-parameter");

@@ -114,7 +114,7 @@ namespace lpng
                     {
                         gccCompiler.AllWarnings = true;
                         gccCompiler.ExtraWarnings = true;
-                        gccCompiler.Pedantic = true;
+                        gccCompiler.Pedantic = false;
                         gccCompiler.Visibility = GccCommon.EVisibility.Default;
                     }
 

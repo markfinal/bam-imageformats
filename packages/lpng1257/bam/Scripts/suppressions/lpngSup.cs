@@ -61,6 +61,7 @@ namespace lpng
                 this.Add("png.c", "implicit-function-declaration");
                 this.Add("pngread.c", "implicit-function-declaration");
                 this.Add("pngrtran.c", "implicit-function-declaration");
+                this.Add("pngrtran.c", GccCommon.ToolchainVersion.GCC_7, null, "implicit-fallthrough");
                 this.Add("pngrutil.c", "implicit-function-declaration");
                 this.Add("pngset.c", "implicit-function-declaration");
                 this.Add("pngwrite.c", "implicit-function-declaration");
