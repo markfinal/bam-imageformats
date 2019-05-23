@@ -49,8 +49,7 @@ namespace lpng
 
                 this.PrivatePatch(settings =>
                     {
-                        var gccLinker = settings as GccCommon.ICommonLinkerSettings;
-                        if (null != gccLinker)
+                        if (settings is GccCommon.ICommonLinkerSettings gccLinker)
                         {
                             gccLinker.CanUseOrigin = true;
                             gccLinker.RPath.AddUnique("$ORIGIN");
@@ -77,15 +76,14 @@ namespace lpng
 
                 source.PrivatePatch(settings =>
                     {
-                        var compiler = settings as C.ICommonCompilerSettings;
-                        compiler.PreprocessorDefines.Add("PNG_FREESTANDING_TESTS");
-                        compiler.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)/contrib/visupng"));
+                        var preprocessor = settings as C.ICommonPreprocessorSettings;
+                        preprocessor.PreprocessorDefines.Add("PNG_FREESTANDING_TESTS");
+                        preprocessor.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)/contrib/visupng"));
                     });
 
                 this.PrivatePatch(settings =>
                     {
-                        var gccLinker = settings as GccCommon.ICommonLinkerSettings;
-                        if (null != gccLinker)
+                        if (settings is GccCommon.ICommonLinkerSettings gccLinker)
                         {
                             gccLinker.CanUseOrigin = true;
                             gccLinker.RPath.AddUnique("$ORIGIN");
@@ -112,15 +110,14 @@ namespace lpng
 
                 source.PrivatePatch(settings =>
                     {
-                        var compiler = settings as C.ICommonCompilerSettings;
-                        compiler.PreprocessorDefines.Add("PNG_FREESTANDING_TESTS");
-                        compiler.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)/contrib/visupng"));
+                        var preprocessor = settings as C.ICommonPreprocessorSettings;
+                        preprocessor.PreprocessorDefines.Add("PNG_FREESTANDING_TESTS");
+                        preprocessor.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)/contrib/visupng"));
                     });
 
                 this.PrivatePatch(settings =>
                     {
-                        var gccLinker = settings as GccCommon.ICommonLinkerSettings;
-                        if (null != gccLinker)
+                        if (settings is GccCommon.ICommonLinkerSettings gccLinker)
                         {
                             gccLinker.CanUseOrigin = true;
                             gccLinker.RPath.AddUnique("$ORIGIN");
@@ -147,15 +144,14 @@ namespace lpng
 
                 source.PrivatePatch(settings =>
                     {
-                        var compiler = settings as C.ICommonCompilerSettings;
-                        compiler.PreprocessorDefines.Add("PNG_FREESTANDING_TESTS");
-                        compiler.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)/contrib/visupng"));
+                        var preprocessor = settings as C.ICommonPreprocessorSettings;
+                        preprocessor.PreprocessorDefines.Add("PNG_FREESTANDING_TESTS");
+                        preprocessor.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)/contrib/visupng"));
                     });
 
                 this.PrivatePatch(settings =>
                     {
-                        var gccLinker = settings as GccCommon.ICommonLinkerSettings;
-                        if (null != gccLinker)
+                        if (settings is GccCommon.ICommonLinkerSettings gccLinker)
                         {
                             gccLinker.CanUseOrigin = true;
                             gccLinker.RPath.AddUnique("$ORIGIN");
@@ -182,15 +178,14 @@ namespace lpng
 
                 source.PrivatePatch(settings =>
                     {
-                        var compiler = settings as C.ICommonCompilerSettings;
-                        compiler.PreprocessorDefines.Add("PNG_FREESTANDING_TESTS");
-                        compiler.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)/contrib/visupng"));
+                        var preprocessor = settings as C.ICommonPreprocessorSettings;
+                        preprocessor.PreprocessorDefines.Add("PNG_FREESTANDING_TESTS");
+                        preprocessor.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)/contrib/visupng"));
                     });
 
                 this.PrivatePatch(settings =>
                     {
-                        var gccLinker = settings as GccCommon.ICommonLinkerSettings;
-                        if (null != gccLinker)
+                        if (settings is GccCommon.ICommonLinkerSettings gccLinker)
                         {
                             gccLinker.CanUseOrigin = true;
                             gccLinker.RPath.AddUnique("$ORIGIN");

@@ -206,6 +206,19 @@ namespace tiff
                 source.AddFiles("$(packagedir)/libtiff/tif_unix.c");
             }
 
+            if (source.Compiler is VisualCCommon.CompilerBase)
+            {
+                source.SuppressWarningsDelegate(new VisualC.WarningSuppression.LibTiff());
+            }
+            else if (source.Compiler is GccCommon.CompilerBase)
+            {
+                source.SuppressWarningsDelegate(new Gcc.WarningSuppression.LibTiff());
+            }
+            else if (source.Compiler is ClangCommon.CompilerBase)
+            {
+                source.SuppressWarningsDelegate(new Clang.WarningSuppression.LibTiff());
+            }
+
             // note these dependencies are on SOURCE, as the headers are needed for compilation
             var copyStandardHeaders = Bam.Core.Graph.Instance.FindReferencedModule<CopyStandardHeaders>();
             var generateConf = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfHeader>();
@@ -223,42 +236,6 @@ namespace tiff
 
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
-                source["tif_dirinfo.c"].ForEach(item =>
-                    {
-                        item.PrivatePatch(settings =>
-                            {
-                                if (settings is VisualCCommon.ICommonCompilerSettings)
-                                {
-                                    var compiler = settings as C.ICommonCompilerSettings;
-                                    compiler.DisableWarnings.AddUnique("4133"); // tiff-3.9.7\libtiff\tif_dirinfo.c(797): warning C4133: 'function' : incompatible types - from 'size_t *' to 'unsigned int *'
-                                }
-                            });
-                    });
-                source["tif_fax3.c"].ForEach(item =>
-                    {
-                        item.PrivatePatch(settings =>
-                            {
-                                if (settings is VisualCCommon.ICommonCompilerSettings)
-                                {
-                                    // VisualC 14.0
-                                    var compiler = settings as C.ICommonCompilerSettings;
-                                    compiler.DisableWarnings.AddUnique("4311"); // tiff-3.9.7\libtiff\tif_fax3.c(395): warning C4311: 'type cast': pointer truncation from 'unsigned char *' to 'unsigned long'
-                                }
-                            });
-                    });
-                source["tif_win32.c"].ForEach(item =>
-                    {
-                        item.PrivatePatch(settings =>
-                            {
-                                if (settings is VisualCCommon.ICommonCompilerSettings)
-                                {
-                                    // VisualC 14.0
-                                    var compiler = settings as C.ICommonCompilerSettings;
-                                    compiler.DisableWarnings.AddUnique("4311"); // tiff-3.9.7\libtiff\tif_win32.c(212): warning C4311: 'type cast': pointer truncation from 'thandle_t' to 'int'
-                                    compiler.DisableWarnings.AddUnique("4312"); // tiff-3.9.7\libtiff\tif_win32.c(156): warning C4312: 'type cast': conversion from 'int' to 'thandle_t' of greater size
-                                }
-                            });
-                    });
                 source.PrivatePatch(settings =>
                     {
                         var preprocessor = settings as C.ICommonPreprocessorSettings;
@@ -312,27 +289,6 @@ namespace tiff
                         clangCompiler.ExtraWarnings = true;
                         clangCompiler.Pedantic = true;
                     });
-
-                source["tif_lzw.c"].ForEach(item =>
-                    item.PrivatePatch(settings =>
-                        {
-                            var compiler = settings as C.ICommonCompilerSettings;
-                            compiler.DisableWarnings.AddUnique("unused-parameter"); // tiff-3.9.7/libtiff/tif_lzw.c:1060:28: error: unused parameter 'scheme' [-Werror,-Wunused-parameter]
-                        }));
-
-                source["tif_print.c"].ForEach(item =>
-                    item.PrivatePatch(settings =>
-                        {
-                            var compiler = settings as C.ICommonCompilerSettings;
-                            compiler.DisableWarnings.AddUnique("unused-variable"); // tiff-3.9.7/libtiff/tif_print.c:118:17: error: unused variable 'td' [-Werror,-Wunused-variable]
-                        }));
-
-                source["tif_write.c"].ForEach(item =>
-                    item.PrivatePatch(settings =>
-                        {
-                            var compiler = settings as C.ICommonCompilerSettings;
-                            compiler.DisableWarnings.AddUnique("sign-compare"); // tiff-3.9.7/libtiff/tif_write.c:633:49: error: comparison of integers of different signs: 'toff_t' (aka 'unsigned int') and 'tsize_t' (aka 'int') [-Werror,-Wsign-compare]
-                        }));
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
             {
@@ -393,6 +349,19 @@ namespace tiff
                 source.AddFiles("$(packagedir)/libtiff/tif_unix.c");
             }
 
+            if (source.Compiler is VisualCCommon.CompilerBase)
+            {
+                source.SuppressWarningsDelegate(new VisualC.WarningSuppression.LibTiff());
+            }
+            else if (source.Compiler is GccCommon.CompilerBase)
+            {
+                source.SuppressWarningsDelegate(new Gcc.WarningSuppression.LibTiff());
+            }
+            else if (source.Compiler is ClangCommon.CompilerBase)
+            {
+                source.SuppressWarningsDelegate(new Clang.WarningSuppression.LibTiff());
+            }
+
             // note these dependencies are on SOURCE, as the headers are needed for compilation
             var copyStandardHeaders = Bam.Core.Graph.Instance.FindReferencedModule<CopyStandardHeaders>();
             var generateConf = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfHeader>();
@@ -410,42 +379,6 @@ namespace tiff
 
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
-                source["tif_dirinfo.c"].ForEach(item =>
-                    {
-                        item.PrivatePatch(settings =>
-                            {
-                                if (settings is VisualCCommon.ICommonCompilerSettings)
-                                {
-                                    var compiler = settings as C.ICommonCompilerSettings;
-                                    compiler.DisableWarnings.AddUnique("4133"); // tiff-3.9.7\libtiff\tif_dirinfo.c(797): warning C4133: 'function' : incompatible types - from 'size_t *' to 'unsigned int *'
-                                }
-                            });
-                    });
-                source["tif_fax3.c"].ForEach(item =>
-                    {
-                        item.PrivatePatch(settings =>
-                            {
-                                if (settings is VisualCCommon.ICommonCompilerSettings)
-                                {
-                                    // VisualC 14.0
-                                    var compiler = settings as C.ICommonCompilerSettings;
-                                    compiler.DisableWarnings.AddUnique("4311"); // tiff-3.9.7\libtiff\tif_fax3.c(395): warning C4311: 'type cast': pointer truncation from 'unsigned char *' to 'unsigned long'
-                                }
-                            });
-                    });
-                source["tif_win32.c"].ForEach(item =>
-                    {
-                        item.PrivatePatch(settings =>
-                            {
-                                if (settings is VisualCCommon.ICommonCompilerSettings)
-                                {
-                                    // VisualC 14.0
-                                    var compiler = settings as C.ICommonCompilerSettings;
-                                    compiler.DisableWarnings.AddUnique("4311"); // tiff-3.9.7\libtiff\tif_win32.c(212): warning C4311: 'type cast': pointer truncation from 'thandle_t' to 'int'
-                                    compiler.DisableWarnings.AddUnique("4312"); // tiff-3.9.7\libtiff\tif_win32.c(156): warning C4312: 'type cast': conversion from 'int' to 'thandle_t' of greater size
-                                }
-                            });
-                    });
                 source.PrivatePatch(settings =>
                     {
                         var preprocessor = settings as C.ICommonPreprocessorSettings;
@@ -484,27 +417,6 @@ namespace tiff
                         clangCompiler.ExtraWarnings = true;
                         clangCompiler.Pedantic = true;
                     });
-
-                source["tif_lzw.c"].ForEach(item =>
-                    item.PrivatePatch(settings =>
-                        {
-                            var compiler = settings as C.ICommonCompilerSettings;
-                            compiler.DisableWarnings.AddUnique("unused-parameter"); // tiff-3.9.7/libtiff/tif_lzw.c:1060:28: error: unused parameter 'scheme' [-Werror,-Wunused-parameter]
-                        }));
-
-                source["tif_print.c"].ForEach(item =>
-                    item.PrivatePatch(settings =>
-                        {
-                            var compiler = settings as C.ICommonCompilerSettings;
-                            compiler.DisableWarnings.AddUnique("unused-variable"); // tiff-3.9.7/libtiff/tif_print.c:118:17: error: unused variable 'td' [-Werror,-Wunused-variable]
-                        }));
-
-                source["tif_write.c"].ForEach(item =>
-                    item.PrivatePatch(settings =>
-                        {
-                            var compiler = settings as C.ICommonCompilerSettings;
-                            compiler.DisableWarnings.AddUnique("sign-compare"); // tiff-3.9.7/libtiff/tif_write.c:633:49: error: comparison of integers of different signs: 'toff_t' (aka 'unsigned int') and 'tsize_t' (aka 'int') [-Werror,-Wsign-compare]
-                        }));
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
             {

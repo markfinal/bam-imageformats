@@ -52,7 +52,23 @@ namespace lpng
                 this.Macros["dynamicext"] = Bam.Core.TokenizedString.Create(".so.$(MajorVersion)$(MinorVersion).$(PatchVersion).0", null);
             }
 
-            var source = this.CreateCSourceContainer("$(packagedir)/*.c", filter: new System.Text.RegularExpressions.Regex(@"^((?!.*example)(?!.*pngtest).*)$"));
+            var source = this.CreateCSourceContainer(
+                "$(packagedir)/*.c",
+                filter: new System.Text.RegularExpressions.Regex(@"^((?!.*example)(?!.*pngtest).*)$")
+            );
+
+            if (source.Compiler is VisualCCommon.CompilerBase)
+            {
+                source.SuppressWarningsDelegate(new VisualC.WarningSuppression.PNGLibrary());
+            }
+            else if (source.Compiler is GccCommon.CompilerBase)
+            {
+                source.SuppressWarningsDelegate(new Gcc.WarningSuppression.PNGLibrary());
+            }
+            else if (source.Compiler is ClangCommon.CompilerBase)
+            {
+                source.SuppressWarningsDelegate(new Clang.WarningSuppression.PNGLibrary());
+            }
 
             // note these dependencies are on SOURCE, as the headers are needed for compilation
             var copyStandardHeaders = Graph.Instance.FindReferencedModule<CopyPngStandardHeaders>();
@@ -66,17 +82,15 @@ namespace lpng
 
             source.PrivatePatch(settings =>
                 {
-                    var compiler = settings as C.ICommonCompilerSettings;
+                    var preprocessor = settings as C.ICommonPreprocessorSettings;
 
-                    var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
-                    if (null != vcCompiler)
+                    if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                     {
                         vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level4;
-                        compiler.PreprocessorDefines.Add("PNG_BUILD_DLL");
+                        preprocessor.PreprocessorDefines.Add("PNG_BUILD_DLL");
                     }
 
-                    var gccCompiler = settings as GccCommon.ICommonCompilerSettings;
-                    if (null != gccCompiler)
+                    if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
                     {
                         gccCompiler.AllWarnings = true;
                         gccCompiler.ExtraWarnings = true;
@@ -84,8 +98,7 @@ namespace lpng
                         gccCompiler.Visibility = GccCommon.EVisibility.Default;
                     }
 
-                    var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
-                    if (null != clangCompiler)
+                    if (settings is ClangCommon.ICommonCompilerSettings clangCompiler)
                     {
                         clangCompiler.AllWarnings = true;
                         clangCompiler.ExtraWarnings = true;
@@ -95,34 +108,8 @@ namespace lpng
 
                     if (this.BuildEnvironment.Configuration == EConfiguration.Debug)
                     {
-                        compiler.PreprocessorDefines.Add("PNG_DEBUG");
+                        preprocessor.PreprocessorDefines.Add("PNG_DEBUG");
                     }
-                });
-
-            source["pngread.c"].ForEach(item =>
-                {
-                    item.PrivatePatch(settings =>
-                        {
-                            var compiler = settings as C.ICommonCompilerSettings;
-                            var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
-                            if (null != vcCompiler)
-                            {
-                                compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
-                            }
-                        });
-                });
-
-            source["pngwrite.c"].ForEach(item =>
-                {
-                    item.PrivatePatch(settings =>
-                        {
-                            var compiler = settings as C.ICommonCompilerSettings;
-                            var vcCompiler = settings as VisualCCommon.ICommonCompilerSettings;
-                            if (null != vcCompiler)
-                            {
-                                compiler.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
-                            }
-                        });
                 });
         }
     }

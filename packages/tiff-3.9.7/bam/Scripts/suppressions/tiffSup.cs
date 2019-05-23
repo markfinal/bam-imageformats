@@ -1,5 +1,5 @@
 #region License
-// Copyright (c) 2010-2018, Mark Final
+// Copyright (c) 2010-2019, Mark Final
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -27,38 +27,43 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
-using Bam.Core;
-namespace lpng
+namespace tiff
 {
-    [ModuleGroup("Thirdparty/libpng")]
-    class CopyPngStandardHeaders :
-        Publisher.Collation
+    namespace VisualC.WarningSuppression
     {
-        protected override void
-        Init(
-            Bam.Core.Module parent)
+        sealed class LibTiff :
+            C.SuppressWarningsDelegate
         {
-            base.Init(parent);
-
-            var publishRoot = this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders");
-
-            this.PublicPatch((settings, appliedTo) =>
-                {
-                    if (settings is C.ICommonPreprocessorSettings preprocessor)
-                    {
-                        preprocessor.IncludePaths.AddUnique(publishRoot);
-                    }
-                });
-
-            var headerPaths = new Bam.Core.StringArray
+            public LibTiff()
             {
-                "png.h",
-                "pngconf.h"
-            };
+                this.Add("tif_dirinfo.c", "4133");
+                this.Add("tif_fax3.c", "4311");
+                this.Add("tif_win32.c", "4311", "4312");
+            }
+        }
+    }
 
-            foreach (var header in headerPaths)
+    namespace Gcc.WarningSuppression
+    {
+        sealed class LibTiff :
+            C.SuppressWarningsDelegate
+        {
+            public LibTiff()
             {
-                this.IncludeFiles<CopyPngStandardHeaders>("$(packagedir)/" + header, publishRoot, null);
+                this.Add("tif_lzw.c", "unused-parameter");
+                this.Add("tif_print.c", "unused-parameter");
+                this.Add("tif_write.c", "unused-parameter");
+            }
+        }
+    }
+
+    namespace Clang.WarningSuppression
+    {
+        sealed class LibTiff :
+            C.SuppressWarningsDelegate
+        {
+            public LibTiff()
+            {
             }
         }
     }

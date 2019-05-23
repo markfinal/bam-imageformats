@@ -1,5 +1,5 @@
 #region License
-// Copyright (c) 2010-2018, Mark Final
+// Copyright (c) 2010-2019, Mark Final
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -27,38 +27,39 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
-using Bam.Core;
 namespace lpng
 {
-    [ModuleGroup("Thirdparty/libpng")]
-    class CopyPngStandardHeaders :
-        Publisher.Collation
+    namespace VisualC.WarningSuppression
     {
-        protected override void
-        Init(
-            Bam.Core.Module parent)
+        sealed class PNGLibrary :
+            C.SuppressWarningsDelegate
         {
-            base.Init(parent);
-
-            var publishRoot = this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders");
-
-            this.PublicPatch((settings, appliedTo) =>
-                {
-                    if (settings is C.ICommonPreprocessorSettings preprocessor)
-                    {
-                        preprocessor.IncludePaths.AddUnique(publishRoot);
-                    }
-                });
-
-            var headerPaths = new Bam.Core.StringArray
+            public PNGLibrary()
             {
-                "png.h",
-                "pngconf.h"
-            };
+                this.Add("pngread.c", "4996");
+                this.Add("pngwrite.c", "4996");
+            }
+        }
+    }
 
-            foreach (var header in headerPaths)
+    namespace Gcc.WarningSuppression
+    {
+        sealed class PNGLibrary :
+            C.SuppressWarningsDelegate
+        {
+            public PNGLibrary()
             {
-                this.IncludeFiles<CopyPngStandardHeaders>("$(packagedir)/" + header, publishRoot, null);
+            }
+        }
+    }
+
+    namespace Clang.WarningSuppression
+    {
+        sealed class PNGLibrary :
+            C.SuppressWarningsDelegate
+        {
+            public PNGLibrary()
+            {
             }
         }
     }

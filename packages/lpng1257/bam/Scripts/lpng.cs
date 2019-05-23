@@ -63,7 +63,23 @@ namespace lpng
                 this.Macros["dynamicext"] = Bam.Core.TokenizedString.Create(".so.0.$(PatchVersion).0", null);
             }
 
-            var source = this.CreateCSourceContainer("$(packagedir)/*.c", filter: new System.Text.RegularExpressions.Regex(@"^((?!.*example)(?!.*pngtest).*)$"));
+            var source = this.CreateCSourceContainer(
+                "$(packagedir)/*.c",
+                filter: new System.Text.RegularExpressions.Regex(@"^((?!.*example)(?!.*pngtest).*)$")
+            );
+
+            if (source.Compiler is VisualCCommon.CompilerBase)
+            {
+                source.SuppressWarningsDelegate(new VisualC.WarningSuppression.PNGLibrary());
+            }
+            else if (source.Compiler is GccCommon.CompilerBase)
+            {
+                source.SuppressWarningsDelegate(new Gcc.WarningSuppression.PNGLibrary());
+            }
+            else if (source.Compiler is ClangCommon.CompilerBase)
+            {
+                source.SuppressWarningsDelegate(new Clang.WarningSuppression.PNGLibrary());
+            }
 
             // note these dependencies are on SOURCE, as the headers are needed for compilation
             var copyStandardHeaders = Graph.Instance.FindReferencedModule<CopyPngStandardHeaders>();
@@ -114,193 +130,6 @@ namespace lpng
                     {
                         preprocessor.PreprocessorDefines.Add("PNG_DEBUG");
                     }
-                });
-
-            source["png.c"].ForEach(item =>
-                {
-                    item.PrivatePatch(settings =>
-                        {
-                            if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
-                            {
-                                var preprocessor = settings as C.ICommonPreprocessorSettings;
-                                preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
-                            }
-                            if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
-                            {
-                                var compiler = settings as C.ICommonCompilerSettings;
-                                compiler.DisableWarnings.AddUnique("implicit-function-declaration");
-                            }
-                        });
-                });
-
-            source["pnggccrd.c"].ForEach(item =>
-                {
-                    item.PrivatePatch(settings =>
-                        {
-                            var compiler = settings as C.ICommonCompilerSettings;
-                            if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
-                            {
-                                compiler.DisableWarnings.AddUnique("4206"); // lpng1256\pnggccrd.c(27): warning C4206: nonstandard extension used: translation unit is empty
-                            }
-                            if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
-                            {
-                                gccCompiler.Pedantic = false;
-                            }
-                            if (settings is ClangCommon.ICommonCompilerSettings clangCompiler)
-                            {
-                                compiler.DisableWarnings.AddUnique("empty-translation-unit"); // lpng1256/pnggccrd.c:26:7: error: ISO C requires a translation unit to contain at least one declaration
-                            }
-                        });
-                });
-
-            source["pngpread.c"].ForEach(item =>
-                {
-                    item.PrivatePatch(settings =>
-                    {
-                        var compiler = settings as C.ICommonCompilerSettings;
-                        if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
-                        {
-                            compiler.DisableWarnings.AddUnique("4267"); // lpng1256\pngpread.c(572): warning C4267: '-=': conversion from 'size_t' to 'png_uint_32', possible loss of data
-                        }
-                    });
-                });
-
-            source["pngread.c"].ForEach(item =>
-                {
-                    item.PrivatePatch(settings =>
-                        {
-                            if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
-                            {
-                                var preprocessor = settings as C.ICommonPreprocessorSettings;
-                                preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
-                            }
-                            if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
-                            {
-                                var compiler = settings as C.ICommonCompilerSettings;
-                                compiler.DisableWarnings.AddUnique("implicit-function-declaration");
-                            }
-                        });
-                });
-
-            source["pngrtran.c"].ForEach(item =>
-                {
-                    item.PrivatePatch(settings =>
-                        {
-                            if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
-                            {
-                                var preprocessor = settings as C.ICommonPreprocessorSettings;
-                                preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
-                            }
-                            if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
-                            {
-                                var compiler = settings as C.ICommonCompilerSettings;
-                                compiler.DisableWarnings.AddUnique("implicit-function-declaration");
-                            }
-                        });
-                });
-
-            source["pngrutil.c"].ForEach(item =>
-                {
-                    item.PrivatePatch(settings =>
-                        {
-                            var compiler = settings as C.ICommonCompilerSettings;
-                            if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
-                            {
-                                var preprocessor = settings as C.ICommonPreprocessorSettings;
-                                preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
-                                compiler.DisableWarnings.AddUnique("4267"); // lpng1256\pngrutil.c(228): warning C4267: '=': conversion from 'size_t' to 'uInt', possible loss of data
-                                compiler.DisableWarnings.AddUnique("4310"); // lpng1256\pngrutil.c(1269): warning C4310: cast truncates constant value
-                            }
-                            if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
-                            {
-                                compiler.DisableWarnings.AddUnique("implicit-function-declaration");
-                            }
-                        });
-                });
-
-            source["pngset.c"].ForEach(item =>
-                {
-                    item.PrivatePatch(settings =>
-                        {
-                            var compiler = settings as C.ICommonCompilerSettings;
-                            if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
-                            {
-                                var preprocessor = settings as C.ICommonPreprocessorSettings;
-                                preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
-                                compiler.DisableWarnings.AddUnique("4267"); // lpng1256\pngset.c(305): warning C4267: '=': conversion from 'size_t' to 'png_uint_32', possible loss of data
-                            }
-                            if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
-                            {
-                                compiler.DisableWarnings.AddUnique("implicit-function-declaration");
-                            }
-                        });
-                });
-
-            source["pngvcrd.c"].ForEach(item =>
-                {
-                    item.PrivatePatch(settings =>
-                        {
-                            var compiler = settings as C.ICommonCompilerSettings;
-                            if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
-                            {
-                                compiler.DisableWarnings.AddUnique("4206"); // lpng1256\pngvcrd.c(14): warning C4206: nonstandard extension used: translation unit is empty
-                            }
-                            if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
-                            {
-                                gccCompiler.Pedantic = false;
-                            }
-                            if (settings is ClangCommon.ICommonCompilerSettings clangCompiler)
-                            {
-                                compiler.DisableWarnings.AddUnique("empty-translation-unit"); // lpng1256/pnggccrd.c:26:7: error: ISO C requires a translation unit to contain at least one declaration
-                            }
-                        });
-                });
-
-            source["pngwio.c"].ForEach(item =>
-                {
-                    item.PrivatePatch(settings =>
-                    {
-                        var compiler = settings as C.ICommonCompilerSettings;
-                        if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
-                        {
-                            compiler.DisableWarnings.AddUnique("4267"); // lpng1256\pngwio.c(60): warning C4267: '=': conversion from 'size_t' to 'png_uint_32', possible loss of data
-                        }
-                    });
-                });
-
-            source["pngwrite.c"].ForEach(item =>
-                {
-                    item.PrivatePatch(settings =>
-                        {
-                            var compiler = settings as C.ICommonCompilerSettings;
-                            if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
-                            {
-                                var preprocessor = settings as C.ICommonPreprocessorSettings;
-                                preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
-                            }
-                            if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
-                            {
-                                compiler.DisableWarnings.AddUnique("implicit-function-declaration");
-                            }
-                        });
-                });
-
-            source["pngwutil.c"].ForEach(item =>
-                {
-                    item.PrivatePatch(settings =>
-                        {
-                            var compiler = settings as C.ICommonCompilerSettings;
-                            if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
-                            {
-                                var preprocessor = settings as C.ICommonPreprocessorSettings;
-                                preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
-                                compiler.DisableWarnings.AddUnique("4267"); // lpng1256\pngwutil.c(191): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-                            }
-                            if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
-                            {
-                                compiler.DisableWarnings.AddUnique("implicit-function-declaration");
-                            }
-                        });
                 });
         }
     }
