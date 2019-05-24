@@ -37,21 +37,21 @@ createCheckerboardImage(
     const int samplesperpixel)
 {
     int tilesize = 8;
-    char colour = 255;
+    char colour = -1;
     char *current = imageBuf;
     int y;
     for (y = 0; y < height; ++y)
     {
         if (0 == (y % tilesize))
         {
-            colour ^= 255;
+            colour ^= -1;
         }
         int x;
         for (x = 0; x < width; ++x)
         {
             if (0 == (x % tilesize))
             {
-                colour ^= 255;
+                colour ^= -1;
             }
             *(current++) = colour;
             *(current++) = colour;

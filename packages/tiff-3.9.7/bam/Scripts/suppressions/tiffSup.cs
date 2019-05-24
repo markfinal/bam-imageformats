@@ -64,6 +64,9 @@ namespace tiff
         {
             public LibTiff()
             {
+                this.Add("tif_lzw.c", "unused-parameter");
+                this.Add("tif_print.c", "unused-variable");
+                this.Add("tif_write.c", "sign-compare");
             }
         }
     }
