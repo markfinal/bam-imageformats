@@ -1,4 +1,4 @@
-[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/nxcltu54ug7cu1pk/branch/master?svg=true)](https://ci.appveyor.com/project/markfinal/bam-imageformats/branch/master)
+[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/x7p8in9b2d5t8fsw/branch/master?svg=true)](https://ci.appveyor.com/project/markfinal/bam-imageformats/branch/master)
 
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
