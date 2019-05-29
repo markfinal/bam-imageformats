@@ -16,33 +16,27 @@ before_script:
   - dotnet --version
 matrix:
   include:
-  - os: osx
-    osx_image: xcode8.3
-    mono: none
-    dotnet: 2.1.401
-    script:
-      - python /tmp/BuildAMation/tests/runtests.py --Clang.version=Xcode8 -c debug -c profile -j0 -d --nodefaultrepo -r . -b Native
-      - python /tmp/BuildAMation/tests/runtests.py --Clang.version=Xcode8 -c debug -c profile -j0 -d --nodefaultrepo -r . -b MakeFile
-      - python /tmp/BuildAMation/tests/runtests.py --Clang.version=Xcode8 -c debug -c profile -j0 -d --nodefaultrepo -r . -b Xcode
-  - os: osx
-    osx_image: xcode9.4
-    mono: none
-    dotnet: 2.1.401
-    script:
-      - python /tmp/BuildAMation/tests/runtests.py --Clang.version=Xcode9 -c debug -c profile -j0 -d --nodefaultrepo -r . -b Native
-      - python /tmp/BuildAMation/tests/runtests.py --Clang.version=Xcode9 -c debug -c profile -j0 -d --nodefaultrepo -r . -b MakeFile
-      - python /tmp/BuildAMation/tests/runtests.py --Clang.version=Xcode9 -c debug -c profile -j0 -d --nodefaultrepo -r . -b Xcode
+  #- os: osx
+  #  osx_image: xcode8.3
+  #  mono: none
+  #  dotnet: 2.1.401
+  #  script:
+  #    - python /tmp/BuildAMation/tests/runtests.py --Clang.version=Xcode8 -c debug -c profile -j0 -d --nodefaultrepo -r . -b Native
+  #    - python /tmp/BuildAMation/tests/runtests.py --Clang.version=Xcode8 -c debug -c profile -j0 -d --nodefaultrepo -r . -b MakeFile
+  #    - python /tmp/BuildAMation/tests/runtests.py --Clang.version=Xcode8 -c debug -c profile -j0 -d --nodefaultrepo -r . -b Xcode
+  #- os: osx
+  #  osx_image: xcode9.4
+  #  mono: none
+  #  dotnet: 2.1.401
+  #  script:
+  #    - python /tmp/BuildAMation/tests/runtests.py --Clang.version=Xcode9 -c debug -c profile -j0 -d --nodefaultrepo -r . -b Native
+  #    - python /tmp/BuildAMation/tests/runtests.py --Clang.version=Xcode9 -c debug -c profile -j0 -d --nodefaultrepo -r . -b MakeFile
+  #    - python /tmp/BuildAMation/tests/runtests.py --Clang.version=Xcode9 -c debug -c profile -j0 -d --nodefaultrepo -r . -b Xcode
   - os: osx
     osx_image: xcode10.2
     mono: none
     dotnet: 2.1.401
     script:
-      - ls /Users/travis/build/
-      - ls /Users/travis/build/build
-      - ls /Users/travis/build/markfinal
       #- python /tmp/BuildAMation/tests/runtests.py --Clang.version=Xcode10 --C.bitdepth=64 -c debug -c profile -j0 -d --nodefaultrepo -r . -b Native
       #- python /tmp/BuildAMation/tests/runtests.py --Clang.version=Xcode10 --C.bitdepth=64 -c debug -c profile -j0 -d --nodefaultrepo -r . -b MakeFile
-      - python /tmp/BuildAMation/tests/runtests.py --Clang.version=Xcode10 --C.bitdepth=64 -c debug -c profile -j0 -d --nodefaultrepo -r . -b Xcode -k
-      - ls /Users/travis/build/
-      - ls /Users/travis/build/build
-      - ls /Users/travis/build/markfinal
+      - python /tmp/BuildAMation/tests/runtests.py --Clang.version=Xcode10 --C.bitdepth=64 -c debug -j0 -d --nodefaultrepo -r . -b Xcode -k -t jpegtest1
