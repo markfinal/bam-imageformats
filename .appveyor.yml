@@ -3,7 +3,6 @@ configuration: Release
 platform: AnyCPU
 install:
   - sh: sudo apt-get -q update
-  - sh: sudo apt-get -q -y --no-install-recommends install python
   - sh: sudo update-alternatives --remove-all gcc
   - git clone -q --depth=1 --branch=master https://github.com/markfinal/bam-compress.git ../bam-compress
   - ps: Start-FileDownload 'https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.tar?branch=master&job=Image%3A%20Visual%20Studio%202017'
@@ -29,7 +28,7 @@ for:
     environment:
       GCC_VERSION: 8
     before_test:
-      - sh: sudo apt-get -q -y --no-install-recommends install g++-8 g++-8-multilib
+      - sh: sudo apt-get -q -y --no-install-recommends install g++-8 g++-8-multilib g++-multilib
       - sh: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 10 --slave /usr/bin/g++ g++ /usr/bin/g++-7 --slave /usr/bin/gcov gcov /usr/bin/gcov-7 --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-7 --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-7 --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-7 --slave /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-7 --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-7
       - sh: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 5  --slave /usr/bin/g++ g++ /usr/bin/g++-8 --slave /usr/bin/gcov gcov /usr/bin/gcov-8 --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-8 --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-8 --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-8 --slave /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-8 --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-8
   - matrix:
@@ -39,7 +38,7 @@ for:
       GCC_VERSION: 7
     before_test:
       - sh: sudo apt-get -q update
-      - sh: sudo apt-get -q -y --no-install-recommends install g++-7 g++-7-multilib
+      - sh: sudo apt-get -q -y --no-install-recommends install g++-7 g++-7-multilib g++-multilib
       - sh: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 10 --slave /usr/bin/g++ g++ /usr/bin/g++-7 --slave /usr/bin/gcov gcov /usr/bin/gcov-7 --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-7 --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-7 --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-7 --slave /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-7 --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-7
       - sh: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 5  --slave /usr/bin/g++ g++ /usr/bin/g++-8 --slave /usr/bin/gcov gcov /usr/bin/gcov-8 --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-8 --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-8 --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-8 --slave /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-8 --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-8
   - matrix:
@@ -47,6 +46,9 @@ for:
         - job_name: Ubuntu 16 (GCC 5)
     environment:
       GCC_VERSION: 5
+    before_test:
+      - sh: sudo apt-get -q update
+      - sh: sudo apt-get -q -y --no-install-recommends install g++ g++-multilib
   - matrix:
       only:
         - job_name: Visual Studio 2017
