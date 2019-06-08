@@ -1,31 +1,48 @@
 image:
   - Ubuntu1804
-  - Ubuntu
+  - Ubuntu1604
   - Visual Studio 2019 Preview
   - Visual Studio 2017
 clone_depth: 10
 configuration: Release
 platform: AnyCPU
+environment:
+  matrix:
+  - job_name: Ubuntu 18 (GCC 8)
+    APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu1804
+  - job_name: Ubuntu 18 (GCC 7)
+    APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu1804
+  - job_name: Ubuntu 16 (GCC 5)
+    APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu1604
+  - job_name: Visual Studio 2019 Preview
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 Preview
+  - job_name: Visual Studio 2017
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 for:
   - matrix:
       only:
-        - image: Ubuntu
+        - job_name: Ubuntu 18 (GCC 8)
     environment:
-      GCC_VERSION: 5
+      GCC_VERSION: 8
   - matrix:
       only:
-        - image: Ubuntu1804
+        - job_name: Ubuntu 18 (GCC 7)
     environment:
       GCC_VERSION: 7
   - matrix:
       only:
-        - image: Visual Studio 2017
+        - job_name: Ubuntu 16 (GCC 5)
+    environment:
+      GCC_VERSION: 5
+  - matrix:
+      only:
+        - job_name: Visual Studio 2017
     environment:
         VC_VERSION: 15.0
         VC_PRERELEASE_ARGS:
   - matrix:
       only:
-        - image: Visual Studio 2019 Preview
+        - job_name: Visual Studio 2019 Preview
     environment:
         VC_VERSION: 16
         VC_PRERELEASE_ARGS: "--VisualC.discoverprereleases"
