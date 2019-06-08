@@ -44,6 +44,9 @@ for:
 install:
   - sh: sudo apt-get -q update
   - sh: sudo apt-get -q -y --no-install-recommends install g++ gcc-multilib g++-multilib python
+  - sh: sudo update-alternatives --remove-all gcc
+  - sh: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 10 --slave /usr/bin/g++ g++ /usr/bin/g++-7 --slave /usr/bin/gcov gcov /usr/bin/gcov-7 --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-7 --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-7 --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-7 --slave /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-7 --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-7
+  - sh: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 5  --slave /usr/bin/g++ g++ /usr/bin/g++-8 --slave /usr/bin/gcov gcov /usr/bin/gcov-8 --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-8 --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-8 --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-8 --slave /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-8 --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-8
   - git clone -q --depth=1 --branch=master https://github.com/markfinal/bam-compress.git ../bam-compress
   - ps: Start-FileDownload 'https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.tar?branch=master&job=Image%3A%20Visual%20Studio%202017'
   - cmd: 7z x bam.tar -oc:\BuildAMation
@@ -57,5 +60,6 @@ test_script:
   - cmd: python c:\BuildAMation\tests\runtests.py -x Mingw --VisualC.version=%VC_VERSION% %VC_PRERELEASE_ARGS% -b VSSolution -c debug -c profile -j0 -d --nodefaultrepo -r .
   - cmd: python c:\BuildAMation\tests\runtests.py -x Mingw --VisualC.version=%VC_VERSION% %VC_PRERELEASE_ARGS% -b MakeFile -c debug -c profile -j0 -d --MakeFile.format=NMAKE --nodefaultrepo -r .
   - sh: source ~/BuildAMation/env.sh
+  - sh: sudo update-alternatives --set gcc /usr/bin/gcc-$GCC_VERSION
   - sh: python ~/BuildAMation/tests/runtests.py --Gcc.version=$GCC_VERSION -b Native -c debug -c profile -j0 -d --nodefaultrepo -r .
   - sh: python ~/BuildAMation/tests/runtests.py --Gcc.version=$GCC_VERSION -b MakeFile -c debug -c profile -j0 -d --nodefaultrepo -r .
