@@ -17,7 +17,6 @@ for:
         - image: Ubuntu1804
     environment:
       GCC_VERSION: 7
-      GCC_VERSION: 8
   - matrix:
       only:
         - image: Visual Studio 2017
