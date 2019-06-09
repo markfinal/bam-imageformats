@@ -68,7 +68,7 @@ environment:
   #  APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
   #- job_name: Visual Studio 2010 VSSolution
   #  APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-fo#r:
+for:
   - matrix:
       only:
         - job_name: Ubuntu 18 (GCC 9) Native
