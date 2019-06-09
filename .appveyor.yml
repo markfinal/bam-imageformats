@@ -52,10 +52,10 @@ environment:
   #  APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
   - job_name: Visual Studio 2013 Native
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-  #- job_name: Visual Studio 2013 MakeFile
-  #  APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-  #- job_name: Visual Studio 2013 VSSolution
-  #  APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  - job_name: Visual Studio 2013 MakeFile
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  - job_name: Visual Studio 2013 VSSolution
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
   #- job_name: Visual Studio 2012 Native
   #  APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
   #- job_name: Visual Studio 2012 MakeFile
