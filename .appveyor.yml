@@ -2,6 +2,7 @@ clone_depth: 10
 configuration: Release
 platform: AnyCPU
 install:
+  - sh: sudo add-apt-repository ppa:ubuntu-toolchain-r/test
   - sh: sudo apt-get -q update
   - sh: sudo update-alternatives --remove-all gcc
   - git clone -q --depth=1 --branch=master https://github.com/markfinal/bam-compress.git ../bam-compress
