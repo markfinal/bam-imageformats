@@ -18,6 +18,8 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu1804
   - job_name: Ubuntu 18 (GCC 7)
     APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu1804
+  - job_name: Ubuntu 18 (GCC 6)
+    APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu1804
   - job_name: Ubuntu 16 (GCC 5)
     APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu1604
   - job_name: Visual Studio 2019 Preview
@@ -61,6 +63,16 @@ for:
       - sh: sudo apt-get -q -y --no-install-recommends install g++-7 g++-7-multilib g++-multilib
       - sh: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 10 --slave /usr/bin/g++ g++ /usr/bin/g++-7 --slave /usr/bin/gcov gcov /usr/bin/gcov-7 --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-7 --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-7 --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-7 --slave /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-7 --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-7
       - sh: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 5  --slave /usr/bin/g++ g++ /usr/bin/g++-8 --slave /usr/bin/gcov gcov /usr/bin/gcov-8 --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-8 --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-8 --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-8 --slave /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-8 --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-8
+  - matrix:
+      only:
+        - job_name: Ubuntu 18 (GCC 6)
+    environment:
+      GCC_VERSION: 6
+    before_test:
+      - sh: sudo apt-get -q update
+      - sh: sudo apt-get -q -y --no-install-recommends install g++-6 g++-6-multilib g++-multilib
+      - sh: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 10 --slave /usr/bin/g++ g++ /usr/bin/g++-7 --slave /usr/bin/gcov gcov /usr/bin/gcov-7 --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-7 --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-7 --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-7 --slave /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-7 --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-7
+      - sh: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 5  --slave /usr/bin/g++ g++ /usr/bin/g++-6 --slave /usr/bin/gcov gcov /usr/bin/gcov-6 --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-6 --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-6 --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-6 --slave /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-6 --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-6
   - matrix:
       only:
         - job_name: Ubuntu 16 (GCC 5)
