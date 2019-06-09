@@ -56,6 +56,7 @@ namespace jpeg
                 this.Add("jquant1.c", "4100");
                 this.Add("jquant2.c", "4100");
                 this.Add("jdapimin.c", VisualCCommon.ToolchainVersion.VC2013, VisualCCommon.ToolchainVersion.VC2013, "4127");
+                this.Add("jdmarker.c", VisualCCommon.ToolchainVersion.VC2013, VisualCCommon.ToolchainVersion.VC2013, "4127");
             }
         }
     }
