@@ -11,6 +11,8 @@ install:
   - sh: tar xf bam.tar -C ~/BuildAMation
 environment:
   matrix:
+  - job_name: Ubuntu 18 (GCC 9)
+    APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu1804
   - job_name: Ubuntu 18 (GCC 8)
     APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu1804
   - job_name: Ubuntu 18 (GCC 7)
@@ -22,6 +24,15 @@ environment:
   - job_name: Visual Studio 2017
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 for:
+  - matrix:
+      only:
+        - job_name: Ubuntu 18 (GCC 9)
+    environment:
+      GCC_VERSION: 9
+    before_test:
+      - sh: sudo apt-get -q -y --no-install-recommends install g++-9 g++-9-multilib g++-multilib
+      - sh: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 10 --slave /usr/bin/g++ g++ /usr/bin/g++-7 --slave /usr/bin/gcov gcov /usr/bin/gcov-7 --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-7 --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-7 --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-7 --slave /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-7 --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-7
+      - sh: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 5  --slave /usr/bin/g++ g++ /usr/bin/g++-9 --slave /usr/bin/gcov gcov /usr/bin/gcov-9 --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-9 --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-9 --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-9 --slave /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-9 --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-9
   - matrix:
       only:
         - job_name: Ubuntu 18 (GCC 8)
