@@ -36,25 +36,37 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 Preview
   - job_name: Visual Studio 2019 Preview MakeFile
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 Preview
+  - job_name: Visual Studio 2019 Preview VSSolution
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 Preview
   - job_name: Visual Studio 2017 Native
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
   - job_name: Visual Studio 2017 MakeFile
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  - job_name: Visual Studio 2017 VSSolution
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
   - job_name: Visual Studio 2015 Native
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
   - job_name: Visual Studio 2015 MakeFile
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  - job_name: Visual Studio 2015 VSSolution
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
   - job_name: Visual Studio 2013 Native
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
   - job_name: Visual Studio 2013 MakeFile
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  - job_name: Visual Studio 2013 VSSolution
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
   - job_name: Visual Studio 2012 Native
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
   - job_name: Visual Studio 2012 MakeFile
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  - job_name: Visual Studio 2012 VSSolution
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
   - job_name: Visual Studio 2010 Native
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
   - job_name: Visual Studio 2010 MakeFile
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  - job_name: Visual Studio 2010 VSSolution
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 for:
   - matrix:
@@ -177,6 +189,13 @@ for:
       VC_PRERELEASE_ARGS: "--VisualC.discoverprereleases"
   - matrix:
       only:
+        - job_name: Visual Studio 2019 Preview VSSolution
+    environment:
+      BAM_BUILD_MODE: VSSolution
+      VC_VERSION: 16
+      VC_PRERELEASE_ARGS: "--VisualC.discoverprereleases"
+  - matrix:
+      only:
         - job_name: Visual Studio 2017 Native
     environment:
       BAM_BUILD_MODE: Native
@@ -187,6 +206,13 @@ for:
         - job_name: Visual Studio 2017 MakeFile
     environment:
       BAM_BUILD_MODE: MakeFile --MakeFile.Format=NMAKE
+      VC_VERSION: 15.0
+      VC_PRERELEASE_ARGS:
+  - matrix:
+      only:
+        - job_name: Visual Studio 2017 VSSolution
+    environment:
+      BAM_BUILD_MODE: VSSolution
       VC_VERSION: 15.0
       VC_PRERELEASE_ARGS:
   - matrix:
@@ -205,6 +231,13 @@ for:
       VC_PRERELEASE_ARGS:
   - matrix:
       only:
+        - job_name: Visual Studio 2015 VSSolution
+    environment:
+      BAM_BUILD_MODE: VSSolution
+      VC_VERSION: 14.0
+      VC_PRERELEASE_ARGS:
+  - matrix:
+      only:
         - job_name: Visual Studio 2013 Native
     environment:
       BAM_BUILD_MODE: Native
@@ -215,6 +248,13 @@ for:
         - job_name: Visual Studio 2013 MakeFile
     environment:
       BAM_BUILD_MODE: MakeFile --MakeFile.Format=NMAKE
+      VC_VERSION: 12.0
+      VC_PRERELEASE_ARGS:
+  - matrix:
+      only:
+        - job_name: Visual Studio 2013 VSSolution
+    environment:
+      BAM_BUILD_MODE: VSSolution
       VC_VERSION: 12.0
       VC_PRERELEASE_ARGS:
   - matrix:
@@ -233,6 +273,13 @@ for:
       VC_PRERELEASE_ARGS:
   - matrix:
       only:
+        - job_name: Visual Studio 2012 VSSolution
+    environment:
+      BAM_BUILD_MODE: VSSolution
+      VC_VERSION: 11.0
+      VC_PRERELEASE_ARGS:
+  - matrix:
+      only:
         - job_name: Visual Studio 2010 Native
     environment:
       BAM_BUILD_MODE: Native
@@ -243,6 +290,13 @@ for:
         - job_name: Visual Studio 2010 MakeFile
     environment:
       BAM_BUILD_MODE: MakeFile --MakeFile.Format=NMAKE
+      VC_VERSION: 10.0
+      VC_PRERELEASE_ARGS:
+  - matrix:
+      only:
+        - job_name: Visual Studio 2010 VSSolution
+    environment:
+      BAM_BUILD_MODE: VSSolution
       VC_VERSION: 10.0
       VC_PRERELEASE_ARGS:
 build: off
