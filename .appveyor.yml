@@ -24,6 +24,14 @@ environment:
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019 Preview
   - job_name: Visual Studio 2017
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+  - job_name: Visual Studio 2015
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  - job_name: Visual Studio 2013
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  - job_name: Visual Studio 2012
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  - job_name: Visual Studio 2010
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 for:
   - matrix:
       only:
@@ -64,16 +72,40 @@ for:
       - sh: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 10 --slave /usr/bin/g++ g++ /usr/bin/g++-5 --slave /usr/bin/gcov gcov /usr/bin/gcov-5 --slave /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-5 --slave /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-5 --slave /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-5 --slave /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-5 --slave /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-5
   - matrix:
       only:
+        - job_name: Visual Studio 2019 Preview
+    environment:
+        VC_VERSION: 16
+        VC_PRERELEASE_ARGS: "--VisualC.discoverprereleases"
+  - matrix:
+      only:
         - job_name: Visual Studio 2017
     environment:
         VC_VERSION: 15.0
         VC_PRERELEASE_ARGS:
   - matrix:
       only:
-        - job_name: Visual Studio 2019 Preview
+        - job_name: Visual Studio 2015
     environment:
-        VC_VERSION: 16
-        VC_PRERELEASE_ARGS: "--VisualC.discoverprereleases"
+        VC_VERSION: 14.0
+        VC_PRERELEASE_ARGS:
+  - matrix:
+      only:
+        - job_name: Visual Studio 2013
+    environment:
+        VC_VERSION: 12.0
+        VC_PRERELEASE_ARGS:
+  - matrix:
+      only:
+        - job_name: Visual Studio 2012
+    environment:
+        VC_VERSION: 11.0
+        VC_PRERELEASE_ARGS:
+  - matrix:
+      only:
+        - job_name: Visual Studio 2010
+    environment:
+        VC_VERSION: 10.0
+        VC_PRERELEASE_ARGS:
 build: off
 test_script:
   - cmd: c:\BuildAMation\env.bat
