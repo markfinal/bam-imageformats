@@ -42,11 +42,11 @@ createCheckerboardImage(
     int y;
     for (y = 0; y < height; ++y)
     {
+        int x;
         if (0 == (y % tilesize))
         {
             colour ^= -1;
         }
-        int x;
         for (x = 0; x < width; ++x)
         {
             if (0 == (x % tilesize))
