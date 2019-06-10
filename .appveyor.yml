@@ -8,7 +8,7 @@ install:
   - cmd: 7z x bam.tar -oc:\BuildAMation
   - sh: mkdir ~/BuildAMation
   - sh: tar xf bam.tar -C ~/BuildAMation
-  - sh: tar xf ubuntu_install_scripts.tar ~/CI
+  - sh: tar xf ubuntu_install_scripts.tar -C ~/CI
   - sh: ls ~/CI
 environment:
   matrix:
