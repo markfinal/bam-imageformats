@@ -42,55 +42,63 @@ TestReader()
 {
     struct jpeg_decompress_struct cinfo;
     struct jpeg_error_mgr jerr;
+    char *image;
+    FILE *fp;
+    int row_stride;
 
     cinfo.err = jpeg_std_error(&jerr);
 
-    FILE *fp = fopen("new.jpeg", "rb");
+    fp = fopen("new.jpeg", "rb");
 
     jpeg_create_decompress(&cinfo);
     jpeg_stdio_src(&cinfo, fp);
     jpeg_read_header(&cinfo, TRUE);
     jpeg_start_decompress(&cinfo);
+    row_stride = cinfo.output_width * cinfo.output_components;
 
-    char *image = malloc(cinfo.output_width * cinfo.output_components * cinfo.output_height);
+    image = malloc(cinfo.output_width * cinfo.output_components * cinfo.output_height);
     if (NULL == image)
     {
         return -1;
     }
-    char *currentWrite = image;
-
-    int row_stride = cinfo.output_width * cinfo.output_components;
-    JSAMPARRAY buffer = (*cinfo.mem->alloc_sarray)((j_common_ptr)&cinfo, JPOOL_IMAGE, row_stride, 1);
-    while (cinfo.output_scanline < cinfo.output_height)
     {
-        (void)jpeg_read_scanlines(&cinfo, buffer, 1);
-        memcpy(currentWrite, buffer[0], row_stride);
-        currentWrite += row_stride;
+        char *currentWrite = image;
+
+        JSAMPARRAY buffer = (*cinfo.mem->alloc_sarray)((j_common_ptr)&cinfo, JPOOL_IMAGE, row_stride, 1);
+        while (cinfo.output_scanline < cinfo.output_height)
+        {
+            (void)jpeg_read_scanlines(&cinfo, buffer, 1);
+            memcpy(currentWrite, buffer[0], row_stride);
+            currentWrite += row_stride;
+        }
+
+        jpeg_finish_decompress(&cinfo);
+
+        jpeg_destroy_decompress(&cinfo);
+
     }
-
-    jpeg_finish_decompress(&cinfo);
-
-    jpeg_destroy_decompress(&cinfo);
-
     fclose(fp);
 
-    char *compare = malloc(cinfo.output_width * cinfo.output_height * cinfo.output_components);
-    if (NULL == compare)
     {
-        return -1;
-    }
-    createCheckerboardImage(compare, cinfo.output_width, cinfo.output_height, cinfo.output_components);
-    char *currentRead = image;
-    int y;
-    for (y = 0; y < cinfo.output_height; ++y)
-    {
-        if (0 != memcmp(currentRead, compare + y * row_stride, row_stride))
+        char *currentRead;
+        unsigned int y;
+        char *compare = malloc(cinfo.output_width * cinfo.output_height * cinfo.output_components);
+        if (NULL == compare)
         {
-            return -2;
+            return -1;
         }
-        currentRead += row_stride;
+        createCheckerboardImage(compare, cinfo.output_width, cinfo.output_height);
+        currentRead = image;
+        for (y = 0; y < cinfo.output_height; ++y)
+        {
+            if (0 != memcmp(currentRead, compare + y * row_stride, row_stride))
+            {
+                return -2;
+            }
+            currentRead += row_stride;
+        }
+        free(compare);
     }
-    free(compare);
     free(image);
     return 0;
 }

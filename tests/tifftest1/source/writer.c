@@ -41,14 +41,15 @@ TestWriter()
     int width = 128;
     int height = 128;
     int samplesperpixel = 4;
+    tsize_t linebytes = samplesperpixel * width;
+    unsigned char *buf = NULL;
+    TIFF *tif;
     char *image = malloc(width * height * samplesperpixel);
     if (NULL == image)
     {
         return -1;
     }
-    size_t linebytes = samplesperpixel * width;
-    unsigned char *buf = NULL;
-    TIFF *tif = TIFFOpen("new.tif", "w");
+    tif = TIFFOpen("new.tif", "w");
     if (NULL == tif)
     {
         return -1;
@@ -73,14 +74,16 @@ TestWriter()
         return -1;
     }
     TIFFSetField(tif, TIFFTAG_ROWSPERSTRIP, TIFFDefaultStripSize(tif, linebytes));
-    createCheckerboardImage(image, width, height, samplesperpixel);
-    unsigned int row;
-    for (row = 0; row < height; ++row)
+    createCheckerboardImage(image, width, height);
     {
-        memcpy(buf, &image[(height - row - 1) * linebytes], linebytes);
-        if (TIFFWriteScanline(tif, buf, row, 0) < 0)
+        int row;
+        for (row = 0; row < height; ++row)
         {
-            break;
+            memcpy(buf, &image[(height - row - 1) * linebytes], linebytes);
+            if (TIFFWriteScanline(tif, buf, row, 0) < 0)
+            {
+                break;
+            }
         }
     }
     TIFFClose(tif);

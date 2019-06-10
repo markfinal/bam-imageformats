@@ -43,6 +43,32 @@ namespace tifftest1
             var source = this.CreateCSourceContainer("$(packagedir)/source/*.c");
             this.CompileAndLinkAgainst<tiff.LibTiff_static>(source);
 
+            source.PrivatePatch(settings =>
+            {
+                if (settings is ClangCommon.ICommonCompilerSettings clangCompiler)
+                {
+                    clangCompiler.AllWarnings = true;
+                    clangCompiler.ExtraWarnings = true;
+                    clangCompiler.Pedantic = true;
+                }
+                else if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
+                {
+                    gccCompiler.AllWarnings = true;
+                    gccCompiler.ExtraWarnings = true;
+                    gccCompiler.Pedantic = true;
+                }
+                else if (settings is MingwCommon.ICommonCompilerSettings mingwCompiler)
+                {
+                    mingwCompiler.AllWarnings = true;
+                    mingwCompiler.ExtraWarnings = true;
+                    mingwCompiler.Pedantic = true;
+                }
+                else if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
+                {
+                    vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level4;
+                }
+            });
+
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
             {
                 this.PrivatePatch(settings =>

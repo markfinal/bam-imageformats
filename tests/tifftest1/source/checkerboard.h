@@ -34,7 +34,6 @@ extern void
 createCheckerboardImage(
     char *imageBuf,
     const int width,
-    const int height,
-    const int samplesperpixel);
+    const int height);
 
 #endif /* TIFFTEST1_CHECKERBOARD_H */

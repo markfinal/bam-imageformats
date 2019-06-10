@@ -41,6 +41,7 @@ TestReader()
     int width = 0;
     int height = 0;
     int samplesperpixel = 0;
+    uint32 *image;
     TIFF *tif = TIFFOpen("new.tif", "r");
     if (NULL == tif)
     {
@@ -50,7 +51,7 @@ TestReader()
     TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &height);
     TIFFGetField(tif, TIFFTAG_SAMPLESPERPIXEL, &samplesperpixel);
 
-    uint32 *image = _TIFFmalloc(width * height * samplesperpixel);
+    image = _TIFFmalloc(width * height * samplesperpixel);
     if (NULL == image)
     {
         return -1;
@@ -61,18 +62,20 @@ TestReader()
         return -2;
     }
 
-    char *compare = _TIFFmalloc(width * height * samplesperpixel);
-    if (NULL == compare)
     {
-        return -1;
-    }
-    createCheckerboardImage(compare, width, height, samplesperpixel);
-    if (0 != memcmp(image, compare, width * height * samplesperpixel))
-    {
-        return -2;
-    }
+        char *compare = _TIFFmalloc(width * height * samplesperpixel);
+        if (NULL == compare)
+        {
+            return -1;
+        }
+        createCheckerboardImage(compare, width, height);
+        if (0 != memcmp(image, compare, width * height * samplesperpixel))
+        {
+            return -2;
+        }
 
-    free(compare);
+        free(compare);
+    }
     free(image);
     TIFFClose(tif);
     return 0;

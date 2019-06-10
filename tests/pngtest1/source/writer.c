@@ -42,23 +42,28 @@ TestWriter()
     int height = 128;
     int samplesperpixel = 4;
     int bitsperpixel = 8;
+    FILE *fp;
+    png_structp png_ptr;
+    png_infop info_ptr;
+    png_bytep *row_pointers;
+    int y;
+
     char *image = malloc(width * height * samplesperpixel * bitsperpixel);
     if (NULL == image)
     {
         return -1;
     }
-    createCheckerboardImage(image, width, height, samplesperpixel);
+    createCheckerboardImage(image, width, height);
 
-    FILE *fp = fopen("new.png", "wb");
+    fp = fopen("new.png", "wb");
 
-    png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-    png_infop info_ptr = png_create_info_struct(png_ptr);
+    png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+    info_ptr = png_create_info_struct(png_ptr);
     png_init_io(png_ptr, fp);
     png_set_IHDR(png_ptr, info_ptr, width, height, bitsperpixel, PNG_COLOR_TYPE_RGBA, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
     png_write_info(png_ptr, info_ptr);
 
-    png_bytep *row_pointers = (png_bytep*)malloc(sizeof(png_bytep) * height);
-    int y;
+    row_pointers = (png_bytep*)malloc(sizeof(png_bytep) * height);
     for (y = 0; y < height; ++y)
     {
         png_bytep offset = (0 == y) ? (png_bytep)image : (row_pointers[y - 1] + (width * samplesperpixel * bitsperpixel) / 8);

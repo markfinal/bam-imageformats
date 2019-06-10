@@ -39,24 +39,24 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 int
 TestWriter()
 {
+    struct jpeg_compress_struct cinfo;
+    struct jpeg_error_mgr jerr;
     int width = 128;
     int height = 128;
     int samplesperpixel = 3;
     int bitsperpixel = 8;
+    FILE *fp;
     char *image = malloc(width * height * samplesperpixel * bitsperpixel);
     if (NULL == image)
     {
         return -1;
     }
-    createCheckerboardImage(image, width, height, samplesperpixel);
-
-    struct jpeg_compress_struct cinfo;
-    struct jpeg_error_mgr jerr;
+    createCheckerboardImage(image, width, height);
 
     cinfo.err = jpeg_std_error(&jerr);
     jpeg_create_compress(&cinfo);
 
-    FILE *fp = fopen("new.jpeg", "wb");
+    fp = fopen("new.jpeg", "wb");
     jpeg_stdio_dest(&cinfo, fp);
 
     cinfo.image_width = width;

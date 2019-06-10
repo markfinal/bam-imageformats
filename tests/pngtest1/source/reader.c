@@ -39,6 +39,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 int
 TestReader()
 {
+    png_structp png_ptr;
+    png_infop info_ptr;
+    int width;
+    int height;
+    int color_type;
+    int bit_depth;
+    png_bytep *row_pointers;
+    int y;
+
     FILE *fp = fopen("new.png", "rb");
 
     unsigned char header[8];
@@ -53,48 +62,52 @@ TestReader()
         return -1;
     }
 
-    png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-    png_infop info_ptr = png_create_info_struct(png_ptr);
+    png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+    info_ptr = png_create_info_struct(png_ptr);
 
     png_init_io(png_ptr, fp);
     png_set_sig_bytes(png_ptr, 8);
     png_read_info(png_ptr, info_ptr);
 
-    int width = png_get_image_width(png_ptr, info_ptr);
-    int height = png_get_image_height(png_ptr, info_ptr);
-    int color_type = png_get_color_type(png_ptr, info_ptr);
-    int bit_depth = png_get_bit_depth(png_ptr, info_ptr);
+    width = png_get_image_width(png_ptr, info_ptr);
+    height = png_get_image_height(png_ptr, info_ptr);
+    color_type = png_get_color_type(png_ptr, info_ptr);
+    bit_depth = png_get_bit_depth(png_ptr, info_ptr);
 
-    int number_of_passes = png_set_interlace_handling(png_ptr);
     png_read_update_info(png_ptr, info_ptr);
 
-    png_bytep *row_pointers = (png_bytep*)malloc(sizeof(png_bytep) * height);
-    int y;
-    for (y = 0; y < height; ++y)
-    {
-        row_pointers[y] = (png_byte*)malloc(png_get_rowbytes(png_ptr, info_ptr));
-    }
+    row_pointers = (png_bytep*)malloc(sizeof(png_bytep) * height);
 
-    png_read_image(png_ptr, row_pointers);
+    {
+        for (y = 0; y < height; ++y)
+        {
+            row_pointers[y] = (png_byte*)malloc(png_get_rowbytes(png_ptr, info_ptr));
+        }
+
+        png_read_image(png_ptr, row_pointers);
+    }
 
     fclose(fp);
 
-    assert(PNG_COLOR_TYPE_RGBA == color_type);
-    char *compare = malloc(width * height * bit_depth * 4);
-    if (NULL == compare)
     {
-        return -1;
-    }
-    createCheckerboardImage(compare, width, height, 4);
-    const int rowLength = (width * bit_depth * 4) / 8;
-    for (y = 0; y < height; ++y)
-    {
-        if (0 != memcmp(row_pointers[y], compare + y * rowLength, rowLength))
+        char *compare;
+        const int rowLength = (width * bit_depth * 4) / 8;
+        assert(PNG_COLOR_TYPE_RGBA == color_type);
+        compare = malloc(width * height * bit_depth * 4);
+        if (NULL == compare)
         {
-            return -2;
+            return -1;
         }
+        createCheckerboardImage(compare, width, height);
+        for (y = 0; y < height; ++y)
+        {
+            if (0 != memcmp(row_pointers[y], compare + y * rowLength, rowLength))
+            {
+                return -2;
+            }
+        }
+        free(compare);
     }
-    free(compare);
 
     for (y = 0; y < height; ++y)
     {

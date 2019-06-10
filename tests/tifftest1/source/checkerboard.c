@@ -33,8 +33,7 @@ void
 createCheckerboardImage(
     char *imageBuf,
     const int width,
-    const int height,
-    const int samplesperpixel)
+    const int height)
 {
     int tilesize = 8;
     char colour = -1;
