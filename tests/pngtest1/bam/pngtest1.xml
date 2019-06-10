@@ -19,6 +19,7 @@
     <Package name="lpng" version="1257" default="true" />
     <Package name="lpng" version="1626" />
     <Package name="MakeFileBuilder" />
+    <Package name="Mingw" version="4.8.1" />
     <Package name="NativeBuilder" />
     <Package name="VisualC" version="10.0" />
     <Package name="VisualC" version="11.0" />
