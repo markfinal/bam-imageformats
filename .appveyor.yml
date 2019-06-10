@@ -179,131 +179,131 @@ for:
     environment:
       BAM_BUILD_MODE: Native
       VC_VERSION: 16
-      VC_PRERELEASE_ARGS: "--VisualC.discoverprereleases"
+      EXTRA_TEST_ARGS: "--VisualC.discoverprereleases"
   - matrix:
       only:
         - job_name: Visual Studio 2019 Preview MakeFile
     environment:
       BAM_BUILD_MODE: MakeFile --MakeFile.format=NMAKE
       VC_VERSION: 16
-      VC_PRERELEASE_ARGS: "--VisualC.discoverprereleases"
+      EXTRA_TEST_ARGS: "--VisualC.discoverprereleases"
   - matrix:
       only:
         - job_name: Visual Studio 2019 Preview VSSolution
     environment:
       BAM_BUILD_MODE: VSSolution
       VC_VERSION: 16
-      VC_PRERELEASE_ARGS: "--VisualC.discoverprereleases"
+      EXTRA_TEST_ARGS: "--VisualC.discoverprereleases"
   - matrix:
       only:
         - job_name: Visual Studio 2017 Native
     environment:
       BAM_BUILD_MODE: Native
       VC_VERSION: 15.0
-      VC_PRERELEASE_ARGS:
+      EXTRA_TEST_ARGS:
   - matrix:
       only:
         - job_name: Visual Studio 2017 MakeFile
     environment:
       BAM_BUILD_MODE: MakeFile --MakeFile.format=NMAKE
       VC_VERSION: 15.0
-      VC_PRERELEASE_ARGS:
+      EXTRA_TEST_ARGS:
   - matrix:
       only:
         - job_name: Visual Studio 2017 VSSolution
     environment:
       BAM_BUILD_MODE: VSSolution
       VC_VERSION: 15.0
-      VC_PRERELEASE_ARGS:
+      EXTRA_TEST_ARGS:
   - matrix:
       only:
         - job_name: Visual Studio 2015 Native
     environment:
       BAM_BUILD_MODE: Native
       VC_VERSION: 14.0
-      VC_PRERELEASE_ARGS:
+      EXTRA_TEST_ARGS:
   - matrix:
       only:
         - job_name: Visual Studio 2015 MakeFile
     environment:
       BAM_BUILD_MODE: MakeFile --MakeFile.format=NMAKE
       VC_VERSION: 14.0
-      VC_PRERELEASE_ARGS:
+      EXTRA_TEST_ARGS:
   - matrix:
       only:
         - job_name: Visual Studio 2015 VSSolution
     environment:
       BAM_BUILD_MODE: VSSolution
       VC_VERSION: 14.0
-      VC_PRERELEASE_ARGS:
+      EXTRA_TEST_ARGS:
   - matrix:
       only:
         - job_name: Visual Studio 2013 Native
     environment:
       BAM_BUILD_MODE: Native
       VC_VERSION: 12.0
-      VC_PRERELEASE_ARGS:
+      EXTRA_TEST_ARGS:
   - matrix:
       only:
         - job_name: Visual Studio 2013 MakeFile
     environment:
       BAM_BUILD_MODE: MakeFile --MakeFile.format=NMAKE
       VC_VERSION: 12.0
-      VC_PRERELEASE_ARGS:
+      EXTRA_TEST_ARGS:
   - matrix:
       only:
         - job_name: Visual Studio 2013 VSSolution
     environment:
       BAM_BUILD_MODE: VSSolution
       VC_VERSION: 12.0
-      VC_PRERELEASE_ARGS:
+      EXTRA_TEST_ARGS:
   - matrix:
       only:
         - job_name: Visual Studio 2012 Native
     environment:
       BAM_BUILD_MODE: Native
       VC_VERSION: 11.0
-      VC_PRERELEASE_ARGS:
+      EXTRA_TEST_ARGS:
   - matrix:
       only:
         - job_name: Visual Studio 2012 MakeFile
     environment:
       BAM_BUILD_MODE: MakeFile --MakeFile.format=NMAKE
       VC_VERSION: 11.0
-      VC_PRERELEASE_ARGS:
+      EXTRA_TEST_ARGS:
   - matrix:
       only:
         - job_name: Visual Studio 2012 VSSolution
     environment:
       BAM_BUILD_MODE: VSSolution
       VC_VERSION: 11.0
-      VC_PRERELEASE_ARGS:
+      EXTRA_TEST_ARGS:
   - matrix:
       only:
         - job_name: Visual Studio 2010 Native
     environment:
       BAM_BUILD_MODE: Native
       VC_VERSION: 10.0
-      VC_PRERELEASE_ARGS:
+      EXTRA_TEST_ARGS: --C.bitdepth=32
   - matrix:
       only:
         - job_name: Visual Studio 2010 MakeFile
     environment:
       BAM_BUILD_MODE: MakeFile --MakeFile.format=NMAKE
       VC_VERSION: 10.0
-      VC_PRERELEASE_ARGS:
+      EXTRA_TEST_ARGS:
   - matrix:
       only:
         - job_name: Visual Studio 2010 VSSolution
     environment:
       BAM_BUILD_MODE: VSSolution
       VC_VERSION: 10.0
-      VC_PRERELEASE_ARGS:
+      EXTRA_TEST_ARGS:
 build: off
 test_script:
   - cmd: c:\BuildAMation\env.bat
   - cmd: "SET PATH=C:\\Python27-x64;%PATH%"
-  - cmd: python c:\BuildAMation\tests\runtests.py -x Mingw --VisualC.version=%VC_VERSION% %VC_PRERELEASE_ARGS% -b %BAM_BUILD_MODE% -c debug -c profile -j0 -d --nodefaultrepo -r .
+  - cmd: python c:\BuildAMation\tests\runtests.py -x Mingw --VisualC.version=%VC_VERSION% -b %BAM_BUILD_MODE% -c debug -c profile -j0 -d --nodefaultrepo -r . %EXTRA_TEST_ARGS%
   - sh: sudo update-alternatives --set gcc /usr/bin/gcc-$GCC_VERSION
   - sh: source ~/BuildAMation/env.sh
-  - sh: python ~/BuildAMation/tests/runtests.py --Gcc.version=$GCC_VERSION -b $BAM_BUILD_MODE -c debug -c profile -j0 -d --nodefaultrepo -r .
+  - sh: python ~/BuildAMation/tests/runtests.py --Gcc.version=$GCC_VERSION -b $BAM_BUILD_MODE -c debug -c profile -j0 -d --nodefaultrepo -r . $EXTRA_TEST_ARGS
