@@ -66,6 +66,9 @@ namespace pngtest1
                 else if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                 {
                     vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level4;
+
+                    var preprocessor = settings as C.ICommonPreprocessorSettings;
+                    preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
                 }
             });
 
