@@ -47,7 +47,7 @@ namespace lpng
                 this.Add("pngwio.c", "4267");
                 this.Add("pngwrite.c", "4996");
                 this.Add("pngwutil.c", "4267", "4996");
-                this.Add("pngrutil.c", VisualCCommon.ToolchainVersion.VC2012, VisualCCommon.ToolchainVersion.VC2013, "4127");
+                this.Add("pngrutil.c", VisualCCommon.ToolchainVersion.VC2010, VisualCCommon.ToolchainVersion.VC2013, "4127");
             }
         }
     }
