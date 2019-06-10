@@ -56,18 +56,18 @@ environment:
   #  APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
   #- job_name: Visual Studio 2013 VSSolution
   #  APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-  - job_name: Visual Studio 2012 Native
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-  - job_name: Visual Studio 2012 MakeFile
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-  - job_name: Visual Studio 2012 VSSolution
-    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  #- job_name: Visual Studio 2012 Native
+  #  APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  #- job_name: Visual Studio 2012 MakeFile
+  #  APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  #- job_name: Visual Studio 2012 VSSolution
+  #  APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
   - job_name: Visual Studio 2010 Native
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-  #- job_name: Visual Studio 2010 MakeFile
-  #  APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-  #- job_name: Visual Studio 2010 VSSolution
-  #  APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  - job_name: Visual Studio 2010 MakeFile
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+  - job_name: Visual Studio 2010 VSSolution
+    APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
 for:
   - matrix:
       only:
@@ -291,14 +291,14 @@ for:
     environment:
       BAM_BUILD_MODE: MakeFile --MakeFile.format=NMAKE
       VC_VERSION: 10.0
-      EXTRA_TEST_ARGS:
+      EXTRA_TEST_ARGS: --C.bitdepth=32
   - matrix:
       only:
         - job_name: Visual Studio 2010 VSSolution
     environment:
       BAM_BUILD_MODE: VSSolution
       VC_VERSION: 10.0
-      EXTRA_TEST_ARGS:
+      EXTRA_TEST_ARGS: --C.bitdepth=32
 build: off
 test_script:
   - cmd: c:\BuildAMation\env.bat
