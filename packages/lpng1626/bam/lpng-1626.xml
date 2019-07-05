@@ -5,7 +5,7 @@
     <Source type="http" path="https://sourceforge.net/projects/libpng/files/libpng16/older-releases/1.6.26/libpng-1.6.26.tar.xz/download" subdir="libpng-1.6.26" />
   </Sources>
   <PackageRepositories>
-    <Repo dir="../../../../bam-compress/packages" />
+    <NamedRepo name="bam-compress" />
   </PackageRepositories>
   <Dependents>
     <Package name="C" />
