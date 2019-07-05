@@ -7,7 +7,7 @@ notifications:
 language: csharp
 python: '2.7'
 install:
-  - git clone -q --depth=1 --branch=master https://github.com/markfinal/bam-compress.git ../bam-compress
+  - git clone -q --depth=1 --branch=master https://github.com/markfinal/bam-compress.git ${TRAVIS_BUILD_DIR}/bam-compress
   - export BAM_BRANCH_TESTED=${BAM_BRANCH:-master}
   - echo "Testing BAM branch '${BAM_BRANCH_TESTED}'"
   - wget "https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.tar?branch=${BAM_BRANCH_TESTED}&job=Image%3A%20Visual%20Studio%202017" -O /tmp/bam.tar
@@ -17,6 +17,9 @@ install:
   - if [ $TRAVIS_OS_NAME = linux ]; then tar xf /tmp/ubuntu_install_scripts.tar -C /tmp; fi
 before_script:
   - dotnet --version
+env:
+  global:
+    BAMRepository__SearchDirs: "'${TRAVIS_BUILD_DIR}'"
 matrix:
   include:
   - os: linux
