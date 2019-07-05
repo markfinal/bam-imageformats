@@ -8,8 +8,6 @@ install:
   - ps: Start-FileDownload "https://ci.appveyor.com/api/projects/markfinal/buildamation/artifacts/bam.tar?branch=$env:BAM_BRANCH_TESTED&job=Image%3A%20Visual%20Studio%202017"
   - cmd: 7z x bam.tar -oc:\BuildAMation
 environment:
-  global:
-    BAMRepository__SearchDirs: %APPVEYOR_BUILD_FOLDER%
   matrix:
   - job_name: Visual Studio 2019 Native
     APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
@@ -171,4 +169,5 @@ for:
 build: off
 test_script:
   - cmd: "SET PATH=C:\\Python27-x64;%PATH%"
+  - cmd: "SET BAMRepository__SearchDirs=%APPVEYOR_BUILD_FOLDER%"
   - cmd: c:\BuildAMation\env.bat && python c:\BuildAMation\tests\runtests.py -x Mingw --VisualC.version=%VC_VERSION% -b %BAM_BUILD_MODE% -c debug -c profile -j0 -d --nodefaultrepo -r . %EXTRA_TEST_ARGS%
