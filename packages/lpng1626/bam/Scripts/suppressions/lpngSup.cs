@@ -49,6 +49,9 @@ namespace lpng
         {
             public PNGLibrary()
             {
+                this.Add("pngwrite.c", GccCommon.ToolchainVersion.GCC_7, null, "implicit-fallthrough");
+                this.Add("pngread.c", GccCommon.ToolchainVersion.GCC_7, null, "implicit-fallthrough");
+                this.Add("pngrtran.c", GccCommon.ToolchainVersion.GCC_7, null, "implicit-fallthrough");
             }
         }
     }
