@@ -38,10 +38,9 @@ namespace lpng
             C.ConsoleApplication
         {
             protected override void
-            Init(
-                Bam.Core.Module parent)
+            Init()
             {
-                base.Init(parent);
+                base.Init();
 
                 var source = this.CreateCSourceContainer("$(packagedir)/pngtest.c");
                 this.CompileAndLinkAgainst<PNGLibrary>(source);
@@ -65,10 +64,9 @@ namespace lpng
             C.ConsoleApplication
         {
             protected override void
-            Init(
-                Bam.Core.Module parent)
+            Init()
             {
-                base.Init(parent);
+                base.Init();
 
                 var source = this.CreateCSourceContainer("$(packagedir)/contrib/libtests/pngvalid.c");
                 this.CompileAndLinkAgainst<PNGLibrary>(source);
@@ -99,10 +97,9 @@ namespace lpng
             C.ConsoleApplication
         {
             protected override void
-            Init(
-                Bam.Core.Module parent)
+            Init()
             {
-                base.Init(parent);
+                base.Init();
 
                 var source = this.CreateCSourceContainer("$(packagedir)/contrib/libtests/pngstest.c");
                 this.CompileAndLinkAgainst<PNGLibrary>(source);
@@ -133,10 +130,9 @@ namespace lpng
             C.ConsoleApplication
         {
             protected override void
-            Init(
-                Bam.Core.Module parent)
+            Init()
             {
-                base.Init(parent);
+                base.Init();
 
                 var source = this.CreateCSourceContainer("$(packagedir)/contrib/libtests/pngunknown.c");
                 this.CompileAndLinkAgainst<PNGLibrary>(source);
@@ -167,10 +163,9 @@ namespace lpng
             C.ConsoleApplication
         {
             protected override void
-            Init(
-                Bam.Core.Module parent)
+            Init()
             {
-                base.Init(parent);
+                base.Init();
 
                 var source = this.CreateCSourceContainer("$(packagedir)/contrib/libtests/pngimage.c");
                 this.CompileAndLinkAgainst<PNGLibrary>(source);
@@ -200,10 +195,9 @@ namespace lpng
             Publisher.Collation
         {
             protected override void
-            Init(
-                Bam.Core.Module parent)
+            Init()
             {
-                base.Init(parent);
+                base.Init();
 
                 this.SetDefaultMacrosAndMappings(EPublishingType.ConsoleApplication);
                 this.IncludeAllModulesInNamespace("lpng.tests", C.ConsoleApplication.ExecutableKey);

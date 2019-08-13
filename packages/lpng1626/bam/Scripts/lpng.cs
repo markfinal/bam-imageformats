@@ -35,10 +35,9 @@ namespace lpng
         C.DynamicLibrary
     {
         protected override void
-        Init(
-            Bam.Core.Module parent)
+        Init()
         {
-            base.Init(parent);
+            base.Init();
 
             this.Macros["MajorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("1");
             this.Macros["MinorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("6");

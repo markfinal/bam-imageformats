@@ -35,10 +35,9 @@ namespace tiff
         Publisher.Collation
     {
         protected override void
-        Init(
-            Bam.Core.Module parent)
+        Init()
         {
-            base.Init(parent);
+            base.Init();
 
             var publishRoot = this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders");
 
@@ -69,10 +68,9 @@ namespace tiff
         C.ProceduralHeaderFile
     {
         protected override void
-        Init(
-            Bam.Core.Module parent)
+        Init()
         {
-            base.Init(parent);
+            base.Init();
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
                 this.Macros.Add("templatetiffconf", this.CreateTokenizedString("$(packagedir)/libtiff/tiffconf.vc.h"));
@@ -120,10 +118,9 @@ namespace tiff
         C.ProceduralHeaderFile
     {
         protected override void
-        Init(
-            Bam.Core.Module parent)
+        Init()
         {
-            base.Init(parent);
+            base.Init();
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
                 this.Macros.Add("templateConfig", this.CreateTokenizedString("$(packagedir)/libtiff/tif_config.vc.h"));
@@ -181,10 +178,9 @@ namespace tiff
         C.DynamicLibrary
     {
         protected override void
-        Init(
-            Bam.Core.Module parent)
+        Init()
         {
-            base.Init(parent);
+            base.Init();
 
             this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("tiff");
             this.SetSemanticVersion(3, 9, 7);
@@ -324,10 +320,9 @@ namespace tiff
         C.StaticLibrary
     {
         protected override void
-        Init(
-            Bam.Core.Module parent)
+        Init()
         {
-            base.Init(parent);
+            base.Init();
 
             this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("tiff");
             this.SetSemanticVersion(3, 9, 7);

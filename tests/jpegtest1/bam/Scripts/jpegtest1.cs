@@ -34,10 +34,9 @@ namespace jpegtest1
         C.ConsoleApplication
     {
         protected override void
-        Init(
-            Bam.Core.Module parent)
+        Init()
         {
-            base.Init(parent);
+            base.Init();
 
             this.CreateHeaderContainer("$(packagedir)/source/*.h");
             var source = this.CreateCSourceContainer("$(packagedir)/source/*.c");
@@ -89,10 +88,9 @@ namespace jpegtest1
         Publisher.Collation
     {
         protected override void
-        Init(
-            Bam.Core.Module parent)
+        Init()
         {
-            base.Init(parent);
+            base.Init();
 
             this.SetDefaultMacrosAndMappings(EPublishingType.ConsoleApplication);
             this.Include<JPEGTest1>(C.ConsoleApplication.ExecutableKey);

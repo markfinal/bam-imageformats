@@ -36,10 +36,9 @@ namespace tiff
             C.ConsoleApplication
         {
             protected override void
-            Init(
-                Bam.Core.Module parent)
+            Init()
             {
-                base.Init(parent);
+                base.Init();
 
                 this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("ascii_tag");
 
@@ -71,10 +70,9 @@ namespace tiff
             C.ConsoleApplication
         {
             protected override void
-            Init(
-                Bam.Core.Module parent)
+            Init()
             {
-                base.Init(parent);
+                base.Init();
 
                 this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("long_tag");
 
@@ -107,10 +105,9 @@ namespace tiff
             C.ConsoleApplication
         {
             protected override void
-            Init(
-                Bam.Core.Module parent)
+            Init()
             {
-                base.Init(parent);
+                base.Init();
 
                 this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("short_tag");
 
@@ -143,10 +140,9 @@ namespace tiff
             C.ConsoleApplication
         {
             protected override void
-            Init(
-                Bam.Core.Module parent)
+            Init()
             {
-                base.Init(parent);
+                base.Init();
 
                 this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("strip_rw");
 
@@ -171,10 +167,9 @@ namespace tiff
             Publisher.Collation
         {
             protected override void
-            Init(
-                Bam.Core.Module parent)
+            Init()
             {
-                base.Init(parent);
+                base.Init();
 
                 this.SetDefaultMacrosAndMappings(EPublishingType.ConsoleApplication);
                 this.IncludeAllModulesInNamespace("tiff.tests", C.ConsoleApplication.ExecutableKey);

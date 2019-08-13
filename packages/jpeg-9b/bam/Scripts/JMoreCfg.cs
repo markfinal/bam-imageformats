@@ -35,10 +35,9 @@ namespace jpeg
         C.ProceduralHeaderFile
     {
         protected override void
-        Init(
-            Bam.Core.Module parent)
+        Init()
         {
-            base.Init(parent);
+            base.Init();
             this.Macros.Add("templateConfig", this.CreateTokenizedString("$(packagedir)/jmorecfg.h"));
         }
 

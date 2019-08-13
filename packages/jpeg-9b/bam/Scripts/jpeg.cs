@@ -34,10 +34,9 @@ namespace jpeg
         C.StaticLibrary
     {
         protected override void
-        Init(
-            Bam.Core.Module parent)
+        Init()
         {
-            base.Init(parent);
+            base.Init();
 
             this.SetSemanticVersion("9", "b", null);
             this.Macros["OutputName"] = this.CreateTokenizedString("jpeg");
