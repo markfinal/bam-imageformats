@@ -39,16 +39,14 @@ namespace lpng
         {
             base.Init();
 
-            this.Macros["MajorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("1");
-            this.Macros["MinorVersion"] = Bam.Core.TokenizedString.CreateVerbatim("6");
-            this.Macros["PatchVersion"] = Bam.Core.TokenizedString.CreateVerbatim("26");
-            this.Macros["OutputName"] = this.CreateTokenizedString("png$(MajorVersion)$(MinorVersion)");
+            this.SetSemanticVersion(1, 6, 26);
+            this.Macros[Bam.Core.ModuleMacroNames.OutputName] = this.CreateTokenizedString("png$(MajorVersion)$(MinorVersion)");
 
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
             {
                 // to match that in the CMakeLists.txt
-                this.Macros["sonameext"] = Bam.Core.TokenizedString.Create(".so.$(MajorVersion)$(MinorVersion)", null);
-                this.Macros["dynamicext"] = Bam.Core.TokenizedString.Create(".so.$(MajorVersion)$(MinorVersion).$(PatchVersion).0", null);
+                this.Macros[C.ModuleMacroNames.SharedObjectSONameFileExtension] = Bam.Core.TokenizedString.Create(".so.$(MajorVersion)$(MinorVersion)", null);
+                this.Macros[C.ModuleMacroNames.DynamicLibraryFileExtension] = Bam.Core.TokenizedString.Create(".so.$(MajorVersion)$(MinorVersion).$(PatchVersion).0", null);
             }
 
             var source = this.CreateCSourceContainer(

@@ -53,13 +53,13 @@ namespace lpng
             }
 
             this.SetSemanticVersion(1, 2, 57);
-            this.Macros["OutputName"] = this.CreateTokenizedString("png$(MajorVersion)$(MinorVersion)");
+            this.Macros[Bam.Core.ModuleMacroNames.OutputName] = this.CreateTokenizedString("png$(MajorVersion)$(MinorVersion)");
 
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
             {
                 // to match that in the CMakeLists.txt
-                this.Macros["sonameext"] = Bam.Core.TokenizedString.CreateVerbatim(".so.0");
-                this.Macros["dynamicext"] = Bam.Core.TokenizedString.Create(".so.0.$(PatchVersion).0", null);
+                this.Macros[C.ModuleMacroNames.SharedObjectSONameFileExtension] = Bam.Core.TokenizedString.CreateVerbatim(".so.0");
+                this.Macros[C.ModuleMacroNames.DynamicLibraryFileExtension] = Bam.Core.TokenizedString.Create(".so.0.$(PatchVersion).0", null);
             }
 
             var source = this.CreateCSourceContainer(

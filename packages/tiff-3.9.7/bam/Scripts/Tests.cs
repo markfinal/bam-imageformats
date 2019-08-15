@@ -40,7 +40,7 @@ namespace tiff
             {
                 base.Init();
 
-                this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("ascii_tag");
+                this.Macros[Bam.Core.ModuleMacroNames.OutputName] = Bam.Core.TokenizedString.CreateVerbatim("ascii_tag");
 
                 var source = this.CreateCSourceContainer("$(packagedir)/test/ascii_tag.c");
                 this.CompileAndLinkAgainst<LibTiff_static>(source);
@@ -74,7 +74,7 @@ namespace tiff
             {
                 base.Init();
 
-                this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("long_tag");
+                this.Macros[Bam.Core.ModuleMacroNames.OutputName] = Bam.Core.TokenizedString.CreateVerbatim("long_tag");
 
                 var source = this.CreateCSourceContainer("$(packagedir)/test/long_tag.c");
                 source.AddFiles("$(packagedir)/test/check_tag.c");
@@ -109,7 +109,7 @@ namespace tiff
             {
                 base.Init();
 
-                this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("short_tag");
+                this.Macros[Bam.Core.ModuleMacroNames.OutputName] = Bam.Core.TokenizedString.CreateVerbatim("short_tag");
 
                 var source = this.CreateCSourceContainer("$(packagedir)/test/short_tag.c");
                 source.AddFiles("$(packagedir)/test/check_tag.c");
@@ -144,7 +144,7 @@ namespace tiff
             {
                 base.Init();
 
-                this.Macros["OutputName"] = Bam.Core.TokenizedString.CreateVerbatim("strip_rw");
+                this.Macros[Bam.Core.ModuleMacroNames.OutputName] = Bam.Core.TokenizedString.CreateVerbatim("strip_rw");
 
                 this.CreateHeaderContainer("$(packagedir)/test/test_arrays.h");
                 var source = this.CreateCSourceContainer("$(packagedir)/test/strip_rw.c");
