@@ -41,7 +41,7 @@ namespace lpng
             {
                 base.Init();
 
-                var source = this.CreateCSourceContainer("$(packagedir)/pngtest.c");
+                var source = this.CreateCSourceCollection("$(packagedir)/pngtest.c");
                 this.CompileAndLinkAgainst<PNGLibrary>(source);
                 this.CompileAndLinkAgainst<zlib.ZLib>(source);
 

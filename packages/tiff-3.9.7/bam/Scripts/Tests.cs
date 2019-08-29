@@ -42,7 +42,7 @@ namespace tiff
 
                 this.Macros[Bam.Core.ModuleMacroNames.OutputName] = Bam.Core.TokenizedString.CreateVerbatim("ascii_tag");
 
-                var source = this.CreateCSourceContainer("$(packagedir)/test/ascii_tag.c");
+                var source = this.CreateCSourceCollection("$(packagedir)/test/ascii_tag.c");
                 this.CompileAndLinkAgainst<LibTiff_static>(source);
 
                 source.PrivatePatch(settings =>
@@ -76,7 +76,7 @@ namespace tiff
 
                 this.Macros[Bam.Core.ModuleMacroNames.OutputName] = Bam.Core.TokenizedString.CreateVerbatim("long_tag");
 
-                var source = this.CreateCSourceContainer("$(packagedir)/test/long_tag.c");
+                var source = this.CreateCSourceCollection("$(packagedir)/test/long_tag.c");
                 source.AddFiles("$(packagedir)/test/check_tag.c");
                 this.CompileAndLinkAgainst<LibTiff_static>(source);
 
@@ -111,7 +111,7 @@ namespace tiff
 
                 this.Macros[Bam.Core.ModuleMacroNames.OutputName] = Bam.Core.TokenizedString.CreateVerbatim("short_tag");
 
-                var source = this.CreateCSourceContainer("$(packagedir)/test/short_tag.c");
+                var source = this.CreateCSourceCollection("$(packagedir)/test/short_tag.c");
                 source.AddFiles("$(packagedir)/test/check_tag.c");
                 this.CompileAndLinkAgainst<LibTiff_static>(source);
 
@@ -146,8 +146,8 @@ namespace tiff
 
                 this.Macros[Bam.Core.ModuleMacroNames.OutputName] = Bam.Core.TokenizedString.CreateVerbatim("strip_rw");
 
-                this.CreateHeaderContainer("$(packagedir)/test/test_arrays.h");
-                var source = this.CreateCSourceContainer("$(packagedir)/test/strip_rw.c");
+                this.CreateHeaderCollection("$(packagedir)/test/test_arrays.h");
+                var source = this.CreateCSourceCollection("$(packagedir)/test/strip_rw.c");
                 source.AddFiles("$(packagedir)/test/strip.c");
                 source.AddFiles("$(packagedir)/test/test_arrays.c");
                 this.CompileAndLinkAgainst<LibTiff_static>(source);

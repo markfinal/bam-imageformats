@@ -41,7 +41,7 @@ namespace jpeg
             this.SetSemanticVersion("9", "b", null);
             this.Macros[Bam.Core.ModuleMacroNames.OutputName] = this.CreateTokenizedString("jpeg");
 
-            var source = this.CreateCSourceContainer("$(packagedir)/j*.c",
+            var source = this.CreateCSourceCollection("$(packagedir)/j*.c",
                 filter: new System.Text.RegularExpressions.Regex(@"^((?!.*jmemname.c)(?!.*jmemnobs.c)(?!.*jmemdos.c)(?!.*jmemmac.c)(?!.*jpegtran.c).*)$"));
 
             if (source.Compiler is VisualCCommon.CompilerBase)

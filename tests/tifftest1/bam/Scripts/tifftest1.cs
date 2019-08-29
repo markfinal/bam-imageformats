@@ -38,8 +38,8 @@ namespace tifftest1
         {
             base.Init();
 
-            this.CreateHeaderContainer("$(packagedir)/source/*.h");
-            var source = this.CreateCSourceContainer("$(packagedir)/source/*.c");
+            this.CreateHeaderCollection("$(packagedir)/source/*.h");
+            var source = this.CreateCSourceCollection("$(packagedir)/source/*.c");
             this.CompileAndLinkAgainst<tiff.LibTiff_static>(source);
 
             source.PrivatePatch(settings =>

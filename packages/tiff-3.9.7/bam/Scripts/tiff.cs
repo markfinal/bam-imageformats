@@ -185,8 +185,8 @@ namespace tiff
             this.Macros[Bam.Core.ModuleMacroNames.OutputName] = Bam.Core.TokenizedString.CreateVerbatim("tiff");
             this.SetSemanticVersion(3, 9, 7);
 
-            var headers = this.CreateHeaderContainer("$(packagedir)/libtiff/*.h");
-            var source = this.CreateCSourceContainer("$(packagedir)/libtiff/*.c", filter: new System.Text.RegularExpressions.Regex(@"^((?!.*acorn)(?!.*apple)(?!.*atari)(?!.*msdos)(?!.*unix)(?!.*win3).*)$"));
+            var headers = this.CreateHeaderCollection("$(packagedir)/libtiff/*.h");
+            var source = this.CreateCSourceCollection("$(packagedir)/libtiff/*.c", filter: new System.Text.RegularExpressions.Regex(@"^((?!.*acorn)(?!.*apple)(?!.*atari)(?!.*msdos)(?!.*unix)(?!.*win3).*)$"));
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
                 headers.AddFiles("$(packagedir)/port/*.h");
@@ -327,8 +327,8 @@ namespace tiff
             this.Macros[Bam.Core.ModuleMacroNames.OutputName] = Bam.Core.TokenizedString.CreateVerbatim("tiff");
             this.SetSemanticVersion(3, 9, 7);
 
-            var headers = this.CreateHeaderContainer("$(packagedir)/libtiff/*.h");
-            var source = this.CreateCSourceContainer("$(packagedir)/libtiff/*.c", filter: new System.Text.RegularExpressions.Regex(@"^((?!.*acorn)(?!.*apple)(?!.*atari)(?!.*msdos)(?!.*unix)(?!.*win3).*)$"));
+            var headers = this.CreateHeaderCollection("$(packagedir)/libtiff/*.h");
+            var source = this.CreateCSourceCollection("$(packagedir)/libtiff/*.c", filter: new System.Text.RegularExpressions.Regex(@"^((?!.*acorn)(?!.*apple)(?!.*atari)(?!.*msdos)(?!.*unix)(?!.*win3).*)$"));
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
                 headers.AddFiles("$(packagedir)/port/*.h");

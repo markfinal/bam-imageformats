@@ -38,8 +38,8 @@ namespace pngtest1
         {
             base.Init();
 
-            this.CreateHeaderContainer("$(packagedir)/source/*.h");
-            var source = this.CreateCSourceContainer("$(packagedir)/source/*.c");
+            this.CreateHeaderCollection("$(packagedir)/source/*.h");
+            var source = this.CreateCSourceCollection("$(packagedir)/source/*.c");
             this.CompileAndLinkAgainst<lpng.PNGLibrary>(source);
 
             source.PrivatePatch(settings =>

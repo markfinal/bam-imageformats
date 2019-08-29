@@ -42,7 +42,7 @@ namespace lpng
             {
                 base.Init();
 
-                var source = this.CreateCSourceContainer("$(packagedir)/pngtest.c");
+                var source = this.CreateCSourceCollection("$(packagedir)/pngtest.c");
                 this.CompileAndLinkAgainst<PNGLibrary>(source);
                 this.CompileAndLinkAgainst<zlib.ZLib>(source);
 
@@ -68,7 +68,7 @@ namespace lpng
             {
                 base.Init();
 
-                var source = this.CreateCSourceContainer("$(packagedir)/contrib/libtests/pngvalid.c");
+                var source = this.CreateCSourceCollection("$(packagedir)/contrib/libtests/pngvalid.c");
                 this.CompileAndLinkAgainst<PNGLibrary>(source);
                 this.CompileAndLinkAgainst<zlib.ZLib>(source);
 
@@ -101,7 +101,7 @@ namespace lpng
             {
                 base.Init();
 
-                var source = this.CreateCSourceContainer("$(packagedir)/contrib/libtests/pngstest.c");
+                var source = this.CreateCSourceCollection("$(packagedir)/contrib/libtests/pngstest.c");
                 this.CompileAndLinkAgainst<PNGLibrary>(source);
                 this.CompileAndLinkAgainst<zlib.ZLib>(source);
 
@@ -134,7 +134,7 @@ namespace lpng
             {
                 base.Init();
 
-                var source = this.CreateCSourceContainer("$(packagedir)/contrib/libtests/pngunknown.c");
+                var source = this.CreateCSourceCollection("$(packagedir)/contrib/libtests/pngunknown.c");
                 this.CompileAndLinkAgainst<PNGLibrary>(source);
                 this.CompileAndLinkAgainst<zlib.ZLib>(source);
 
@@ -167,7 +167,7 @@ namespace lpng
             {
                 base.Init();
 
-                var source = this.CreateCSourceContainer("$(packagedir)/contrib/libtests/pngimage.c");
+                var source = this.CreateCSourceCollection("$(packagedir)/contrib/libtests/pngimage.c");
                 this.CompileAndLinkAgainst<PNGLibrary>(source);
                 this.CompileAndLinkAgainst<zlib.ZLib>(source);
 
