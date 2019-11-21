@@ -40,7 +40,7 @@ namespace pngtest1
 
             this.CreateHeaderCollection("$(packagedir)/source/*.h");
             var source = this.CreateCSourceCollection("$(packagedir)/source/*.c");
-            this.CompileAndLinkAgainst<lpng.PNGLibrary>(source);
+            this.UseSDK<lpng.SDK>(source);
 
             source.PrivatePatch(settings =>
             {

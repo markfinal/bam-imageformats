@@ -29,35 +29,22 @@
 #endregion // License
 namespace lpng
 {
-    [Bam.Core.ModuleGroup("Thirdparty/libpng")]
-    class CopyPngStandardHeaders :
-        Publisher.Collation
+    class PNGLibraryExported :
+        PNGLibrary,
+        C.IExportableCModule
     {
-        protected override void
-        Init()
+        Bam.Core.Module.PublicPatchDelegate C.IExportableCModule.ExportPatch => (settings, appliedTo) =>
         {
-            base.Init();
-
-            var publishRoot = this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders");
-
-            this.PublicPatch((settings, appliedTo) =>
+            /*
+            if (settings is C.ICommonPreprocessorSettings preprocessor)
+            {
+                //preprocessor.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)"));
+                if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                 {
-                    if (settings is C.ICommonPreprocessorSettings preprocessor)
-                    {
-                        preprocessor.IncludePaths.AddUnique(publishRoot);
-                    }
-                });
-
-            var headerPaths = new Bam.Core.StringArray
-            {
-                "png.h",
-                "pngconf.h"
-            };
-
-            foreach (var header in headerPaths)
-            {
-                this.IncludeFiles<CopyPngStandardHeaders>("$(packagedir)/" + header, publishRoot, null);
+                    preprocessor.PreprocessorDefines.Add("PNG_DLL");
+                }
             }
-        }
+            */
+        };
     }
 }

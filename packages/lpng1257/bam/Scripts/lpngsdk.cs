@@ -27,48 +27,30 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
-using System.Linq;
 namespace lpng
 {
-    namespace tests
+    [Bam.Core.ModuleGroup("Thirdparty/libpng")]
+    class SDK :
+        C.SDKTemplate
     {
-        [Bam.Core.ModuleGroup("Thirdparty/libpng/tests")]
-        class PNGTest :
-            C.ConsoleApplication
+        private readonly Bam.Core.TokenizedStringArray headers = new Bam.Core.TokenizedStringArray();
+        private readonly Bam.Core.TypeArray libraryTypes = new Bam.Core.TypeArray(typeof(PNGLibrary));
+
+        public SDK()
         {
-            protected override void
-            Init()
+            var headerPaths = new Bam.Core.StringArray
             {
-                base.Init();
+                "png.h",
+                "pngconf.h"
+            };
 
-                var source = this.CreateCSourceCollection("$(packagedir)/pngtest.c");
-                this.UseSDK<SDK>(source);
-
-                this.PrivatePatch(settings =>
-                    {
-                        if (settings is GccCommon.ICommonLinkerSettings gccLinker)
-                        {
-                            gccLinker.CanUseOrigin = true;
-                            gccLinker.RPath.AddUnique("$ORIGIN");
-                            var linker = settings as C.ICommonLinkerSettings;
-                            linker.Libraries.AddUnique("-lm");
-                        }
-                    });
+            foreach (var header in headerPaths)
+            {
+                this.headers.Add(this.CreateTokenizedString("$(packagedir)/" + header));
             }
         }
 
-        sealed class PNGTestRuntime :
-            Publisher.Collation
-        {
-            protected override void
-            Init()
-            {
-                base.Init();
-
-                this.SetDefaultMacrosAndMappings(EPublishingType.ConsoleApplication);
-                this.IncludeAllModulesInNamespace("lpng.tests", C.ConsoleApplication.ExecutableKey);
-                this.IncludeFiles<PNGTest>("$(packagedir)/pngtest.png", this.ExecutableDir, this.Find<PNGTest>().First());
-            }
-        }
+        protected override Bam.Core.TokenizedStringArray HeaderFiles => this.headers;
+        protected override Bam.Core.TypeArray LibraryModuleTypes => this.libraryTypes;
     }
 }

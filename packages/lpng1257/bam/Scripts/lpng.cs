@@ -32,21 +32,8 @@ namespace lpng
 {
     [Bam.Core.ModuleGroup("Thirdparty/libpng")]
     class PNGLibrary :
-        C.DynamicLibrary,
-        C.IExportableCModule
+        C.DynamicLibrary
     {
-        Bam.Core.Module.PublicPatchDelegate C.IExportableCModule.ExportPatch => (settings, appliedTo) =>
-        {
-            if (settings is C.ICommonPreprocessorSettings preprocessor)
-            {
-                //preprocessor.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)"));
-                if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
-                {
-                    preprocessor.PreprocessorDefines.Add("PNG_DLL");
-                }
-            }
-        };
-
         protected override void
         Init()
         {
@@ -92,13 +79,6 @@ namespace lpng
             {
                 source.SuppressWarningsDelegate(new Clang.WarningSuppression.PNGLibrary());
             }
-
-            // note these dependencies are on SOURCE, as the headers are needed for compilation
-            var copyStandardHeaders = Graph.Instance.FindReferencedModule<CopyPngStandardHeaders>();
-            source.DependsOn(copyStandardHeaders);
-
-            // export the public headers
-            this.UsePublicPatches(copyStandardHeaders);
 
             this.UseSDK<zlib.SDK>(source); // png.h requires zlib.h
 
