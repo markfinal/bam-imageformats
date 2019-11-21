@@ -44,7 +44,6 @@ namespace lpng
 
                 var source = this.CreateCSourceCollection("$(packagedir)/pngtest.c");
                 this.CompileAndLinkAgainst<PNGLibrary>(source);
-                this.CompileAndLinkAgainst<zlib.ZLib>(source);
 
                 this.PrivatePatch(settings =>
                     {
@@ -70,7 +69,6 @@ namespace lpng
 
                 var source = this.CreateCSourceCollection("$(packagedir)/contrib/libtests/pngvalid.c");
                 this.CompileAndLinkAgainst<PNGLibrary>(source);
-                this.CompileAndLinkAgainst<zlib.ZLib>(source);
 
                 source.PrivatePatch(settings =>
                     {
@@ -103,7 +101,6 @@ namespace lpng
 
                 var source = this.CreateCSourceCollection("$(packagedir)/contrib/libtests/pngstest.c");
                 this.CompileAndLinkAgainst<PNGLibrary>(source);
-                this.CompileAndLinkAgainst<zlib.ZLib>(source);
 
                 source.PrivatePatch(settings =>
                     {
@@ -136,7 +133,6 @@ namespace lpng
 
                 var source = this.CreateCSourceCollection("$(packagedir)/contrib/libtests/pngunknown.c");
                 this.CompileAndLinkAgainst<PNGLibrary>(source);
-                this.CompileAndLinkAgainst<zlib.ZLib>(source);
 
                 source.PrivatePatch(settings =>
                     {
@@ -169,7 +165,6 @@ namespace lpng
 
                 var source = this.CreateCSourceCollection("$(packagedir)/contrib/libtests/pngimage.c");
                 this.CompileAndLinkAgainst<PNGLibrary>(source);
-                this.CompileAndLinkAgainst<zlib.ZLib>(source);
 
                 source.PrivatePatch(settings =>
                     {

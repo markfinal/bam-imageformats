@@ -31,8 +31,13 @@ namespace jpeg
 {
     [Bam.Core.ModuleGroup("Thirdparty/libjpeg")]
     class JpegLibrary :
-        C.StaticLibrary
+        C.StaticLibrary,
+        C.IExportableCModule
     {
+        Bam.Core.Module.PublicPatchDelegate C.IExportableCModule.ExportPatch => (settings, appliedTo) =>
+        {
+        };
+
         protected override void
         Init()
         {

@@ -32,8 +32,13 @@ namespace lpng
 {
     [ModuleGroup("Thirdparty/libpng")]
     class PNGLibrary :
-        C.DynamicLibrary
+        C.DynamicLibrary,
+        C.IExportableCModule
     {
+        Bam.Core.Module.PublicPatchDelegate C.IExportableCModule.ExportPatch => (settings, appliedTo) =>
+        {
+        };
+
         protected override void
         Init()
         {
@@ -75,7 +80,7 @@ namespace lpng
             // export the public headers
             this.UsePublicPatches(copyStandardHeaders);
 
-            this.CompileAndLinkAgainst<zlib.ZLib>(source);
+            this.UseSDK<zlib.SDK>(source);
 
             source.PrivatePatch(settings =>
                 {
