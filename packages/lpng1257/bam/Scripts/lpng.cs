@@ -80,7 +80,7 @@ namespace lpng
                 source.SuppressWarningsDelegate(new Clang.WarningSuppression.PNGLibrary());
             }
 
-            this.UseSDK<zlib.SDK>(source); // png.h requires zlib.h
+            this.UseSDKPublicly<zlib.SDK>(source); // png.h requires zlib.h
 
             source.PrivatePatch(settings =>
                 {
