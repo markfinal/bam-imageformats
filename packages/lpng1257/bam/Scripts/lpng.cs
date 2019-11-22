@@ -48,6 +48,8 @@ namespace lpng
                         if (settings is GccCommon.ICommonLinkerSettings gccLinker)
                         {
                             gccLinker.VersionScript = versionScript.InputPath;
+                            gccLinker.CanUseOrigin = true;
+                            gccLinker.RPath.AddUnique("$ORIGIN");
                             var linker = settings as C.ICommonLinkerSettings;
                             linker.Libraries.Add("-lm");
                         }
