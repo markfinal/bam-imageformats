@@ -77,8 +77,6 @@ namespace pngtest1
                     {
                         gccLinker.CanUseOrigin = true;
                         gccLinker.RPath.AddUnique("$ORIGIN");
-                        var linker = settings as C.ICommonLinkerSettings;
-                        linker.Libraries.AddUnique("-lm");
                     }
                 });
         }
