@@ -64,56 +64,6 @@ namespace tiff
     }
 
     [Bam.Core.ModuleGroup("Thirdparty/tiff")]
-    class GenerateConfHeader :
-        C.ProceduralHeaderFile
-    {
-        protected override void
-        Init()
-        {
-            base.Init();
-            if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
-            {
-                this.Macros.Add("templatetiffconf", this.CreateTokenizedString("$(packagedir)/libtiff/tiffconf.vc.h"));
-            }
-        }
-
-        protected override Bam.Core.TokenizedString OutputPath => this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/tiffconf.h");
-
-        protected override string GuardString
-        {
-            get
-            {
-                if (Bam.Core.OSUtilities.IsWindowsHosting)
-                {
-                    return null;
-                }
-                return base.GuardString;
-            }
-        }
-
-        protected override string Contents
-        {
-            get
-            {
-                if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
-                {
-                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros["templatetiffconf"].ToString()))
-                    {
-                        return readFile.ReadToEnd();
-                    }
-                }
-                else
-                {
-                    var contents = new System.Text.StringBuilder();
-                    contents.AppendLine("#define SIZEOF_INT 4");
-                    contents.AppendLine("#define LZW_SUPPORT 1");
-                    return contents.ToString();
-                }
-            }
-        }
-    }
-
-    [Bam.Core.ModuleGroup("Thirdparty/tiff")]
     class LibTiff :
         C.DynamicLibrary
     {
@@ -158,8 +108,7 @@ namespace tiff
             /*
             // note these dependencies are on SOURCE, as the headers are needed for compilation
             var copyStandardHeaders = Bam.Core.Graph.Instance.FindReferencedModule<CopyStandardHeaders>();
-            var generateConf = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfHeader>();
-            source.DependsOn(copyStandardHeaders, generateConf);
+            source.DependsOn(copyStandardHeaders);
 
             // export the public headers
             this.UsePublicPatches(copyStandardHeaders);
@@ -167,6 +116,9 @@ namespace tiff
             var generateConfig = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfigHeader>();
             source.DependsOn(generateConfig);
             source.UsePublicPatchesPrivately(generateConfig);
+            var generateConf = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfHeader>();
+            source.DependsOn(generateConf);
+            source.UsePublicPatchesPrivately(generateConf);
 
             source.PrivatePatch(settings =>
                 {
@@ -304,8 +256,7 @@ namespace tiff
             /*
             // note these dependencies are on SOURCE, as the headers are needed for compilation
             var copyStandardHeaders = Bam.Core.Graph.Instance.FindReferencedModule<CopyStandardHeaders>();
-            var generateConf = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfHeader>();
-            source.DependsOn(copyStandardHeaders, generateConf);
+            source.DependsOn(copyStandardHeaders);
 
             // export the public headers
             this.UsePublicPatches(copyStandardHeaders);
@@ -313,6 +264,9 @@ namespace tiff
             var generateConfig = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfigHeader>();
             source.DependsOn(generateConfig);
             source.UsePublicPatchesPrivately(generateConfig);
+            var generateConf = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfHeader>();
+            source.DependsOn(generateConf);
+            source.UsePublicPatchesPrivately(generateConf);
 
             source.PrivatePatch(settings =>
                 {
