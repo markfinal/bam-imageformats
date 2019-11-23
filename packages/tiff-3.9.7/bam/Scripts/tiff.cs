@@ -317,13 +317,8 @@ namespace tiff
     // however, sometimes a static library is preferred
     [Bam.Core.ModuleGroup("Thirdparty/tiff")]
     class LibTiff_static :
-        C.StaticLibrary,
-        C.IExportableCModule
+        C.StaticLibrary
     {
-        Bam.Core.Module.PublicPatchDelegate C.IExportableCModule.ExportPatch => (settings, appliedTo) =>
-        {
-        };
-
         protected override void
         Init()
         {
