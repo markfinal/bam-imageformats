@@ -37,20 +37,25 @@ namespace tiff
     {
         private readonly Bam.Core.TokenizedStringArray headers = new Bam.Core.TokenizedStringArray();
         private readonly Bam.Core.TypeArray libraryTypes = new Bam.Core.TypeArray(typeof(LibTiff));
+        private readonly Bam.Core.TypeArray genHeaderTypes = new Bam.Core.TypeArray(typeof(GenerateConfHeader));
 
         public SDK()
         {
             var headerPaths = new Bam.Core.StringArray
             {
+                "tiffio.h",
+                "tiff.h",
+                "tiffvers.h"
             };
 
             foreach (var header in headerPaths)
             {
-                this.headers.Add(this.CreateTokenizedString("$(packagedir)/" + header));
+                this.headers.Add(this.CreateTokenizedString("$(packagedir)/libtiff/" + header));
             }
         }
 
         protected override Bam.Core.TokenizedStringArray HeaderFiles => this.headers;
         protected override Bam.Core.TypeArray LibraryModuleTypes => this.libraryTypes;
+        protected override TypeArray GeneratedHeaderTypes => this.genHeaderTypes;
     }
 }
