@@ -30,7 +30,7 @@
 using Bam.Core;
 namespace tifftest1
 {
-    sealed class TiffTest1 :
+    class TiffTest1 :
         C.ConsoleApplication
     {
         protected override void
@@ -79,6 +79,19 @@ namespace tifftest1
                     linker.Libraries.AddUnique("-lm");
                 });
             }
+        }
+    }
+
+    sealed class TiffTest1Runtime :
+        Publisher.Collation
+    {
+        protected override void
+        Init()
+        {
+            base.Init();
+
+            this.SetDefaultMacrosAndMappings(EPublishingType.ConsoleApplication);
+            this.Include<TiffTest1>(C.ConsoleApplication.ExecutableKey);
         }
     }
 }
