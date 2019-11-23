@@ -114,66 +114,6 @@ namespace tiff
     }
 
     [Bam.Core.ModuleGroup("Thirdparty/tiff")]
-    class GenerateConfigHeader :
-        C.ProceduralHeaderFile
-    {
-        protected override void
-        Init()
-        {
-            base.Init();
-            if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
-            {
-                this.Macros.Add("templateConfig", this.CreateTokenizedString("$(packagedir)/libtiff/tif_config.vc.h"));
-            }
-        }
-
-        protected override Bam.Core.TokenizedString OutputPath => this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/tif_config.h");
-
-        protected override string GuardString
-        {
-            get
-            {
-                if (Bam.Core.OSUtilities.IsWindowsHosting)
-                {
-                    return null;
-                }
-                return base.GuardString;
-            }
-        }
-
-        protected override string Contents
-        {
-            get
-            {
-                if (this.BuildEnvironment.Platform.Includes(EPlatform.Windows))
-                {
-                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros["templateConfig"].ToString()))
-                    {
-                        return readFile.ReadToEnd();
-                    }
-                }
-                else
-                {
-                    var contents = new System.Text.StringBuilder();
-                    contents.AppendLine("#define HAVE_SEARCH_H");
-                    contents.AppendLine("#define TIFF_INT64_T long long");
-                    contents.AppendLine("#define TIFF_UINT64_T unsigned long long");
-                    contents.AppendLine("#define HAVE_FCNTL_H");
-                    contents.AppendLine("#define HAVE_STRING_H");
-                    contents.AppendLine("#define HOST_FILLORDER FILLORDER_LSB2MSB");
-                    contents.AppendLine("#define HAVE_IEEEFP 1");
-                    contents.AppendLine("#define HAVE_UNISTD_H 1");
-                    if (this.BuildEnvironment.Platform.Includes(EPlatform.OSX))
-                    {
-                        contents.AppendLine("#define HAVE_GETOPT 1");
-                    }
-                    return contents.ToString();
-                }
-            }
-        }
-    }
-
-    [Bam.Core.ModuleGroup("Thirdparty/tiff")]
     class LibTiff :
         C.DynamicLibrary
     {
@@ -215,14 +155,18 @@ namespace tiff
                 source.SuppressWarningsDelegate(new Clang.WarningSuppression.LibTiff());
             }
 
+            /*
             // note these dependencies are on SOURCE, as the headers are needed for compilation
             var copyStandardHeaders = Bam.Core.Graph.Instance.FindReferencedModule<CopyStandardHeaders>();
             var generateConf = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfHeader>();
-            var generateConfig = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfigHeader>();
-            source.DependsOn(copyStandardHeaders, generateConf, generateConfig);
+            source.DependsOn(copyStandardHeaders, generateConf);
 
             // export the public headers
             this.UsePublicPatches(copyStandardHeaders);
+            */
+            var generateConfig = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfigHeader>();
+            source.DependsOn(generateConfig);
+            source.UsePublicPatchesPrivately(generateConfig);
 
             source.PrivatePatch(settings =>
                 {
@@ -357,14 +301,18 @@ namespace tiff
                 source.SuppressWarningsDelegate(new Clang.WarningSuppression.LibTiff());
             }
 
+            /*
             // note these dependencies are on SOURCE, as the headers are needed for compilation
             var copyStandardHeaders = Bam.Core.Graph.Instance.FindReferencedModule<CopyStandardHeaders>();
             var generateConf = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfHeader>();
-            var generateConfig = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfigHeader>();
-            source.DependsOn(copyStandardHeaders, generateConf, generateConfig);
+            source.DependsOn(copyStandardHeaders, generateConf);
 
             // export the public headers
             this.UsePublicPatches(copyStandardHeaders);
+            */
+            var generateConfig = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfigHeader>();
+            source.DependsOn(generateConfig);
+            source.UsePublicPatchesPrivately(generateConfig);
 
             source.PrivatePatch(settings =>
                 {

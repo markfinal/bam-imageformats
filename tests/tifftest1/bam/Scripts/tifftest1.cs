@@ -40,7 +40,7 @@ namespace tifftest1
 
             this.CreateHeaderCollection("$(packagedir)/source/*.h");
             var source = this.CreateCSourceCollection("$(packagedir)/source/*.c");
-            this.CompileAndLinkAgainst<tiff.LibTiff_staticExported>(source);
+            this.UseSDK<tiff.SDK>(source);
 
             source.PrivatePatch(settings =>
             {
