@@ -44,7 +44,7 @@ namespace tiff
             }
         }
 
-        protected override Bam.Core.TokenizedString OutputPath => this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/tif_config.h");
+        protected override Bam.Core.TokenizedString OutputPath => this.CreateTokenizedString("$(packagebuilddir)/$(moduleoutputdir)/tif_config.h");
 
         protected override string GuardString
         {

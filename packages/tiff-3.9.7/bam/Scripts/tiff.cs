@@ -31,39 +31,6 @@ using Bam.Core;
 namespace tiff
 {
     [Bam.Core.ModuleGroup("Thirdparty/tiff")]
-    class CopyStandardHeaders :
-        Publisher.Collation
-    {
-        protected override void
-        Init()
-        {
-            base.Init();
-
-            var publishRoot = this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders");
-
-            this.PublicPatch((settings, appliedTo) =>
-                {
-                    if (settings is C.ICommonPreprocessorSettings preprocessor)
-                    {
-                        preprocessor.IncludePaths.AddUnique(publishRoot);
-                    }
-                });
-
-            var headerPaths = new Bam.Core.StringArray
-            {
-                "tiff.h",
-                "tiffvers.h",
-                "tiffio.h"
-            };
-
-            foreach (var header in headerPaths)
-            {
-                this.IncludeFiles<CopyStandardHeaders>("$(packagedir)/libtiff/" + header, publishRoot, null);
-            }
-        }
-    }
-
-    [Bam.Core.ModuleGroup("Thirdparty/tiff")]
     class LibTiff :
         C.DynamicLibrary
     {
@@ -105,14 +72,6 @@ namespace tiff
                 source.SuppressWarningsDelegate(new Clang.WarningSuppression.LibTiff());
             }
 
-            /*
-            // note these dependencies are on SOURCE, as the headers are needed for compilation
-            var copyStandardHeaders = Bam.Core.Graph.Instance.FindReferencedModule<CopyStandardHeaders>();
-            source.DependsOn(copyStandardHeaders);
-
-            // export the public headers
-            this.UsePublicPatches(copyStandardHeaders);
-            */
             var generateConfig = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfigHeader>();
             source.DependsOn(generateConfig);
             source.UsePublicPatchesPrivately(generateConfig);
@@ -256,14 +215,6 @@ namespace tiff
                 source.SuppressWarningsDelegate(new Clang.WarningSuppression.LibTiff());
             }
 
-            /*
-            // note these dependencies are on SOURCE, as the headers are needed for compilation
-            var copyStandardHeaders = Bam.Core.Graph.Instance.FindReferencedModule<CopyStandardHeaders>();
-            source.DependsOn(copyStandardHeaders);
-
-            // export the public headers
-            this.UsePublicPatches(copyStandardHeaders);
-            */
             var generateConfig = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfigHeader>();
             source.DependsOn(generateConfig);
             source.UsePublicPatchesPrivately(generateConfig);
