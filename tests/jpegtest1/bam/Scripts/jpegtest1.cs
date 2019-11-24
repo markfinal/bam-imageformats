@@ -40,7 +40,7 @@ namespace jpegtest1
 
             this.CreateHeaderCollection("$(packagedir)/source/*.h");
             var source = this.CreateCSourceCollection("$(packagedir)/source/*.c");
-            this.CompileAndLinkAgainst<jpeg.JpegLibrary>(source);
+            this.CompileAndLinkAgainst<jpeg.JpegLibraryExported>(source);
 
             source.PrivatePatch(settings =>
             {
