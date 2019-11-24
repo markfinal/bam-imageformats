@@ -75,8 +75,11 @@ namespace tifftest1
             {
                 this.PrivatePatch(settings =>
                 {
-                    var linker = settings as C.ICommonLinkerSettings;
-                    linker.Libraries.AddUnique("-lm");
+                    if (settings is GccCommon.ICommonLinkerSettings gccLinker)
+                    {
+                        gccLinker.CanUseOrigin = true;
+                        gccLinker.RPath.AddUnique("$ORIGIN");
+                    }
                 });
             }
         }

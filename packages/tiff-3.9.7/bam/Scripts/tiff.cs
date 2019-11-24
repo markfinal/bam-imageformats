@@ -204,6 +204,9 @@ namespace tiff
                     {
                         var gccLinker = settings as GccCommon.ICommonLinkerSettings;
                         gccLinker.VersionScript = versionScript.InputPath;
+
+                        var linker = settings as C.ICommonLinkerSettings;
+                        linker.Libraries.AddUnique("-lm");
                     });
             }
         }
