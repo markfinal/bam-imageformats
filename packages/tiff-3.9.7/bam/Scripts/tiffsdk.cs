@@ -27,8 +27,6 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
-using Bam.Core;
-
 namespace tiff
 {
     [Bam.Core.ModuleGroup("Thirdparty/tiff")]
@@ -56,6 +54,6 @@ namespace tiff
 
         protected override Bam.Core.TokenizedStringArray HeaderFiles => this.headers;
         protected override Bam.Core.TypeArray LibraryModuleTypes => this.libraryTypes;
-        protected override TypeArray GeneratedHeaderTypes => this.genHeaderTypes;
+        protected override Bam.Core.TypeArray GeneratedHeaderTypes => this.genHeaderTypes;
     }
 }
