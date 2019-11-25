@@ -27,7 +27,6 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
-using Bam.Core;
 namespace jpegtest1
 {
     sealed class JPEGTest1 :
@@ -40,7 +39,7 @@ namespace jpegtest1
 
             this.CreateHeaderCollection("$(packagedir)/source/*.h");
             var source = this.CreateCSourceCollection("$(packagedir)/source/*.c");
-            this.CompileAndLinkAgainst<jpeg.JpegLibraryExported>(source);
+            this.UseSDK<jpeg.SDK>(source);
 
             source.PrivatePatch(settings =>
             {

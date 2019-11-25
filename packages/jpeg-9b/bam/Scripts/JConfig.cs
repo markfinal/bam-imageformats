@@ -44,7 +44,7 @@ namespace jpeg
             }
         }
 
-        protected override Bam.Core.TokenizedString OutputPath => this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders/jconfig.h");
+        protected override Bam.Core.TokenizedString OutputPath => this.CreateTokenizedString("$(packagebuilddir)/$(moduleoutputdir)/jconfig.h");
 
         protected override string GuardString
         {
@@ -80,6 +80,12 @@ namespace jpeg
                     return contents.ToString();
                 }
             }
+        }
+
+        public Bam.Core.TokenizedString
+        GetIncludeDir()
+        {
+            return this.IncludeDirectory;
         }
     }
 }

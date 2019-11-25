@@ -30,7 +30,7 @@
 namespace jpeg
 {
     [Bam.Core.ModuleGroup("Thirdparty/libjpeg")]
-    class JpegLibrary :
+    class JpegLibraryStatic :
         C.StaticLibrary
     {
         protected override void
@@ -57,34 +57,29 @@ namespace jpeg
                 source.SuppressWarningsDelegate(new Clang.WarningSuppression.JpegLibrary());
             }
 
-            // note these dependencies are on SOURCE, as the headers are needed for compilation
-            var copyStandardHeaders = Bam.Core.Graph.Instance.FindReferencedModule<CopyJpegStandardHeaders>();
             var generateConf = Bam.Core.Graph.Instance.FindReferencedModule<GenerateJConfigHeader>();
-            var generateMoreCfg = Bam.Core.Graph.Instance.FindReferencedModule<GenerateJMoreCfgHeader>();
-            source.DependsOn(copyStandardHeaders, generateConf, generateMoreCfg);
-
-            // export the public headers
-            this.UsePublicPatches(copyStandardHeaders);
+            source.DependsOn(generateConf);
+            source.UsePublicPatches(generateConf);
 
             source.PrivatePatch(settings =>
+            {
+                if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                 {
-                    if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
-                    {
-                        vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level4;
-                    }
-                    if (settings is ClangCommon.ICommonCompilerSettings clangCompiler)
-                    {
-                        clangCompiler.AllWarnings = true;
-                        clangCompiler.ExtraWarnings = true;
-                        clangCompiler.Pedantic = true;
-                    }
-                    if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
-                    {
-                        gccCompiler.AllWarnings = true;
-                        gccCompiler.ExtraWarnings = true;
-                        gccCompiler.Pedantic = true;
-                    }
-                });
+                    vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level4;
+                }
+                if (settings is ClangCommon.ICommonCompilerSettings clangCompiler)
+                {
+                    clangCompiler.AllWarnings = true;
+                    clangCompiler.ExtraWarnings = true;
+                    clangCompiler.Pedantic = true;
+                }
+                if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
+                {
+                    gccCompiler.AllWarnings = true;
+                    gccCompiler.ExtraWarnings = true;
+                    gccCompiler.Pedantic = true;
+                }
+            });
         }
     }
 }

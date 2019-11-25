@@ -29,8 +29,8 @@
 #endregion // License
 namespace jpeg
 {
-    class JpegLibraryExported :
-        JpegLibrary,
+    class JpegLibraryStaticExported :
+        JpegLibraryStatic,
         C.IExportableCModule
     {
         Bam.Core.Module.PublicPatchDelegate C.IExportableCModule.ExportPatch => (settings, appliedTo) =>

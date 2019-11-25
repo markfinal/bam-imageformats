@@ -30,34 +30,29 @@
 namespace jpeg
 {
     [Bam.Core.ModuleGroup("Thirdparty/libjpeg")]
-    class CopyJpegStandardHeaders :
-        Publisher.Collation
+    class SDK :
+        C.SDKTemplate
     {
-        protected override void
-        Init()
+        private readonly Bam.Core.TokenizedStringArray headers = new Bam.Core.TokenizedStringArray();
+        private readonly Bam.Core.TypeArray libraryTypes = new Bam.Core.TypeArray(typeof(JpegLibraryStatic));
+        private readonly Bam.Core.TypeArray genHeaderTypes = new Bam.Core.TypeArray(typeof(GenerateJConfigHeader));
+
+        public SDK()
         {
-            base.Init();
-
-            var publishRoot = this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders");
-
-            this.PublicPatch((settings, appliedTo) =>
-                {
-                    if (settings is C.ICommonPreprocessorSettings preprocessor)
-                    {
-                        preprocessor.IncludePaths.AddUnique(publishRoot);
-                    }
-                });
-
             var headerPaths = new Bam.Core.StringArray
             {
                 "jpeglib.h",
-                "jerror.h"
+                "jmorecfg.h"
             };
 
             foreach (var header in headerPaths)
             {
-                this.IncludeFiles<CopyJpegStandardHeaders>("$(packagedir)/" + header, publishRoot, null);
+                this.headers.Add(this.CreateTokenizedString("$(packagedir)/" + header));
             }
         }
+
+        protected override Bam.Core.TokenizedStringArray HeaderFiles => this.headers;
+        protected override Bam.Core.TypeArray LibraryModuleTypes => this.libraryTypes;
+        protected override Bam.Core.TypeArray GeneratedHeaderTypes => this.genHeaderTypes;
     }
 }
