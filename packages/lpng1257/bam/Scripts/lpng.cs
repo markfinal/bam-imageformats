@@ -45,11 +45,11 @@ namespace lpng
                 this.DependsOn(versionScript);
                 this.PrivatePatch(settings =>
                     {
-                        if (settings is GccCommon.ICommonLinkerSettings gccLinker)
+                        if (settings is C.ICommonLinkerSettingsLinux linuxLinker)
                         {
-                            gccLinker.VersionScript = versionScript.InputPath;
-                            gccLinker.CanUseOrigin = true;
-                            gccLinker.RPath.AddUnique("$ORIGIN");
+                            linuxLinker.VersionScript = versionScript.InputPath;
+                            linuxLinker.CanUseOrigin = true;
+                            linuxLinker.RPath.AddUnique("$ORIGIN");
                             var linker = settings as C.ICommonLinkerSettings;
                             linker.Libraries.Add("-lm");
                         }
