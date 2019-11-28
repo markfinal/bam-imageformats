@@ -48,8 +48,12 @@ namespace lpng
                         if (settings is C.ICommonLinkerSettingsLinux linuxLinker)
                         {
                             linuxLinker.VersionScript = versionScript.InputPath;
+                            linuxLinker.SharedObjectName = this.CreateTokenizedString("$(dynamicprefix)$(OutputName)$(sonameext)");
+
+                            // to find zlib
                             linuxLinker.CanUseOrigin = true;
                             linuxLinker.RPath.AddUnique("$ORIGIN");
+
                             var linker = settings as C.ICommonLinkerSettings;
                             linker.Libraries.Add("-lm");
                         }
