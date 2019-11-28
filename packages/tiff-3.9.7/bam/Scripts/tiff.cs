@@ -161,8 +161,9 @@ namespace tiff
                 this.DependsOn(versionScript);
                 this.PrivatePatch(settings =>
                     {
-                        var gccLinker = settings as GccCommon.ICommonLinkerSettings;
-                        gccLinker.VersionScript = versionScript.InputPath;
+                        var linuxLinker = settings as C.ICommonLinkerSettingsLinux;
+                        linuxLinker.VersionScript = versionScript.InputPath;
+                        linuxLinker.SharedObjectName = this.CreateTokenizedString("$(dynamicprefix)$(OutputName)$(sonameext)");
 
                         var linker = settings as C.ICommonLinkerSettings;
                         linker.Libraries.AddUnique("-lm");
