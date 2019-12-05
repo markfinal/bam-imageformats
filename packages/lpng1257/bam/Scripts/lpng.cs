@@ -70,6 +70,8 @@ namespace lpng
                 this.Macros[C.ModuleMacroNames.DynamicLibraryFileExtension] = Bam.Core.TokenizedString.Create(".so.0.$(PatchVersion).0", null);
             }
 
+            this.CreateHeaderCollection("$(packagedir)/*.h");
+
             var source = this.CreateCSourceCollection(
                 "$(packagedir)/*.c",
                 filter: new System.Text.RegularExpressions.Regex(@"^((?!.*example)(?!.*pngtest).*)$")
