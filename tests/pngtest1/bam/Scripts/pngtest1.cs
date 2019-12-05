@@ -30,7 +30,7 @@
 using Bam.Core;
 namespace pngtest1
 {
-    sealed class PNGTest1 :
+    class PNGTest1 :
         C.ConsoleApplication
     {
         protected override void
