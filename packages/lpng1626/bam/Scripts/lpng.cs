@@ -47,6 +47,17 @@ namespace lpng
                 // to match that in the CMakeLists.txt
                 this.Macros[C.ModuleMacroNames.SharedObjectSONameFileExtension] = Bam.Core.TokenizedString.Create(".so.$(MajorVersion)$(MinorVersion)", null);
                 this.Macros[C.ModuleMacroNames.DynamicLibraryFileExtension] = Bam.Core.TokenizedString.Create(".so.$(MajorVersion)$(MinorVersion).$(PatchVersion).0", null);
+
+                this.PrivatePatch(settings =>
+                {
+                    if (settings is C.ICommonLinkerSettingsLinux linuxLinker)
+                    {
+                        linuxLinker.SharedObjectName = this.CreateTokenizedString("$(dynamicprefix)$(OutputName)$(sonameext)");
+
+                        var linker = settings as C.ICommonLinkerSettings;
+                        linker.Libraries.Add("-lm");
+                    }
+                });
             }
 
             this.CreateHeaderCollection("$(packagedir)/*.h");

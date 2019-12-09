@@ -45,18 +45,14 @@ namespace lpng
                 this.UseSDK<SDK>(source);
                 this.UseSDK<zlib.SDK>(source);
 
-                /*
                 this.PrivatePatch(settings =>
                     {
-                        if (settings is GccCommon.ICommonLinkerSettings gccLinker)
+                        if (settings is C.ICommonLinkerSettingsLinux linuxLinker)
                         {
-                            gccLinker.CanUseOrigin = true;
-                            gccLinker.RPath.AddUnique("$ORIGIN");
-                            var linker = settings as C.ICommonLinkerSettings;
-                            linker.Libraries.AddUnique("-lm");
+                            linuxLinker.CanUseOrigin = true;
+                            linuxLinker.RPath.AddUnique("$ORIGIN");
                         }
                     });
-                    */
             }
         }
 
@@ -80,20 +76,18 @@ namespace lpng
                         preprocessor.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)/contrib/visupng"));
                     });
 
-                /*
                 this.PrivatePatch(settings =>
                     {
-                        if (settings is GccCommon.ICommonLinkerSettings gccLinker)
+                        if (settings is C.ICommonLinkerSettingsLinux linuxLinker)
                         {
-                            gccLinker.CanUseOrigin = true;
-                            gccLinker.RPath.AddUnique("$ORIGIN");
+                            linuxLinker.CanUseOrigin = true;
+                            linuxLinker.RPath.AddUnique("$ORIGIN");
                             var linker = settings as C.ICommonLinkerSettings;
                             linker.Libraries.AddUnique("-lm");
                         }
                     });
-                    */
+                }
             }
-        }
 
         [Bam.Core.ModuleGroup("Thirdparty/libpng/tests")]
         class PNGstest :
@@ -114,18 +108,16 @@ namespace lpng
                         preprocessor.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)/contrib/visupng"));
                     });
 
-                /*
                 this.PrivatePatch(settings =>
                     {
-                        if (settings is GccCommon.ICommonLinkerSettings gccLinker)
+                        if (settings is C.ICommonLinkerSettingsLinux linuxLinker)
                         {
-                            gccLinker.CanUseOrigin = true;
-                            gccLinker.RPath.AddUnique("$ORIGIN");
+                            linuxLinker.CanUseOrigin = true;
+                            linuxLinker.RPath.AddUnique("$ORIGIN");
                             var linker = settings as C.ICommonLinkerSettings;
                             linker.Libraries.AddUnique("-lm");
                         }
                     });
-                    */
             }
         }
 
@@ -148,18 +140,14 @@ namespace lpng
                         preprocessor.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)/contrib/visupng"));
                     });
 
-                /*
                 this.PrivatePatch(settings =>
                     {
-                        if (settings is GccCommon.ICommonLinkerSettings gccLinker)
+                        if (settings is C.ICommonLinkerSettingsLinux linuxLinker)
                         {
-                            gccLinker.CanUseOrigin = true;
-                            gccLinker.RPath.AddUnique("$ORIGIN");
-                            var linker = settings as C.ICommonLinkerSettings;
-                            linker.Libraries.AddUnique("-lm");
+                            linuxLinker.CanUseOrigin = true;
+                            linuxLinker.RPath.AddUnique("$ORIGIN");
                         }
                     });
-                    */
             }
         }
 
@@ -182,18 +170,14 @@ namespace lpng
                         preprocessor.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)/contrib/visupng"));
                     });
 
-                /*
                 this.PrivatePatch(settings =>
                     {
-                        if (settings is GccCommon.ICommonLinkerSettings gccLinker)
+                        if (settings is C.ICommonLinkerSettingsLinux linuxLinker)
                         {
-                            gccLinker.CanUseOrigin = true;
-                            gccLinker.RPath.AddUnique("$ORIGIN");
-                            var linker = settings as C.ICommonLinkerSettings;
-                            linker.Libraries.AddUnique("-lm");
+                            linuxLinker.CanUseOrigin = true;
+                            linuxLinker.RPath.AddUnique("$ORIGIN");
                         }
                     });
-                    */
             }
         }
 
