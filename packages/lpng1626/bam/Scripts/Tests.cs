@@ -27,13 +27,12 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
-using Bam.Core;
 using System.Linq;
 namespace lpng
 {
     namespace tests
     {
-        [ModuleGroup("Thirdparty/libpng/tests")]
+        [Bam.Core.ModuleGroup("Thirdparty/libpng/tests")]
         class PNGTest :
             C.ConsoleApplication
         {
@@ -43,8 +42,10 @@ namespace lpng
                 base.Init();
 
                 var source = this.CreateCSourceCollection("$(packagedir)/pngtest.c");
-                this.CompileAndLinkAgainst<PNGLibrary>(source);
+                this.UseSDK<SDK>(source);
+                this.UseSDK<zlib.SDK>(source);
 
+                /*
                 this.PrivatePatch(settings =>
                     {
                         if (settings is GccCommon.ICommonLinkerSettings gccLinker)
@@ -55,10 +56,11 @@ namespace lpng
                             linker.Libraries.AddUnique("-lm");
                         }
                     });
+                    */
             }
         }
 
-        [ModuleGroup("Thirdparty/libpng/tests")]
+        [Bam.Core.ModuleGroup("Thirdparty/libpng/tests")]
         class PNGValid :
             C.ConsoleApplication
         {
@@ -68,7 +70,8 @@ namespace lpng
                 base.Init();
 
                 var source = this.CreateCSourceCollection("$(packagedir)/contrib/libtests/pngvalid.c");
-                this.CompileAndLinkAgainst<PNGLibrary>(source);
+                this.UseSDK<SDK>(source);
+                this.UseSDK<zlib.SDK>(source);
 
                 source.PrivatePatch(settings =>
                     {
@@ -77,6 +80,7 @@ namespace lpng
                         preprocessor.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)/contrib/visupng"));
                     });
 
+                /*
                 this.PrivatePatch(settings =>
                     {
                         if (settings is GccCommon.ICommonLinkerSettings gccLinker)
@@ -87,10 +91,11 @@ namespace lpng
                             linker.Libraries.AddUnique("-lm");
                         }
                     });
+                    */
             }
         }
 
-        [ModuleGroup("Thirdparty/libpng/tests")]
+        [Bam.Core.ModuleGroup("Thirdparty/libpng/tests")]
         class PNGstest :
             C.ConsoleApplication
         {
@@ -100,7 +105,7 @@ namespace lpng
                 base.Init();
 
                 var source = this.CreateCSourceCollection("$(packagedir)/contrib/libtests/pngstest.c");
-                this.CompileAndLinkAgainst<PNGLibrary>(source);
+                this.UseSDK<SDK>(source);
 
                 source.PrivatePatch(settings =>
                     {
@@ -109,6 +114,7 @@ namespace lpng
                         preprocessor.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)/contrib/visupng"));
                     });
 
+                /*
                 this.PrivatePatch(settings =>
                     {
                         if (settings is GccCommon.ICommonLinkerSettings gccLinker)
@@ -119,10 +125,11 @@ namespace lpng
                             linker.Libraries.AddUnique("-lm");
                         }
                     });
+                    */
             }
         }
 
-        [ModuleGroup("Thirdparty/libpng/tests")]
+        [Bam.Core.ModuleGroup("Thirdparty/libpng/tests")]
         class PNGunknown :
             C.ConsoleApplication
         {
@@ -132,7 +139,7 @@ namespace lpng
                 base.Init();
 
                 var source = this.CreateCSourceCollection("$(packagedir)/contrib/libtests/pngunknown.c");
-                this.CompileAndLinkAgainst<PNGLibrary>(source);
+                this.UseSDK<SDK>(source);
 
                 source.PrivatePatch(settings =>
                     {
@@ -141,6 +148,7 @@ namespace lpng
                         preprocessor.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)/contrib/visupng"));
                     });
 
+                /*
                 this.PrivatePatch(settings =>
                     {
                         if (settings is GccCommon.ICommonLinkerSettings gccLinker)
@@ -151,10 +159,11 @@ namespace lpng
                             linker.Libraries.AddUnique("-lm");
                         }
                     });
+                    */
             }
         }
 
-        [ModuleGroup("Thirdparty/libpng/tests")]
+        [Bam.Core.ModuleGroup("Thirdparty/libpng/tests")]
         class PNGimage :
             C.ConsoleApplication
         {
@@ -164,7 +173,7 @@ namespace lpng
                 base.Init();
 
                 var source = this.CreateCSourceCollection("$(packagedir)/contrib/libtests/pngimage.c");
-                this.CompileAndLinkAgainst<PNGLibrary>(source);
+                this.UseSDK<SDK>(source);
 
                 source.PrivatePatch(settings =>
                     {
@@ -173,6 +182,7 @@ namespace lpng
                         preprocessor.IncludePaths.AddUnique(this.CreateTokenizedString("$(packagedir)/contrib/visupng"));
                     });
 
+                /*
                 this.PrivatePatch(settings =>
                     {
                         if (settings is GccCommon.ICommonLinkerSettings gccLinker)
@@ -183,6 +193,7 @@ namespace lpng
                             linker.Libraries.AddUnique("-lm");
                         }
                     });
+                    */
             }
         }
 

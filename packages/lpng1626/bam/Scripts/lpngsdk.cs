@@ -27,28 +27,18 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
-using Bam.Core;
 namespace lpng
 {
-    [ModuleGroup("Thirdparty/libpng")]
-    class CopyPngStandardHeaders :
-        Publisher.Collation
+    [Bam.Core.ModuleGroup("Thirdparty/libpng")]
+    class SDK :
+        C.SDKTemplate
     {
-        protected override void
-        Init()
+        private readonly Bam.Core.TokenizedStringArray headers = new Bam.Core.TokenizedStringArray();
+        private readonly Bam.Core.TypeArray libraryTypes = new Bam.Core.TypeArray(typeof(PNGLibrary));
+        private readonly Bam.Core.TypeArray generatedHeaderTypes = new Bam.Core.TypeArray(typeof(GeneratePngConfHeader));
+
+        public SDK()
         {
-            base.Init();
-
-            var publishRoot = this.CreateTokenizedString("$(packagebuilddir)/$(config)/PublicHeaders");
-
-            this.PublicPatch((settings, appliedTo) =>
-                {
-                    if (settings is C.ICommonPreprocessorSettings preprocessor)
-                    {
-                        preprocessor.IncludePaths.AddUnique(publishRoot);
-                    }
-                });
-
             var headerPaths = new Bam.Core.StringArray
             {
                 "png.h",
@@ -57,8 +47,12 @@ namespace lpng
 
             foreach (var header in headerPaths)
             {
-                this.IncludeFiles<CopyPngStandardHeaders>("$(packagedir)/" + header, publishRoot, null);
+                this.headers.Add(this.CreateTokenizedString("$(packagedir)/" + header));
             }
         }
+
+        protected override Bam.Core.TokenizedStringArray HeaderFiles => this.headers;
+        protected override Bam.Core.TypeArray LibraryModuleTypes => this.libraryTypes;
+        protected override Bam.Core.TypeArray GeneratedHeaderTypes => this.generatedHeaderTypes;
     }
 }

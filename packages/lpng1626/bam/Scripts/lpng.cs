@@ -30,15 +30,10 @@
 using Bam.Core;
 namespace lpng
 {
-    [ModuleGroup("Thirdparty/libpng")]
+    [Bam.Core.ModuleGroup("Thirdparty/libpng")]
     class PNGLibrary :
-        C.DynamicLibrary,
-        C.IExportableCModule
+        C.DynamicLibrary
     {
-        Bam.Core.Module.PublicPatchDelegate C.IExportableCModule.ExportPatch => (settings, appliedTo) =>
-        {
-        };
-
         protected override void
         Init()
         {
@@ -53,6 +48,8 @@ namespace lpng
                 this.Macros[C.ModuleMacroNames.SharedObjectSONameFileExtension] = Bam.Core.TokenizedString.Create(".so.$(MajorVersion)$(MinorVersion)", null);
                 this.Macros[C.ModuleMacroNames.DynamicLibraryFileExtension] = Bam.Core.TokenizedString.Create(".so.$(MajorVersion)$(MinorVersion).$(PatchVersion).0", null);
             }
+
+            this.CreateHeaderCollection("$(packagedir)/*.h");
 
             var source = this.CreateCSourceCollection(
                 "$(packagedir)/*.c",
@@ -72,14 +69,11 @@ namespace lpng
                 source.SuppressWarningsDelegate(new Clang.WarningSuppression.PNGLibrary());
             }
 
-            // note these dependencies are on SOURCE, as the headers are needed for compilation
-            var copyStandardHeaders = Graph.Instance.FindReferencedModule<CopyPngStandardHeaders>();
             var generateConf = Graph.Instance.FindReferencedModule<GeneratePngConfHeader>();
-            source.DependsOn(copyStandardHeaders, generateConf);
+            source.DependsOn(generateConf);
+            source.UsePublicPatches(generateConf);
 
-            // export the public headers
-            this.UsePublicPatches(copyStandardHeaders);
-
+            // zlib dependency is now not exposed in public headers
             this.UseSDK<zlib.SDK>(source);
 
             source.PrivatePatch(settings =>
