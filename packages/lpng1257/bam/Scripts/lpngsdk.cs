@@ -33,24 +33,19 @@ namespace lpng
     class SDK :
         C.SDKTemplate
     {
-        private readonly Bam.Core.TokenizedStringArray headers = new Bam.Core.TokenizedStringArray();
+        private readonly Bam.Core.StringArray headers;
         private readonly Bam.Core.TypeArray libraryTypes = new Bam.Core.TypeArray(typeof(PNGLibrary));
 
         public SDK()
         {
-            var headerPaths = new Bam.Core.StringArray
+            this.headers = new Bam.Core.StringArray
             {
                 "png.h",
                 "pngconf.h"
             };
-
-            foreach (var header in headerPaths)
-            {
-                this.headers.Add(this.CreateTokenizedString("$(packagedir)/" + header));
-            }
         }
 
-        protected override Bam.Core.TokenizedStringArray HeaderFiles => this.headers;
+        protected override Bam.Core.StringArray HeaderFiles => this.headers;
         protected override Bam.Core.TypeArray LibraryModuleTypes => this.libraryTypes;
     }
 }
