@@ -66,7 +66,6 @@ namespace tiff
             source.DependsOn(generateConf);
             source.UsePublicPatchesPrivately(generateConf);
 
-            /*
             source.PrivatePatch(settings =>
                 {
                     if (settings is C.ICOnlyCompilerSettings cCompiler)
@@ -74,7 +73,6 @@ namespace tiff
                         cCompiler.LanguageStandard = C.ELanguageStandard.C99; // some C++ style comments
                     }
                 });
-                */
 
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
@@ -126,16 +124,17 @@ namespace tiff
             {
                 source.PrivatePatch(settings =>
                     {
-                        /*
-                        // TODO: can this be less brute force?
-                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
-                        clangCompiler.Visibility = ClangCommon.EVisibility.Default;
-                        */
                         if (settings is ClangCommon.ICommonCompilerSettings clangCompiler)
                         {
                             clangCompiler.AllWarnings = true;
                             clangCompiler.ExtraWarnings = true;
                             clangCompiler.Pedantic = true;
+
+                            if (this is C.IDynamicLibrary)
+                            {
+                                // enable brute-force visibility
+                                clangCompiler.Visibility = ClangCommon.EVisibility.Default;
+                            }
                         }
                     });
             }
@@ -143,15 +142,17 @@ namespace tiff
             {
                 source.PrivatePatch(settings =>
                     {
-                        /*
-                        var gccCompiler = settings as GccCommon.ICommonCompilerSettings;
-                        gccCompiler.Visibility = GccCommon.EVisibility.Default;
-                        */
                         if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
                         {
                             gccCompiler.AllWarnings = true;
                             gccCompiler.ExtraWarnings = true;
                             gccCompiler.Pedantic = true;
+
+                            if (this is C.IDynamicLibrary)
+                            {
+                                // enable brute-force visibility
+                                gccCompiler.Visibility = GccCommon.EVisibility.Default;
+                            }
                         }
                     });
 

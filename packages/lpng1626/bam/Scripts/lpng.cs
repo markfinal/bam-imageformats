@@ -82,30 +82,37 @@ namespace lpng
                     {
                         compiler.WarningsAsErrors = false;
                     }
-                    if (settings is C.ICommonPreprocessorSettings preprocessor)
-                    {
-                        preprocessor.PreprocessorDefines.Add("PNG_BUILD_DLL");
-                    }
-
                     if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                     {
                         vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level4;
+                        if (this is C.IDynamicLibrary && settings is C.ICommonPreprocessorSettings preprocessor)
+                        {
+                            preprocessor.PreprocessorDefines.Add("PNG_BUILD_DLL");
+                        }
                     }
                     if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
                     {
                         gccCompiler.AllWarnings = true;
                         gccCompiler.ExtraWarnings = true;
                         gccCompiler.Pedantic = true;
-                        //gccCompiler.Visibility = GccCommon.EVisibility.Default;
+
+                        if (this is C.IDynamicLibrary)
+                        {
+                            // enable brute force export
+                            gccCompiler.Visibility = GccCommon.EVisibility.Default;
+                        }
                     }
                     if (settings is ClangCommon.ICommonCompilerSettings clangCompiler)
                     {
                         clangCompiler.AllWarnings = true;
                         clangCompiler.ExtraWarnings = true;
                         clangCompiler.Pedantic = true;
-                        //clangCompiler.Visibility = ClangCommon.EVisibility.Default;
+                        if (this is C.IDynamicLibrary)
+                        {
+                            // enable brute force export
+                            clangCompiler.Visibility = ClangCommon.EVisibility.Default;
+                        }
                     }
-
                     /*
                     if (this.BuildEnvironment.Configuration == EConfiguration.Debug)
                     {

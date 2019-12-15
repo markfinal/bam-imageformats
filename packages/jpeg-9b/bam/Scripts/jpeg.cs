@@ -50,6 +50,10 @@ namespace jpeg
 
             source.PrivatePatch(settings =>
             {
+                if (settings is C.ICommonCompilerSettings compiler)
+                {
+                    compiler.WarningsAsErrors = false;
+                }
                 if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                 {
                     vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level4;
