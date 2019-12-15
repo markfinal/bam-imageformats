@@ -50,6 +50,8 @@ namespace lpng
                         {
                             linuxLinker.VersionScript = versionScript.InputPath;
                             linuxLinker.SharedObjectName = this.CreateTokenizedString("$(dynamicprefix)$(OutputName)$(sonameext)");
+                            linuxLinker.CanUseOrigin = true;
+                            linuxLinker.RPath.AddUnique("$ORIGIN");
 
                             if (settings is C.ICommonLinkerSettings linker)
                             {

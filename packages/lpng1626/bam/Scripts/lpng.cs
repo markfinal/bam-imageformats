@@ -39,9 +39,6 @@ namespace lpng
         {
             base.Init();
 
-            this.SetSemanticVersion(1, 6, 26);
-            this.Macros[Bam.Core.ModuleMacroNames.OutputName] = this.CreateTokenizedString("png$(MajorVersion)$(MinorVersion)");
-
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
             {
                 // to match that in the CMakeLists.txt
@@ -53,6 +50,8 @@ namespace lpng
                     if (settings is C.ICommonLinkerSettingsLinux linuxLinker)
                     {
                         linuxLinker.SharedObjectName = this.CreateTokenizedString("$(dynamicprefix)$(OutputName)$(sonameext)");
+                        linuxLinker.CanUseOrigin = true;
+                        linuxLinker.RPath.AddUnique("$ORIGIN");
 
                         if (settings is C.ICommonLinkerSettings linker)
                         {
@@ -61,6 +60,9 @@ namespace lpng
                     }
                 });
             }
+
+            this.SetSemanticVersion(1, 6, 26);
+            this.Macros[Bam.Core.ModuleMacroNames.OutputName] = this.CreateTokenizedString("png$(MajorVersion)$(MinorVersion)");
 
             this.CreateHeaderCollection("$(packagedir)/*.h");
 
