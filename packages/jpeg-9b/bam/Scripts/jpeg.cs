@@ -44,19 +44,6 @@ namespace jpeg
             var source = this.CreateCSourceCollection("$(packagedir)/j*.c",
                 filter: new System.Text.RegularExpressions.Regex(@"^((?!.*jmemname.c)(?!.*jmemnobs.c)(?!.*jmemdos.c)(?!.*jmemmac.c)(?!.*jpegtran.c).*)$"));
 
-            if (source.Compiler is VisualCCommon.CompilerBase)
-            {
-                source.SuppressWarningsDelegate(new VisualC.WarningSuppression.JpegLibrary());
-            }
-            else if (source.Compiler is GccCommon.CompilerBase)
-            {
-                source.SuppressWarningsDelegate(new Gcc.WarningSuppression.JpegLibrary());
-            }
-            else if (source.Compiler is ClangCommon.CompilerBase)
-            {
-                source.SuppressWarningsDelegate(new Clang.WarningSuppression.JpegLibrary());
-            }
-
             var generateConf = Bam.Core.Graph.Instance.FindReferencedModule<GenerateJConfigHeader>();
             source.DependsOn(generateConf);
             source.UsePublicPatches(generateConf);

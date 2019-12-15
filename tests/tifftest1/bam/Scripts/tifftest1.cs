@@ -44,6 +44,10 @@ namespace tifftest1
 
             source.PrivatePatch(settings =>
             {
+                if (settings is C.ICommonCompilerSettings compiler)
+                {
+                    compiler.WarningsAsErrors = true;
+                }
                 if (settings is ClangCommon.ICommonCompilerSettings clangCompiler)
                 {
                     clangCompiler.AllWarnings = true;
@@ -66,22 +70,21 @@ namespace tifftest1
                 {
                     vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level4;
 
-                    var preprocessor = settings as C.ICommonPreprocessorSettings;
-                    preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
+                    if (settings is C.ICommonPreprocessorSettings preprocessor)
+                    {
+                        preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
+                    }
                 }
             });
 
-            if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
+            this.PrivatePatch(settings =>
             {
-                this.PrivatePatch(settings =>
+                if (settings is C.ICommonLinkerSettingsLinux linuxLinker)
                 {
-                    if (settings is C.ICommonLinkerSettingsLinux linuxLinker)
-                    {
-                        linuxLinker.CanUseOrigin = true;
-                        linuxLinker.RPath.AddUnique("$ORIGIN");
-                    }
-                });
-            }
+                    linuxLinker.CanUseOrigin = true;
+                    linuxLinker.RPath.AddUnique("$ORIGIN");
+                }
+            });
         }
     }
 

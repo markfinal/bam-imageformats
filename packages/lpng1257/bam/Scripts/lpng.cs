@@ -51,8 +51,10 @@ namespace lpng
                             linuxLinker.VersionScript = versionScript.InputPath;
                             linuxLinker.SharedObjectName = this.CreateTokenizedString("$(dynamicprefix)$(OutputName)$(sonameext)");
 
-                            var linker = settings as C.ICommonLinkerSettings;
-                            linker.Libraries.Add("-lm");
+                            if (settings is C.ICommonLinkerSettings linker)
+                            {
+                                linker.Libraries.Add("-lm");
+                            }
                         }
                     });
             }
@@ -74,52 +76,53 @@ namespace lpng
                 filter: new System.Text.RegularExpressions.Regex(@"^((?!.*example)(?!.*pngtest).*)$")
             );
 
-            if (source.Compiler is VisualCCommon.CompilerBase)
-            {
-                source.SuppressWarningsDelegate(new VisualC.WarningSuppression.PNGLibrary());
-            }
-            else if (source.Compiler is GccCommon.CompilerBase)
-            {
-                source.SuppressWarningsDelegate(new Gcc.WarningSuppression.PNGLibrary());
-            }
-            else if (source.Compiler is ClangCommon.CompilerBase)
-            {
-                source.SuppressWarningsDelegate(new Clang.WarningSuppression.PNGLibrary());
-            }
-
             this.UseSDKPublicly<zlib.SDK>(source); // png.h requires zlib.h
 
             source.PrivatePatch(settings =>
                 {
-                    var preprocessor = settings as C.ICommonPreprocessorSettings;
+                    if (this is C.IDynamicLibrary)
+                    {
+                        if (settings is C.ICommonPreprocessorSettings preprocessor)
+                        {
+                            preprocessor.PreprocessorDefines.Add("PNG_BUILD_DLL");
+                            preprocessor.PreprocessorDefines.Add("PNG_NO_MODULEDEF");
+                        }
+                    }
+
+                    if (settings is C.ICommonCompilerSettings compiler)
+                    {
+                        compiler.WarningsAsErrors = false;
+                    }
+                    //var preprocessor = settings as C.ICommonPreprocessorSettings;
 
                     if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                     {
                         vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level4;
+                        /*
                         preprocessor.PreprocessorDefines.Add("PNG_BUILD_DLL");
                         preprocessor.PreprocessorDefines.Add("PNG_NO_MODULEDEF");
+                        */
                     }
-
                     if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
                     {
                         gccCompiler.AllWarnings = true;
                         gccCompiler.ExtraWarnings = true;
-                        gccCompiler.Pedantic = false;
-                        gccCompiler.Visibility = GccCommon.EVisibility.Default;
+                        gccCompiler.Pedantic = true;
+                        //gccCompiler.Visibility = GccCommon.EVisibility.Default;
                     }
-
                     if (settings is ClangCommon.ICommonCompilerSettings clangCompiler)
                     {
                         clangCompiler.AllWarnings = true;
                         clangCompiler.ExtraWarnings = true;
                         clangCompiler.Pedantic = true;
-                        clangCompiler.Visibility = ClangCommon.EVisibility.Default;
+                        //clangCompiler.Visibility = ClangCommon.EVisibility.Default;
                     }
-
+                    /*
                     if (this.BuildEnvironment.Configuration == EConfiguration.Debug)
                     {
                         preprocessor.PreprocessorDefines.Add("PNG_DEBUG");
                     }
+                    */
                 });
         }
     }

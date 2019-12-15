@@ -44,6 +44,10 @@ namespace pngtest1
 
             source.PrivatePatch(settings =>
             {
+                if (settings is C.ICommonCompilerSettings compiler)
+                {
+                    compiler.WarningsAsErrors = true;
+                }
                 if (settings is ClangCommon.ICommonCompilerSettings clangCompiler)
                 {
                     clangCompiler.AllWarnings = true;

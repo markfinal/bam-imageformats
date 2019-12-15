@@ -59,19 +59,6 @@ namespace tiff
                 source.AddFiles("$(packagedir)/libtiff/tif_unix.c");
             }
 
-            if (source.Compiler is VisualCCommon.CompilerBase)
-            {
-                source.SuppressWarningsDelegate(new VisualC.WarningSuppression.LibTiff());
-            }
-            else if (source.Compiler is GccCommon.CompilerBase)
-            {
-                source.SuppressWarningsDelegate(new Gcc.WarningSuppression.LibTiff());
-            }
-            else if (source.Compiler is ClangCommon.CompilerBase)
-            {
-                source.SuppressWarningsDelegate(new Clang.WarningSuppression.LibTiff());
-            }
-
             var generateConfig = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfigHeader>();
             source.DependsOn(generateConfig);
             source.UsePublicPatchesPrivately(generateConfig);
@@ -79,36 +66,43 @@ namespace tiff
             source.DependsOn(generateConf);
             source.UsePublicPatchesPrivately(generateConf);
 
+            /*
             source.PrivatePatch(settings =>
                 {
-                    var cCompiler = settings as C.ICOnlyCompilerSettings;
-                    cCompiler.LanguageStandard = C.ELanguageStandard.C99; // some C++ style comments
+                    if (settings is C.ICOnlyCompilerSettings cCompiler)
+                    {
+                        cCompiler.LanguageStandard = C.ELanguageStandard.C99; // some C++ style comments
+                    }
                 });
+                */
 
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
                 source.PrivatePatch(settings =>
                     {
-                        var preprocessor = settings as C.ICommonPreprocessorSettings;
-                        preprocessor.PreprocessorDefines.Add("HAVE_FCNTL_H");
-                        preprocessor.PreprocessorDefines.Add("USE_WIN32_FILEIO"); // see tiffio.h
+                        /*
+                        if (settings is C.ICommonPreprocessorSettings preprocessor)
+                        {
+                            preprocessor.PreprocessorDefines.Add("HAVE_FCNTL_H");
+                            preprocessor.PreprocessorDefines.Add("USE_WIN32_FILEIO"); // see tiffio.h
 
-                        // TODO: expose this as a configuration option
-                        // the alternative is TIF_PLATFORM_WINDOWED
-                        preprocessor.PreprocessorDefines.Add("TIF_PLATFORM_CONSOLE");
-
-                        var winCompiler = settings as C.ICommonCompilerSettingsWin;
-                        winCompiler.CharacterSet = C.ECharacterSet.NotSet;
-
+                            // TODO: expose this as a configuration option
+                            // the alternative is TIF_PLATFORM_WINDOWED
+                            preprocessor.PreprocessorDefines.Add("TIF_PLATFORM_CONSOLE");
+                        }
+                        if (settings is C.ICommonCompilerSettingsWin winCompiler)
+                        {
+                            winCompiler.CharacterSet = C.ECharacterSet.NotSet;
+                        }
+                        */
                         if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                         {
-                            vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level2;
+                            vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level4;
                         }
-
                         if (settings is MingwCommon.ICommonCompilerSettings mingwCompiler)
                         {
-                            mingwCompiler.AllWarnings = false;
-                            mingwCompiler.ExtraWarnings = false;
+                            mingwCompiler.AllWarnings = true;
+                            mingwCompiler.ExtraWarnings = true;
                             mingwCompiler.Pedantic = true;
                         }
                     });
@@ -117,56 +111,64 @@ namespace tiff
                     {
                         if (settings is VisualCCommon.ICommonLinkerSettings)
                         {
-                            var linker = settings as C.ICommonLinkerSettings;
-                            linker.Libraries.Add("USER32.lib");
+                            if (settings is C.ICommonLinkerSettings linker)
+                            {
+                                linker.Libraries.Add("USER32.lib");
+                            }
                         }
-
-                        var winLinker = settings as C.ICommonLinkerSettingsWin;
-                        winLinker.ExportDefinitionFile = this.CreateTokenizedString("$(packagedir)/libtiff/libtiff.def");
+                        if (settings is C.ICommonLinkerSettingsWin winLinker)
+                        {
+                            winLinker.ExportDefinitionFile = this.CreateTokenizedString("$(packagedir)/libtiff/libtiff.def");
+                        }
                     });
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.OSX))
             {
                 source.PrivatePatch(settings =>
                     {
-                        var compiler = settings as C.ICommonCompilerSettings;
-                        compiler.DisableWarnings.AddUnique("int-to-void-pointer-cast");
-
+                        /*
                         // TODO: can this be less brute force?
                         var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
                         clangCompiler.Visibility = ClangCommon.EVisibility.Default;
-
-                        clangCompiler.AllWarnings = true;
-                        clangCompiler.ExtraWarnings = true;
-                        clangCompiler.Pedantic = true;
+                        */
+                        if (settings is ClangCommon.ICommonCompilerSettings clangCompiler)
+                        {
+                            clangCompiler.AllWarnings = true;
+                            clangCompiler.ExtraWarnings = true;
+                            clangCompiler.Pedantic = true;
+                        }
                     });
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
             {
                 source.PrivatePatch(settings =>
                     {
-                        var compiler = settings as C.ICommonCompilerSettings;
-                        compiler.DisableWarnings.AddUnique("pointer-to-int-cast");
-                        compiler.DisableWarnings.AddUnique("int-to-pointer-cast");
-
+                        /*
                         var gccCompiler = settings as GccCommon.ICommonCompilerSettings;
                         gccCompiler.Visibility = GccCommon.EVisibility.Default;
-
-                        gccCompiler.AllWarnings = false;
-                        gccCompiler.ExtraWarnings = false;
-                        gccCompiler.Pedantic = true;
+                        */
+                        if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
+                        {
+                            gccCompiler.AllWarnings = true;
+                            gccCompiler.ExtraWarnings = true;
+                            gccCompiler.Pedantic = true;
+                        }
                     });
 
                 var versionScript = Bam.Core.Graph.Instance.FindReferencedModule<VersionScript>();
                 this.DependsOn(versionScript);
                 this.PrivatePatch(settings =>
                     {
-                        var linuxLinker = settings as C.ICommonLinkerSettingsLinux;
-                        linuxLinker.VersionScript = versionScript.InputPath;
-                        linuxLinker.SharedObjectName = this.CreateTokenizedString("$(dynamicprefix)$(OutputName)$(sonameext)");
+                        if (settings is C.ICommonLinkerSettingsLinux linuxLinker)
+                        {
+                            linuxLinker.VersionScript = versionScript.InputPath;
+                            linuxLinker.SharedObjectName = this.CreateTokenizedString("$(dynamicprefix)$(OutputName)$(sonameext)");
+                        }
 
-                        var linker = settings as C.ICommonLinkerSettings;
-                        linker.Libraries.AddUnique("-lm");
+                        if (settings is C.ICommonLinkerSettings linker)
+                        {
+                            linker.Libraries.AddUnique("-lm");
+                        }
                     });
             }
         }
@@ -203,19 +205,6 @@ namespace tiff
                 source.AddFiles("$(packagedir)/libtiff/tif_unix.c");
             }
 
-            if (source.Compiler is VisualCCommon.CompilerBase)
-            {
-                source.SuppressWarningsDelegate(new VisualC.WarningSuppression.LibTiff());
-            }
-            else if (source.Compiler is GccCommon.CompilerBase)
-            {
-                source.SuppressWarningsDelegate(new Gcc.WarningSuppression.LibTiff());
-            }
-            else if (source.Compiler is ClangCommon.CompilerBase)
-            {
-                source.SuppressWarningsDelegate(new Clang.WarningSuppression.LibTiff());
-            }
-
             var generateConfig = Bam.Core.Graph.Instance.FindReferencedModule<GenerateConfigHeader>();
             source.DependsOn(generateConfig);
             source.UsePublicPatchesPrivately(generateConfig);
@@ -223,36 +212,41 @@ namespace tiff
             source.DependsOn(generateConf);
             source.UsePublicPatchesPrivately(generateConf);
 
+            /*
             source.PrivatePatch(settings =>
                 {
                     var cCompiler = settings as C.ICOnlyCompilerSettings;
                     cCompiler.LanguageStandard = C.ELanguageStandard.C99; // some C++ style comments
                 });
+                */
 
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
             {
                 source.PrivatePatch(settings =>
                     {
-                        var preprocessor = settings as C.ICommonPreprocessorSettings;
-                        preprocessor.PreprocessorDefines.Add("HAVE_FCNTL_H");
-                        preprocessor.PreprocessorDefines.Add("USE_WIN32_FILEIO"); // see tiffio.h
+                        /*
+                        if (settings is C.ICommonPreprocessorSettings preprocessor)
+                        {
+                            preprocessor.PreprocessorDefines.Add("HAVE_FCNTL_H");
+                            preprocessor.PreprocessorDefines.Add("USE_WIN32_FILEIO"); // see tiffio.h
 
-                        // TODO: expose this as a configuration option
-                        // the alternative is TIF_PLATFORM_WINDOWED
-                        preprocessor.PreprocessorDefines.Add("TIF_PLATFORM_CONSOLE");
-
-                        var winCompiler = settings as C.ICommonCompilerSettingsWin;
-                        winCompiler.CharacterSet = C.ECharacterSet.NotSet;
-
+                            // TODO: expose this as a configuration option
+                            // the alternative is TIF_PLATFORM_WINDOWED
+                            preprocessor.PreprocessorDefines.Add("TIF_PLATFORM_CONSOLE");
+                        }
+                        if (settings is C.ICommonCompilerSettingsWin winCompiler)
+                        {
+                            winCompiler.CharacterSet = C.ECharacterSet.NotSet;
+                        }
+                        */
                         if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                         {
-                            vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level2;
+                            vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level4;
                         }
-
                         if (settings is MingwCommon.ICommonCompilerSettings mingwCompiler)
                         {
-                            mingwCompiler.AllWarnings = false;
-                            mingwCompiler.ExtraWarnings = false;
+                            mingwCompiler.AllWarnings = true;
+                            mingwCompiler.ExtraWarnings = true;
                             mingwCompiler.Pedantic = true;
                         }
                     });
@@ -261,27 +255,24 @@ namespace tiff
             {
                 source.PrivatePatch(settings =>
                     {
-                        var compiler = settings as C.ICommonCompilerSettings;
-                        compiler.DisableWarnings.AddUnique("int-to-void-pointer-cast");
-
-                        var clangCompiler = settings as ClangCommon.ICommonCompilerSettings;
-                        clangCompiler.AllWarnings = true;
-                        clangCompiler.ExtraWarnings = true;
-                        clangCompiler.Pedantic = true;
+                        if (settings is ClangCommon.ICommonCompilerSettings clangCompiler)
+                        {
+                            clangCompiler.AllWarnings = true;
+                            clangCompiler.ExtraWarnings = true;
+                            clangCompiler.Pedantic = true;
+                        }
                     });
             }
             else if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
             {
                 source.PrivatePatch(settings =>
                     {
-                        var compiler = settings as C.ICommonCompilerSettings;
-                        compiler.DisableWarnings.AddUnique("pointer-to-int-cast");
-                        compiler.DisableWarnings.AddUnique("int-to-pointer-cast");
-
-                        var gccCompiler = settings as GccCommon.ICommonCompilerSettings;
-                        gccCompiler.AllWarnings = false;
-                        gccCompiler.ExtraWarnings = false;
-                        gccCompiler.Pedantic = true;
+                        if (settings is GccCommon.ICommonCompilerSettings gccCompiler)
+                        {
+                            gccCompiler.AllWarnings = true;
+                            gccCompiler.ExtraWarnings = true;
+                            gccCompiler.Pedantic = true;
+                        }
                     });
             }
         }

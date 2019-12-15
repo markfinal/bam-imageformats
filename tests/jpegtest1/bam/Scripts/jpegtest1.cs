@@ -43,6 +43,10 @@ namespace jpegtest1
 
             source.PrivatePatch(settings =>
             {
+                if (settings is C.ICommonCompilerSettings compiler)
+                {
+                    compiler.WarningsAsErrors = true;
+                }
                 if (settings is ClangCommon.ICommonCompilerSettings clangCompiler)
                 {
                     clangCompiler.AllWarnings = true;
@@ -64,9 +68,10 @@ namespace jpegtest1
                 else if (settings is VisualCCommon.ICommonCompilerSettings vcCompiler)
                 {
                     vcCompiler.WarningLevel = VisualCCommon.EWarningLevel.Level4;
-
-                    var preprocessor = settings as C.ICommonPreprocessorSettings;
-                    preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
+                    if (settings is C.ICommonPreprocessorSettings preprocessor)
+                    {
+                        preprocessor.PreprocessorDefines.Add("_CRT_SECURE_NO_WARNINGS");
+                    }
                 }
             });
 
