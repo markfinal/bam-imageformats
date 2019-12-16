@@ -33,21 +33,7 @@ namespace lpng
     class SDK :
         C.SDKTemplate
     {
-        private readonly Bam.Core.StringArray headers;
-        private readonly Bam.Core.TypeArray libraryTypes = new Bam.Core.TypeArray(typeof(PNGLibrary));
-        private readonly Bam.Core.TypeArray generatedHeaderTypes = new Bam.Core.TypeArray(typeof(GeneratePngConfHeader));
-
-        public SDK()
-        {
-            this.headers = new Bam.Core.StringArray
-            {
-                "png.h",
-                "pngconf.h"
-            };
-        }
-
-        protected override Bam.Core.StringArray HeaderFiles => this.headers;
-        protected override Bam.Core.TypeArray LibraryModuleTypes => this.libraryTypes;
-        protected override Bam.Core.TypeArray GeneratedHeaderTypes => this.generatedHeaderTypes;
+        protected override Bam.Core.TypeArray LibraryModuleTypes { get; } = new Bam.Core.TypeArray(typeof(PNGLibrary));
+        protected override Bam.Core.TypeArray GeneratedHeaderTypes { get; } = new Bam.Core.TypeArray(typeof(GeneratePngConfHeader));
     }
 }

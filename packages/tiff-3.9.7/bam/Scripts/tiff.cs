@@ -32,8 +32,15 @@ namespace tiff
 {
     [Bam.Core.ModuleGroup("Thirdparty/tiff")]
     class LibTiff :
-        C.DynamicLibrary
+        C.DynamicLibrary,
+        C.IPublicHeaders
     {
+        Bam.Core.StringArray C.IPublicHeaders.PublicHeaders { get; } = new Bam.Core.StringArray(
+            "libtiff/tiffio.h",
+            "libtiff/tiff.h",
+            "libtiff/tiffvers.h"
+        );
+
         protected override void
         Init()
         {

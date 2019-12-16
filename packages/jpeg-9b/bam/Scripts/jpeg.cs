@@ -31,8 +31,14 @@ namespace jpeg
 {
     [Bam.Core.ModuleGroup("Thirdparty/libjpeg")]
     class JpegLibraryStatic :
-        C.StaticLibrary
+        C.StaticLibrary,
+        C.IPublicHeaders
     {
+        Bam.Core.StringArray C.IPublicHeaders.PublicHeaders { get; } = new Bam.Core.StringArray(
+            "jpeglib.h",
+            "jmorecfg.h"
+        );
+
         protected override void
         Init()
         {
@@ -40,6 +46,8 @@ namespace jpeg
 
             this.SetSemanticVersion("9", "b", null);
             this.Macros[Bam.Core.ModuleMacroNames.OutputName] = this.CreateTokenizedString("jpeg");
+
+            this.CreateHeaderCollection("$(packagedir)/*.h");
 
             var source = this.CreateCSourceCollection("$(packagedir)/j*.c",
                 filter: new System.Text.RegularExpressions.Regex(@"^((?!.*jmemname.c)(?!.*jmemnobs.c)(?!.*jmemdos.c)(?!.*jmemmac.c)(?!.*jpegtran.c).*)$"));

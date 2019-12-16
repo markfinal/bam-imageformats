@@ -32,8 +32,14 @@ namespace lpng
 {
     [Bam.Core.ModuleGroup("Thirdparty/libpng")]
     class PNGLibrary :
-        C.DynamicLibrary
+        C.DynamicLibrary,
+        C.IPublicHeaders
     {
+        Bam.Core.StringArray C.IPublicHeaders.PublicHeaders { get; } = new Bam.Core.StringArray(
+            "png.h",
+            "pngconf.h"
+        );
+
         protected override void
         Init()
         {

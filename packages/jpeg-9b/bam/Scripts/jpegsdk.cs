@@ -33,21 +33,7 @@ namespace jpeg
     class SDK :
         C.SDKTemplate
     {
-        private readonly Bam.Core.StringArray headers;
-        private readonly Bam.Core.TypeArray libraryTypes = new Bam.Core.TypeArray(typeof(JpegLibraryStatic));
-        private readonly Bam.Core.TypeArray genHeaderTypes = new Bam.Core.TypeArray(typeof(GenerateJConfigHeader));
-
-        public SDK()
-        {
-            this.headers = new Bam.Core.StringArray
-            {
-                "jpeglib.h",
-                "jmorecfg.h"
-            };
-        }
-
-        protected override Bam.Core.StringArray HeaderFiles => this.headers;
-        protected override Bam.Core.TypeArray LibraryModuleTypes => this.libraryTypes;
-        protected override Bam.Core.TypeArray GeneratedHeaderTypes => this.genHeaderTypes;
+        protected override Bam.Core.TypeArray LibraryModuleTypes { get; } = new Bam.Core.TypeArray(typeof(JpegLibraryStatic));
+        protected override Bam.Core.TypeArray GeneratedHeaderTypes { get; } = new Bam.Core.TypeArray(typeof(GenerateJConfigHeader));
     }
 }
