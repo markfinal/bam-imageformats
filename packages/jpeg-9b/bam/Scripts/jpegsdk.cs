@@ -33,7 +33,7 @@ namespace jpeg
     class SDK :
         C.SDKTemplate
     {
-        protected override Bam.Core.TypeArray LibraryModuleTypes { get; } = new Bam.Core.TypeArray(typeof(JpegLibraryStatic));
+        public override Bam.Core.TypeArray LibraryModuleTypes { get; } = new Bam.Core.TypeArray(typeof(JpegLibraryStatic));
         protected override Bam.Core.TypeArray GeneratedHeaderTypes { get; } = new Bam.Core.TypeArray(typeof(GenerateJConfigHeader));
     }
 }
