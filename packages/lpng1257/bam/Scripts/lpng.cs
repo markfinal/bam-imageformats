@@ -75,8 +75,8 @@ namespace lpng
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
             {
                 // to match that in the CMakeLists.txt
-                this.Macros.FromName(C.ModuleMacroNames.SharedObjectSONameFileExtension).SetVerbatim(".so.0");
-                this.Macros.FromName(C.ModuleMacroNames.DynamicLibraryFileExtension).Set(".so.0.$(PatchVersion).0", this);
+                this.Macros.AddVerbatim(C.ModuleMacroNames.SharedObjectSONameFileExtension, ".so.0");
+                this.Macros.Add(C.ModuleMacroNames.DynamicLibraryFileExtension, this.CreateTokenizedString(".so.0.$(PatchVersion).0"));
             }
 
             this.CreateHeaderCollection("$(packagedir)/*.h");

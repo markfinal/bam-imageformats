@@ -50,8 +50,8 @@ namespace lpng
             if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Linux))
             {
                 // to match that in the CMakeLists.txt
-                this.Macros.FromName(C.ModuleMacroNames.SharedObjectSONameFileExtension).Set(".so.$(MajorVersion)$(MinorVersion)", this);
-                this.Macros.FromName(C.ModuleMacroNames.DynamicLibraryFileExtension).Set(".so.$(MajorVersion)$(MinorVersion).$(PatchVersion).0", this);
+                this.Macros.Add(C.ModuleMacroNames.SharedObjectSONameFileExtension, this.CreateTokenizedString(".so.$(MajorVersion)$(MinorVersion)"));
+                this.Macros.Add(C.ModuleMacroNames.DynamicLibraryFileExtension, this.CreateTokenizedString(".so.$(MajorVersion)$(MinorVersion).$(PatchVersion).0"));
 
                 this.PrivatePatch(settings =>
                 {
