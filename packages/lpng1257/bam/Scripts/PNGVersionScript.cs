@@ -52,7 +52,7 @@ namespace lpng
                 contents.AppendLine("PNG12_0"); // to match that from MakeFile.elf
                 contents.AppendLine("{");
                 contents.AppendLine("global:");
-                using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros["templateConfig"].ToString()))
+                using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros.FromName("templateConfig").ToString()))
                 {
                     for (;;)
                     {

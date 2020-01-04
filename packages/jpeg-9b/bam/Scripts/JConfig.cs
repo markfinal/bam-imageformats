@@ -64,7 +64,7 @@ namespace jpeg
             {
                 if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
                 {
-                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros["templateConfig"].ToString()))
+                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros.FromName("templateConfig").ToString()))
                     {
                         return readFile.ReadToEnd();
                     }

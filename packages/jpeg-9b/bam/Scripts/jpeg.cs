@@ -47,7 +47,7 @@ namespace jpeg
             base.Init();
 
             this.SetSemanticVersion("9", "b", null);
-            this.Macros[Bam.Core.ModuleMacroNames.OutputName] = this.CreateTokenizedString("jpeg");
+            this.Macros.FromName(Bam.Core.ModuleMacroNames.OutputName).SetVerbatim("jpeg");
 
             this.CreateHeaderCollection("$(packagedir)/*.h");
 

@@ -48,7 +48,7 @@ namespace tiff
         {
             base.Init();
 
-            this.Macros[Bam.Core.ModuleMacroNames.OutputName] = Bam.Core.TokenizedString.CreateVerbatim("tiff");
+            this.Macros.FromName(Bam.Core.ModuleMacroNames.OutputName).SetVerbatim("tiff");
             this.SetSemanticVersion(3, 9, 7);
 
             var headers = this.CreateHeaderCollection("$(packagedir)/libtiff/*.h");
@@ -195,7 +195,7 @@ namespace tiff
         {
             base.Init();
 
-            this.Macros[Bam.Core.ModuleMacroNames.OutputName] = Bam.Core.TokenizedString.CreateVerbatim("tiff");
+            this.Macros.FromName(Bam.Core.ModuleMacroNames.OutputName).SetVerbatim("tiff");
             this.SetSemanticVersion(3, 9, 7);
 
             var headers = this.CreateHeaderCollection("$(packagedir)/libtiff/*.h");

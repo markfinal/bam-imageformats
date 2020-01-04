@@ -64,7 +64,7 @@ namespace tiff
             {
                 if (this.BuildEnvironment.Platform.Includes(Bam.Core.EPlatform.Windows))
                 {
-                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros["templatetiffconf"].ToString()))
+                    using (System.IO.TextReader readFile = new System.IO.StreamReader(this.Macros.FromName("templatetiffconf").ToString()))
                     {
                         return readFile.ReadToEnd();
                     }
