@@ -42,7 +42,8 @@ namespace lpng
                 base.Init();
 
                 var source = this.CreateCSourceCollection("$(packagedir)/pngtest.c");
-                this.UseSDK<SDK>(source);
+                source.CompileAgainstSDK<SDK>();
+                this.LinkAgainstSDK<SDK>();
 
                 this.PrivatePatch(settings =>
                     {

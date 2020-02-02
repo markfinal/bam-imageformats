@@ -35,6 +35,6 @@ namespace tiff
     {
         protected override bool HonourHeaderFileLayout => false; // need to trim off the libtiff parent directory from header paths
         protected override Bam.Core.TypeArray LibraryModuleTypes { get; } = new Bam.Core.TypeArray(typeof(LibTiff));
-        protected override Bam.Core.TypeArray GeneratedHeaderTypes { get; } = new Bam.Core.TypeArray(typeof(GenerateConfHeader));
+        protected override Bam.Core.TypeArray GeneratedHeaderTypes { get; } = new Bam.Core.TypeArray(typeof(GenerateConfHeader), typeof(GenerateConfigHeader));
     }
 }

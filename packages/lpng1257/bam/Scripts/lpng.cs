@@ -86,7 +86,9 @@ namespace lpng
                 filter: new System.Text.RegularExpressions.Regex(@"^((?!.*example)(?!.*pngtest)(?!.*pngvcrd)(?!.*pnggccrd).*)$")
             );
 
-            this.UseSDKPublicly<zlib.SDK>(source); // png.h requires zlib.h
+            source.CompileAgainstSDK<zlib.SDK>();
+            this.LinkAgainstSDK<zlib.SDK>();
+            this.AddInterfaceDependency<zlib.SDK>(); // png.h requires zlib.h
 
             source.PrivatePatch(settings =>
                 {

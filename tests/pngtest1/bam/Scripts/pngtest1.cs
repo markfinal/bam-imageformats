@@ -27,7 +27,6 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion // License
-using Bam.Core;
 namespace pngtest1
 {
     class PNGTest1 :
@@ -40,7 +39,8 @@ namespace pngtest1
 
             this.CreateHeaderCollection("$(packagedir)/source/*.h");
             var source = this.CreateCSourceCollection("$(packagedir)/source/*.c");
-            this.UseSDK<lpng.SDK>(source);
+            source.CompileAgainstSDK<lpng.SDK>();
+            this.LinkAgainstSDK<lpng.SDK>();
 
             source.PrivatePatch(settings =>
             {

@@ -39,7 +39,8 @@ namespace jpegtest1
 
             this.CreateHeaderCollection("$(packagedir)/source/*.h");
             var source = this.CreateCSourceCollection("$(packagedir)/source/*.c");
-            this.UseSDK<jpeg.SDK>(source);
+            source.CompileAgainstSDK<jpeg.SDK>();
+            this.LinkAgainstSDK<jpeg.SDK>();
 
             source.PrivatePatch(settings =>
             {

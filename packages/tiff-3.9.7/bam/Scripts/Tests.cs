@@ -43,7 +43,8 @@ namespace tiff
                 this.Macros.FromName(Bam.Core.ModuleMacroNames.OutputName).SetVerbatim("ascii_tag");
 
                 var source = this.CreateCSourceCollection("$(packagedir)/test/ascii_tag.c");
-                this.CompileAndLinkAgainst<LibTiff_staticExported>(source);
+                source.CompileAgainstSDK<SDK>();
+                this.LinkAgainstSDK<SDK>();
 
                 source.PrivatePatch(settings =>
                     {
@@ -78,7 +79,8 @@ namespace tiff
 
                 var source = this.CreateCSourceCollection("$(packagedir)/test/long_tag.c");
                 source.AddFiles("$(packagedir)/test/check_tag.c");
-                this.CompileAndLinkAgainst<LibTiff_staticExported>(source);
+                source.CompileAgainstSDK<SDK>();
+                this.LinkAgainstSDK<SDK>();
 
                 source.PrivatePatch(settings =>
                     {
@@ -113,7 +115,8 @@ namespace tiff
 
                 var source = this.CreateCSourceCollection("$(packagedir)/test/short_tag.c");
                 source.AddFiles("$(packagedir)/test/check_tag.c");
-                this.CompileAndLinkAgainst<LibTiff_staticExported>(source);
+                source.CompileAgainstSDK<SDK>();
+                this.LinkAgainstSDK<SDK>();
 
                 source.PrivatePatch(settings =>
                     {
@@ -150,7 +153,8 @@ namespace tiff
                 var source = this.CreateCSourceCollection("$(packagedir)/test/strip_rw.c");
                 source.AddFiles("$(packagedir)/test/strip.c");
                 source.AddFiles("$(packagedir)/test/test_arrays.c");
-                this.CompileAndLinkAgainst<LibTiff_staticExported>(source);
+                source.CompileAgainstSDK<SDK>();
+                this.LinkAgainstSDK<SDK>();
 
                 if (this.Linker is GccCommon.LinkerBase)
                 {
