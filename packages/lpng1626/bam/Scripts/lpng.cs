@@ -83,8 +83,9 @@ namespace lpng
             source.DependsOn(generateConf);
             source.UsePublicPatches(generateConf);
 
-            // zlib dependency is now not exposed in public headers
-            this.UseSDK<zlib.SDK>(source);
+            // zlib dependency is not longer exposed in public headers
+            source.CompileAgainstSDK<zlib.SDK>();
+            this.LinkAgainstSDK<zlib.SDK>();
 
             source.PrivatePatch(settings =>
                 {

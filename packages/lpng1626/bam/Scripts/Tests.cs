@@ -42,8 +42,9 @@ namespace lpng
                 base.Init();
 
                 var source = this.CreateCSourceCollection("$(packagedir)/pngtest.c");
-                this.UseSDK<SDK>(source);
-                this.UseSDK<zlib.SDK>(source);
+                source.CompileAgainstSDK<SDK>();
+                source.CompileAgainstSDK<zlib.SDK>();
+                this.LinkAgainstSDK<SDK>();
 
                 this.PrivatePatch(settings =>
                     {
@@ -66,8 +67,10 @@ namespace lpng
                 base.Init();
 
                 var source = this.CreateCSourceCollection("$(packagedir)/contrib/libtests/pngvalid.c");
-                this.UseSDK<SDK>(source);
-                this.UseSDK<zlib.SDK>(source);
+                source.CompileAgainstSDK<SDK>();
+                source.CompileAgainstSDK<zlib.SDK>();
+                this.LinkAgainstSDK<SDK>();
+                this.LinkAgainstSDK<zlib.SDK>();
 
                 source.PrivatePatch(settings =>
                     {
@@ -99,7 +102,8 @@ namespace lpng
                 base.Init();
 
                 var source = this.CreateCSourceCollection("$(packagedir)/contrib/libtests/pngstest.c");
-                this.UseSDK<SDK>(source);
+                source.CompileAgainstSDK<SDK>();
+                this.LinkAgainstSDK<SDK>();
 
                 source.PrivatePatch(settings =>
                     {
@@ -131,7 +135,8 @@ namespace lpng
                 base.Init();
 
                 var source = this.CreateCSourceCollection("$(packagedir)/contrib/libtests/pngunknown.c");
-                this.UseSDK<SDK>(source);
+                source.CompileAgainstSDK<SDK>();
+                this.LinkAgainstSDK<SDK>();
 
                 source.PrivatePatch(settings =>
                     {
@@ -161,7 +166,8 @@ namespace lpng
                 base.Init();
 
                 var source = this.CreateCSourceCollection("$(packagedir)/contrib/libtests/pngimage.c");
-                this.UseSDK<SDK>(source);
+                source.CompileAgainstSDK<SDK>();
+                this.LinkAgainstSDK<SDK>();
 
                 source.PrivatePatch(settings =>
                     {
